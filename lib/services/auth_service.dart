@@ -51,4 +51,28 @@ class AuthService {
       await user.sendEmailVerification();
     }
   }
+
+  Future<bool> checkEmailVerification() async {
+  final user = _auth.currentUser;
+
+  if (user == null) {
+    return false;
+  }
+
+  await user.reload();
+
+  return _auth.currentUser?.emailVerified ?? false;
+}
+
+Future<User?> reloadCurrentUser() async {
+  final user = _auth.currentUser;
+
+  if (user == null) {
+    return null;
+  }
+
+  await user.reload();
+
+  return _auth.currentUser;
+}
 }

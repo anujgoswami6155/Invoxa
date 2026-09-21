@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 import 'login_screen.dart';
+import 'verify_email_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -21,15 +22,21 @@ class AuthGate extends StatelessWidget {
           );
         }
 
-        if (snapshot.hasData) {
-          return const Scaffold(
-            body: Center(
-              child: Text('Dashboard'),
-            ),
-          );
+        final user = snapshot.data;
+
+        if (user == null) {
+          return const LoginScreen();
         }
 
-        return const LoginScreen();
+        if (!user.emailVerified) {
+          return const VerifyEmailScreen();
+        }
+
+        return const Scaffold(
+          body: Center(
+            child: Text('Dashboard'),
+          ),
+        );
       },
     );
   }

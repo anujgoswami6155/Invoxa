@@ -76,6 +76,8 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = firebaseUser;
       _user = user;
 
+      await _authService.sendEmailVerification();
+
       return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = _getAuthErrorMessage(e);
@@ -226,4 +228,35 @@ return true;
         return 'Authentication failed. Please try again.';
     }
   }
+
+  Future<bool> checkEmailVerification() async {
+  _setLoading(true);
+  _clearError();
+
+  try {
+    final verified = await _authService.checkEmailVerification();
+
+    if (verified) {
+  _firebaseUser = _authService.currentUser;
+
+  if (_firebaseUser != null) {
+    _user = await _userService.getUser(
+      _firebaseUser!.uid,
+    );
+  }
+
+  notifyListeners();
+}
+
+    return verified;
+  } on FirebaseAuthException catch (e) {
+    _errorMessage = _getAuthErrorMessage(e);
+    return false;
+  } catch (e) {
+    _errorMessage = 'Something went wrong. Please try again.';
+    return false;
+  } finally {
+    _setLoading(false);
+  }
+}
 }
