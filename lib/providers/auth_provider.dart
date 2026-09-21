@@ -104,12 +104,18 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = credential.user;
 
       if (_firebaseUser != null) {
-        _user = await _userService.getUser(
-          _firebaseUser!.uid,
-        );
-      }
+  _user = await _userService.getUser(
+    _firebaseUser!.uid,
+  );
 
-      return true;
+  if (_user == null) {
+    _errorMessage =
+        'User profile not found. Please contact support.';
+    return false;
+  }
+}
+
+return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = _getAuthErrorMessage(e);
       return false;
