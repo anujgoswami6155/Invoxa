@@ -106,18 +106,18 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = credential.user;
 
       if (_firebaseUser != null) {
-  _user = await _userService.getUser(
-    _firebaseUser!.uid,
-  );
+        _user = await _userService.getUser(
+          _firebaseUser!.uid,
+        );
 
-  if (_user == null) {
-    _errorMessage =
-        'User profile not found. Please contact support.';
-    return false;
-  }
-}
+        if (_user == null) {
+          _errorMessage =
+              'User profile not found. Please contact support.';
+          return false;
+        }
+      }
 
-return true;
+      return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = _getAuthErrorMessage(e);
       return false;
@@ -183,6 +183,37 @@ return true;
     }
   }
 
+  Future<bool> checkEmailVerification() async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      final verified = await _authService.checkEmailVerification();
+
+      if (verified) {
+        _firebaseUser = _authService.currentUser;
+
+        if (_firebaseUser != null) {
+          _user = await _userService.getUser(
+            _firebaseUser!.uid,
+          );
+        }
+
+        notifyListeners();
+      }
+
+      return verified;
+    } on FirebaseAuthException catch (e) {
+      _errorMessage = _getAuthErrorMessage(e);
+      return false;
+    } catch (e) {
+      _errorMessage = 'Something went wrong. Please try again.';
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   void clearError() {
     _clearError();
     notifyListeners();
@@ -228,35 +259,4 @@ return true;
         return 'Authentication failed. Please try again.';
     }
   }
-
-  Future<bool> checkEmailVerification() async {
-  _setLoading(true);
-  _clearError();
-
-  try {
-    final verified = await _authService.checkEmailVerification();
-
-    if (verified) {
-  _firebaseUser = _authService.currentUser;
-
-  if (_firebaseUser != null) {
-    _user = await _userService.getUser(
-      _firebaseUser!.uid,
-    );
-  }
-
-  notifyListeners();
-}
-
-    return verified;
-  } on FirebaseAuthException catch (e) {
-    _errorMessage = _getAuthErrorMessage(e);
-    return false;
-  } catch (e) {
-    _errorMessage = 'Something went wrong. Please try again.';
-    return false;
-  } finally {
-    _setLoading(false);
-  }
-}
 }
