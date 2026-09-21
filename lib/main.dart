@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
+import 'screens/auth/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,11 +35,7 @@ class InvoxaApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('Invoxa'),
-        ),
-      ),
+      home: const AuthGate(),
     );
   }
 }

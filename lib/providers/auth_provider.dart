@@ -23,6 +23,8 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isLoggedIn => _firebaseUser != null;
 
+  Stream<User?> get authStateChanges => _authService.authStateChanges;
+
   AuthProvider() {
     _firebaseUser = _authService.currentUser;
 
