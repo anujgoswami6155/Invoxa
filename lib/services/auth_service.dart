@@ -7,7 +7,7 @@ class AuthService {
   User? get currentUser => _auth.currentUser;
 
   // Listen to authentication state changes
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  Stream<User?> get userChanges => _auth.userChanges();
 
   // Register a new user
   Future<UserCredential> register({
