@@ -25,12 +25,14 @@ class AuthProvider extends ChangeNotifier {
 
   Stream<User?> get userChanges => _authService.userChanges;
 
+  // Constructor, initializes the AuthProvider and listens to authentication state changes
   AuthProvider() {
     _firebaseUser = _authService.currentUser;
 
     _authService.userChanges.listen(_onAuthStateChanged);
   }
 
+  // Handle authentication state changes
   Future<void> _onAuthStateChanged(User? firebaseUser) async {
     _firebaseUser = firebaseUser;
 
