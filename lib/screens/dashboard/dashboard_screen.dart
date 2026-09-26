@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/auth_provider.dart';
+import '../auth/auth_gate.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
+
+  Future<void> _handleLogout(BuildContext context) async {
+    final authProvider = context.read<AuthProvider>();
+    await authProvider.logout();
+    if (context.mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const AuthGate()),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +39,14 @@ class DashboardScreen extends StatelessWidget {
             icon: const Icon(
               Icons.notifications_none_rounded,
               color: Color(0xFF374151),
+            ),
+          ),
+          IconButton(
+            tooltip: 'Logout',
+            onPressed: () => _handleLogout(context),
+            icon: const Icon(
+              Icons.logout_rounded,
+              color: Color(0xFFDC2626),
             ),
           ),
           const SizedBox(width: 8),
@@ -57,9 +80,24 @@ class DashboardScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
-                'Dashboard content coming soon...',
-                style: TextStyle(fontSize: 16, color: Color(0xFF6B7280)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Dashboard content coming soon...',
+                    style: TextStyle(fontSize: 16, color: Color(0xFF6B7280)),
+                  ),
+                  const SizedBox(height: 20),
+                  FilledButton.icon(
+                    onPressed: () => _handleLogout(context),
+                    icon: const Icon(Icons.logout_rounded),
+                    label: const Text('Logout'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: const Color(0xFFDC2626),
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
