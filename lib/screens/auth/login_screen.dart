@@ -1,26 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../providers/auth_provider.dart';
-import '../dashboard/dashboard_screen.dart';
-import 'forgot_password_screen.dart';
 import 'register_screen.dart';
+import 'sign_in_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  bool _obscurePassword = true;
-  bool _showLoginForm = false;
 
   // Dark aesthetic minimal color palette (Electric Indigo & Deep Obsidian)
   static const Color _bgDark = Color(0xFF080C15);
@@ -30,98 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   static const Color _primaryAccentLight = Color(0xFF818CF8);
   static const Color _buttonSecondaryBg = Color(0xFF151C2E);
   static const Color _buttonSecondaryBorder = Color(0xFF243250);
-  static const Color _inputFill = Color(0xFF0B101D);
-  static const Color _inputBorder = Color(0xFF1D2840);
   static const Color _textMuted = Color(0xFF94A3B8);
   static const Color _textSubtle = Color(0xFF64748B);
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _login() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    final authProvider = context.read<AuthProvider>();
-
-    final success = await authProvider.login(
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-    );
-
-    if (!mounted) return;
-
-    if (success) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
-        (route) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xFF1F1218),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color(0xFF881337)),
-          ),
-          content: Row(
-            children: [
-              const Icon(
-                Icons.error_outline_rounded,
-                color: Color(0xFFFB7185),
-                size: 20,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  authProvider.errorMessage ?? 'Login failed. Please try again.',
-                  style: const TextStyle(color: Color(0xFFFECDD3)),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
-
-  void _loadDemoCredentials() {
-    setState(() {
-      _emailController.text = 'demo@invoxa.com';
-      _passwordController.text = 'demo123456';
-      _showLoginForm = true;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color(0xFF131C31),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: _primaryAccentLight),
-        ),
-        duration: const Duration(seconds: 3),
-        content: const Row(
-          children: [
-            Icon(Icons.auto_awesome, color: _primaryAccentLight, size: 20),
-            SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'Demo credentials pre-filled for Rahul Enterprises.',
-                style: TextStyle(color: Color(0xFFE2E8F0)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
                   colors: const [
-                    Color(0x2E6366F1), // 18% indigo glow
+                    Color(0x2E6366F1), // Indigo subtle glow
                     Color(0x330F172A),
                     _bgDark,
                   ],
@@ -168,27 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       const SizedBox(height: 28),
 
-                      // Animated Main Center Card
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 320),
-                        switchInCurve: Curves.easeOutCubic,
-                        switchOutCurve: Curves.easeInCubic,
-                        transitionBuilder: (child, animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0.0, 0.04),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: _showLoginForm
-                            ? _buildLoginFormCard(context)
-                            : _buildShowcaseCard(context),
-                      ),
+                      // Showcase / Hero Card (Exact layout & hierarchy from reference image)
+                      _buildShowcaseCard(context),
 
                       const SizedBox(height: 24),
 
@@ -262,7 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
   // 2. Showcase / Hero Card (Exact layout & hierarchy from reference image)
   Widget _buildShowcaseCard(BuildContext context) {
     return Container(
-      key: const ValueKey('showcase_card'),
       padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
         color: _cardBg,
@@ -390,9 +264,12 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _showLoginForm = true;
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const SignInScreen(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
@@ -462,7 +339,17 @@ class _LoginScreenState extends State<LoginScreen> {
           Center(
             child: InkWell(
               borderRadius: BorderRadius.circular(20),
-              onTap: _loadDemoCredentials,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const SignInScreen(
+                      initialEmail: 'demo@invoxa.com',
+                      initialPassword: 'demo123456',
+                    ),
+                  ),
+                );
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
@@ -493,388 +380,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  // 3. Email & Password Sign In Form Card
-  Widget _buildLoginFormCard(BuildContext context) {
-    return Container(
-      key: const ValueKey('login_form_card'),
-      padding: const EdgeInsets.all(26),
-      decoration: BoxDecoration(
-        color: _cardBg,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: _cardBorder, width: 1.2),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 36,
-            offset: Offset(0, 16),
-          ),
-        ],
-      ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Top Return Link
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    setState(() {
-                      _showLoginForm = false;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.arrow_back_rounded,
-                          size: 16,
-                          color: _primaryAccentLight,
-                        ),
-                        SizedBox(width: 6),
-                        Text(
-                          'Back to Overview',
-                          style: TextStyle(
-                            color: _primaryAccentLight,
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF161F33),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFF283658), width: 1),
-                  ),
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Color(0xFFC7D2FE),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 18),
-
-            const Text(
-              'Sign in with Email',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              'Enter your credentials to access your business suite',
-              style: TextStyle(
-                color: _textMuted,
-                fontSize: 13,
-              ),
-            ),
-
-            const SizedBox(height: 22),
-
-            // In-Card Error Display from AuthProvider
-            Consumer<AuthProvider>(
-              builder: (context, auth, _) {
-                if (auth.errorMessage == null) {
-                  return const SizedBox.shrink();
-                }
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2D141E),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: const Color(0xFF9F1239)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.error_outline_rounded,
-                        color: Color(0xFFFB7185),
-                        size: 18,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          auth.errorMessage!,
-                          style: const TextStyle(
-                            color: Color(0xFFFECDD3),
-                            fontSize: 12.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-
-            // Email Input Field
-            const Text(
-              'Email Address',
-              style: TextStyle(
-                color: Color(0xFFCBD5E1),
-                fontSize: 12.5,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 6),
-            TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: _inputFill,
-                hintText: 'name@business.com',
-                hintStyle: const TextStyle(color: Color(0xFF475569), fontSize: 13),
-                prefixIcon: const Icon(
-                  Icons.mail_outline_rounded,
-                  color: _primaryAccentLight,
-                  size: 20,
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _inputBorder),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _inputBorder),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _primaryAccent, width: 1.5),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE11D48)),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE11D48), width: 1.5),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Please enter your email';
-                }
-                if (!value.contains('@') || !value.contains('.')) {
-                  return 'Please enter a valid email address';
-                }
-                return null;
-              },
-            ),
-
-            const SizedBox(height: 16),
-
-            // Password Input Field Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Password',
-                  style: TextStyle(
-                    color: Color(0xFFCBD5E1),
-                    fontSize: 12.5,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ForgotPasswordScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: _primaryAccentLight,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: _obscurePassword,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: _inputFill,
-                hintText: 'Enter your password',
-                hintStyle: const TextStyle(color: Color(0xFF475569), fontSize: 13),
-                prefixIcon: const Icon(
-                  Icons.lock_outline_rounded,
-                  color: _primaryAccentLight,
-                  size: 20,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscurePassword
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    color: _textSubtle,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _inputBorder),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _inputBorder),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: _primaryAccent, width: 1.5),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE11D48)),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Color(0xFFE11D48), width: 1.5),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
-                }
-                return null;
-              },
-            ),
-
-            const SizedBox(height: 24),
-
-            // Submit Button
-            Consumer<AuthProvider>(
-              builder: (context, authProvider, child) {
-                return SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: authProvider.isLoading ? null : _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _primaryAccent,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: const Color(0x806366F1),
-                      elevation: 4,
-                      shadowColor: const Color(0x666366F1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
-                      ),
-                    ),
-                    child: authProvider.isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                'Sign In to Dashboard',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.arrow_forward_rounded,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                  ),
-                );
-              },
-            ),
-
-            const SizedBox(height: 16),
-
-            // Link to Register Screen
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don't have an account? ",
-                  style: TextStyle(
-                    color: _textMuted,
-                    fontSize: 13,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RegisterScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Create Account',
-                    style: TextStyle(
-                      color: _primaryAccentLight,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

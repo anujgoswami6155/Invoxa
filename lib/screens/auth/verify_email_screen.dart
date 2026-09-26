@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
 import '../dashboard/dashboard_screen.dart';
+import 'auth_gate.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({super.key});
@@ -144,8 +145,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           ),
           content: const Row(
             children: [
-              Icon(Icons.mail_outline_rounded,
-                  color: _primaryAccentLight, size: 20),
+              Icon(
+                Icons.mail_outline_rounded,
+                color: _primaryAccentLight,
+                size: 20,
+              ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -176,7 +180,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  authProvider.errorMessage ?? 'Could not send verification email.',
+                  authProvider.errorMessage ??
+                      'Could not send verification email.',
                   style: const TextStyle(color: Color(0xFFFECDD3)),
                 ),
               ),
@@ -200,11 +205,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [
-                    Color(0x2E6366F1),
-                    Color(0x330F172A),
-                    _bgDark,
-                  ],
+                  colors: const [Color(0x2E6366F1), Color(0x330F172A), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -220,9 +221,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   vertical: 24,
                 ),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 460,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 460),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -326,7 +325,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF161F33),
                   borderRadius: BorderRadius.circular(20),
@@ -353,7 +355,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF142038),
                   borderRadius: BorderRadius.circular(12),
@@ -395,11 +400,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           const SizedBox(height: 8),
           const Text(
             'We have sent a secure verification link to your email address. Please click the link to confirm your ownership and continue.',
-            style: TextStyle(
-              color: _textMuted,
-              fontSize: 13,
-              height: 1.5,
-            ),
+            style: TextStyle(color: _textMuted, fontSize: 13, height: 1.5),
           ),
 
           const SizedBox(height: 22),
@@ -472,10 +473,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           ),
                         ),
                         SizedBox(width: 8),
-                        Icon(
-                          Icons.arrow_forward_rounded,
-                          size: 18,
-                        ),
+                        Icon(Icons.arrow_forward_rounded, size: 18),
                       ],
                     ),
             ),
@@ -493,7 +491,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 backgroundColor: _buttonSecondaryBg,
                 foregroundColor: const Color(0xFFF1F5F9),
                 disabledForegroundColor: _textSubtle,
-                side: const BorderSide(color: _buttonSecondaryBorder, width: 1.1),
+                side: const BorderSide(
+                  color: _buttonSecondaryBorder,
+                  width: 1.1,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13),
                 ),
@@ -517,6 +518,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             child: TextButton.icon(
               onPressed: () async {
                 await context.read<AuthProvider>().logout();
+                if (context.mounted) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const AuthGate()),
+                    (route) => false,
+                  );
+                }
               },
               icon: const Icon(
                 Icons.logout_rounded,
@@ -543,11 +550,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: const [
-          Icon(
-            Icons.shield_outlined,
-            size: 14,
-            color: _primaryAccentLight,
-          ),
+          Icon(Icons.shield_outlined, size: 14, color: _primaryAccentLight),
           SizedBox(width: 7),
           Text(
             'Secure Local-First Business Architecture',
