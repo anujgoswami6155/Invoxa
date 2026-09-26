@@ -50,9 +50,7 @@ class LoginScreen extends StatelessWidget {
                   vertical: 24,
                 ),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 460,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 460),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,11 +162,7 @@ class LoginScreen extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: const [
-                Icon(
-                  Icons.auto_awesome,
-                  size: 13,
-                  color: _primaryAccentLight,
-                ),
+                Icon(Icons.auto_awesome, size: 13, color: _primaryAccentLight),
                 SizedBox(width: 7),
                 Text(
                   'Mobile-First Invoicing & Billing',
@@ -210,11 +204,7 @@ class LoginScreen extends StatelessWidget {
           // Description Paragraph
           const Text(
             'Effortlessly manage customers, create snapshot invoices, track partial & full payments, and monitor your revenue in real-time.',
-            style: TextStyle(
-              color: _textMuted,
-              fontSize: 13.5,
-              height: 1.55,
-            ),
+            style: TextStyle(color: _textMuted, fontSize: 13.5, height: 1.55),
           ),
 
           const SizedBox(height: 22),
@@ -266,9 +256,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const SignInScreen(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const SignInScreen()),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -285,16 +273,10 @@ class LoginScreen extends StatelessWidget {
                 children: const [
                   Text(
                     'Login with Email',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                   SizedBox(width: 8),
-                  Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 18,
-                  ),
+                  Icon(Icons.arrow_forward_rounded, size: 18),
                 ],
               ),
             ),
@@ -310,25 +292,23 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const RegisterScreen(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const RegisterScreen()),
                 );
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: _buttonSecondaryBg,
                 foregroundColor: const Color(0xFFF1F5F9),
-                side: const BorderSide(color: _buttonSecondaryBorder, width: 1.1),
+                side: const BorderSide(
+                  color: _buttonSecondaryBorder,
+                  width: 1.1,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13),
                 ),
               ),
               child: const Text(
                 'Create New Account',
-                style: TextStyle(
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -351,7 +331,10 @@ class LoginScreen extends StatelessWidget {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF0D1424),
                   borderRadius: BorderRadius.circular(20),
@@ -385,17 +368,10 @@ class LoginScreen extends StatelessWidget {
   }
 
   // Feature Bullet Widget
-  Widget _buildFeatureItem({
-    required IconData icon,
-    required String label,
-  }) {
+  Widget _buildFeatureItem({required IconData icon, required String label}) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: _primaryAccentLight,
-        ),
+        Icon(icon, size: 16, color: _primaryAccentLight),
         const SizedBox(width: 7),
         Expanded(
           child: Text(
@@ -418,11 +394,7 @@ class LoginScreen extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: const [
-          Icon(
-            Icons.shield_outlined,
-            size: 14,
-            color: _primaryAccentLight,
-          ),
+          Icon(Icons.shield_outlined, size: 14, color: _primaryAccentLight),
           SizedBox(width: 7),
           Text(
             'Secure Local-First Business Architecture',
