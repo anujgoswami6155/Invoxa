@@ -118,11 +118,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [
-                    Color(0x3800D07E),
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
