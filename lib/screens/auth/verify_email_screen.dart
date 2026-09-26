@@ -205,11 +205,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [
-                    Color(0x3800D07E),
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -329,10 +325,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF0E2419),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: const Color(0xFF18422E),
-                    width: 1,
-                  ),
+                  border: Border.all(color: const Color(0xFF18422E), width: 1),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -362,10 +355,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF0C1F16),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: const Color(0xFF173827),
-                    width: 1,
-                  ),
+                  border: Border.all(color: const Color(0xFF173827), width: 1),
                 ),
                 child: const Text(
                   'Step 2 of 2',
