@@ -6,16 +6,16 @@ import 'sign_in_screen.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  // Dark aesthetic minimal color palette (Electric Indigo & Deep Obsidian)
-  static const Color _bgDark = Color(0xFF080C15);
-  static const Color _cardBg = Color(0xFF101625);
-  static const Color _cardBorder = Color(0xFF1E2942);
-  static const Color _primaryAccent = Color(0xFF6366F1);
-  static const Color _primaryAccentLight = Color(0xFF818CF8);
-  static const Color _buttonSecondaryBg = Color(0xFF151C2E);
-  static const Color _buttonSecondaryBorder = Color(0xFF243250);
-  static const Color _textMuted = Color(0xFF94A3B8);
-  static const Color _textSubtle = Color(0xFF64748B);
+  // Emerald Dark Aesthetic Color Palette (as in reference image)
+  static const Color _bgDark = Color(0xFF060D0A);
+  static const Color _cardBg = Color(0xFF0B1612);
+  static const Color _cardBorder = Color(0xFF14291F);
+  static const Color _primaryAccent = Color(0xFF00D07E);
+  static const Color _primaryAccentLight = Color(0xFF34D399);
+  static const Color _buttonSecondaryBg = Color(0xFF102018);
+  static const Color _buttonSecondaryBorder = Color(0xFF193828);
+  static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: _bgDark,
       body: Stack(
         children: [
-          // Ambient Radial Background Glow
+          // Ambient Radial Background Glow (Emerald aura)
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
@@ -31,8 +31,8 @@ class LoginScreen extends StatelessWidget {
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
                   colors: const [
-                    Color(0x2E6366F1), // Indigo subtle glow
-                    Color(0x330F172A),
+                    Color(0x3800D07E), // Vibrant emerald glow
+                    Color(0x2805291C),
                     _bgDark,
                   ],
                   stops: const [0.0, 0.45, 1.0],
@@ -91,7 +91,7 @@ class LoginScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(13),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x666366F1),
+                color: Color(0x6600D07E),
                 blurRadius: 18,
                 offset: Offset(0, 4),
               ),
@@ -99,7 +99,7 @@ class LoginScreen extends StatelessWidget {
           ),
           child: const Icon(
             Icons.receipt_long_rounded,
-            color: Colors.white,
+            color: Color(0xFF042717),
             size: 24,
           ),
         ),
@@ -155,9 +155,9 @@ class LoginScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFF161F33),
+              color: const Color(0xFF0E2419),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFF283658), width: 1),
+              border: Border.all(color: const Color(0xFF18422E), width: 1),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -167,7 +167,7 @@ class LoginScreen extends StatelessWidget {
                 Text(
                   'Mobile-First Invoicing & Billing',
                   style: TextStyle(
-                    color: Color(0xFFC7D2FE),
+                    color: Color(0xFFA7F3D0),
                     fontSize: 11.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -193,7 +193,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 TextSpan(
                   text: 'Smarter business.',
-                  style: TextStyle(color: _primaryAccentLight),
+                  style: TextStyle(color: _primaryAccent),
                 ),
               ],
             ),
@@ -261,9 +261,9 @@ class LoginScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
-                foregroundColor: Colors.white,
+                foregroundColor: const Color(0xFF042717),
                 elevation: 4,
-                shadowColor: const Color(0x666366F1),
+                shadowColor: const Color(0x6600D07E),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13),
                 ),
@@ -273,10 +273,18 @@ class LoginScreen extends StatelessWidget {
                 children: const [
                   Text(
                     'Login with Email',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF042717),
+                    ),
                   ),
                   SizedBox(width: 8),
-                  Icon(Icons.arrow_forward_rounded, size: 18),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    size: 18,
+                    color: Color(0xFF042717),
+                  ),
                 ],
               ),
             ),
@@ -336,9 +344,9 @@ class LoginScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0D1424),
+                  color: const Color(0xFF091711),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF1E2B48), width: 1),
+                  border: Border.all(color: const Color(0xFF143022), width: 1),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -377,7 +385,7 @@ class LoginScreen extends StatelessWidget {
           child: Text(
             label,
             style: const TextStyle(
-              color: Color(0xFFCBD5E1),
+              color: Color(0xFFD1FAE5),
               fontSize: 12.5,
               fontWeight: FontWeight.w500,
             ),

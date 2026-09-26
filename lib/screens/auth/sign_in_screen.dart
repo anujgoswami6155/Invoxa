@@ -25,16 +25,16 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool _obscurePassword = true;
 
-  // Dark aesthetic minimal color palette (Electric Indigo & Deep Obsidian)
-  static const Color _bgDark = Color(0xFF080C15);
-  static const Color _cardBg = Color(0xFF101625);
-  static const Color _cardBorder = Color(0xFF1E2942);
-  static const Color _primaryAccent = Color(0xFF6366F1);
-  static const Color _primaryAccentLight = Color(0xFF818CF8);
-  static const Color _inputFill = Color(0xFF0B101D);
-  static const Color _inputBorder = Color(0xFF1D2840);
-  static const Color _textMuted = Color(0xFF94A3B8);
-  static const Color _textSubtle = Color(0xFF64748B);
+  // Emerald Dark Aesthetic Color Palette (as in reference image)
+  static const Color _bgDark = Color(0xFF060D0A);
+  static const Color _cardBg = Color(0xFF0B1612);
+  static const Color _cardBorder = Color(0xFF14291F);
+  static const Color _primaryAccent = Color(0xFF00D07E);
+  static const Color _primaryAccentLight = Color(0xFF34D399);
+  static const Color _inputFill = Color(0xFF07120D);
+  static const Color _inputBorder = Color(0xFF152A1F);
+  static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
 
   @override
   void initState() {
@@ -117,14 +117,14 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: _bgDark,
       body: Stack(
         children: [
-          // Ambient Radial Background Glow
+          // Ambient Radial Background Glow (Emerald aura)
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [Color(0x2E6366F1), Color(0x330F172A), _bgDark],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -173,7 +173,7 @@ class _SignInScreenState extends State<SignInScreen> {
             borderRadius: BorderRadius.circular(13),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x666366F1),
+                color: Color(0x6600D07E),
                 blurRadius: 18,
                 offset: Offset(0, 4),
               ),
@@ -181,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           child: const Icon(
             Icons.receipt_long_rounded,
-            color: Colors.white,
+            color: Color(0xFF042717),
             size: 24,
           ),
         ),
@@ -273,17 +273,17 @@ class _SignInScreenState extends State<SignInScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF161F33),
+                    color: const Color(0xFF0E2419),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: const Color(0xFF283658),
+                      color: const Color(0xFF18422E),
                       width: 1,
                     ),
                   ),
                   child: const Text(
                     'Sign In',
                     style: TextStyle(
-                      color: Color(0xFFC7D2FE),
+                      color: Color(0xFFA7F3D0),
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                     ),
@@ -308,7 +308,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   TextSpan(
                     text: 'Sign In to Workspace.',
-                    style: TextStyle(color: _primaryAccentLight),
+                    style: TextStyle(color: _primaryAccent),
                   ),
                 ],
               ),
@@ -365,7 +365,7 @@ class _SignInScreenState extends State<SignInScreen> {
             const Text(
               'Email Address',
               style: TextStyle(
-                color: Color(0xFFCBD5E1),
+                color: Color(0xFFD1FAE5),
                 fontSize: 12.5,
                 fontWeight: FontWeight.w600,
               ),
@@ -380,7 +380,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 fillColor: _inputFill,
                 hintText: 'name@business.com',
                 hintStyle: const TextStyle(
-                  color: Color(0xFF475569),
+                  color: Color(0xFF43584E),
                   fontSize: 13,
                 ),
                 prefixIcon: const Icon(
@@ -439,7 +439,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 const Text(
                   'Password',
                   style: TextStyle(
-                    color: Color(0xFFCBD5E1),
+                    color: Color(0xFFD1FAE5),
                     fontSize: 12.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -474,7 +474,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 fillColor: _inputFill,
                 hintText: 'Enter your password',
                 hintStyle: const TextStyle(
-                  color: Color(0xFF475569),
+                  color: Color(0xFF43584E),
                   fontSize: 13,
                 ),
                 prefixIcon: const Icon(
@@ -547,10 +547,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: authProvider.isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _primaryAccent,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: const Color(0x806366F1),
+                      foregroundColor: const Color(0xFF042717),
+                      disabledBackgroundColor: const Color(0x8000D07E),
                       elevation: 4,
-                      shadowColor: const Color(0x666366F1),
+                      shadowColor: const Color(0x6600D07E),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13),
                       ),
@@ -562,7 +562,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.white,
+                                Color(0xFF042717),
                               ),
                             ),
                           )
@@ -574,10 +574,15 @@ class _SignInScreenState extends State<SignInScreen> {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
+                                  color: Color(0xFF042717),
                                 ),
                               ),
                               SizedBox(width: 8),
-                              Icon(Icons.arrow_forward_rounded, size: 18),
+                              Icon(
+                                Icons.arrow_forward_rounded,
+                                size: 18,
+                                color: Color(0xFF042717),
+                              ),
                             ],
                           ),
                   ),

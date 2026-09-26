@@ -19,16 +19,16 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   Timer? _cooldownTimer;
   Timer? _autoCheckTimer;
 
-  // Dark aesthetic minimal color palette (Electric Indigo & Deep Obsidian)
-  static const Color _bgDark = Color(0xFF080C15);
-  static const Color _cardBg = Color(0xFF101625);
-  static const Color _cardBorder = Color(0xFF1E2942);
-  static const Color _primaryAccent = Color(0xFF6366F1);
-  static const Color _primaryAccentLight = Color(0xFF818CF8);
-  static const Color _buttonSecondaryBg = Color(0xFF151C2E);
-  static const Color _buttonSecondaryBorder = Color(0xFF243250);
-  static const Color _textMuted = Color(0xFF94A3B8);
-  static const Color _textSubtle = Color(0xFF64748B);
+  // Emerald Dark Aesthetic Color Palette (as in reference image)
+  static const Color _bgDark = Color(0xFF060D0A);
+  static const Color _cardBg = Color(0xFF0B1612);
+  static const Color _cardBorder = Color(0xFF14291F);
+  static const Color _primaryAccent = Color(0xFF00D07E);
+  static const Color _primaryAccentLight = Color(0xFF34D399);
+  static const Color _buttonSecondaryBg = Color(0xFF102018);
+  static const Color _buttonSecondaryBorder = Color(0xFF193828);
+  static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
 
   @override
   void initState() {
@@ -137,7 +137,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       _startCooldown();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF131C31),
+          backgroundColor: const Color(0xFF0D2519),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -198,14 +198,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       backgroundColor: _bgDark,
       body: Stack(
         children: [
-          // Ambient Radial Background Glow
+          // Ambient Radial Background Glow (Emerald aura)
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [Color(0x2E6366F1), Color(0x330F172A), _bgDark],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -226,17 +226,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Top Branding
                       _buildTopBranding(),
-
                       const SizedBox(height: 28),
-
-                      // Verification Card
                       _buildCard(context),
-
                       const SizedBox(height: 24),
-
-                      // Bottom Trust Badge
                       _buildFooterBadge(),
                     ],
                   ),
@@ -261,7 +254,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
             borderRadius: BorderRadius.circular(13),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x666366F1),
+                color: Color(0x6600D07E),
                 blurRadius: 18,
                 offset: Offset(0, 4),
               ),
@@ -269,7 +262,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           ),
           child: const Icon(
             Icons.receipt_long_rounded,
-            color: Colors.white,
+            color: Color(0xFF042717),
             size: 24,
           ),
         ),
@@ -330,9 +323,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF161F33),
+                  color: const Color(0xFF0E2419),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF283658), width: 1),
+                  border: Border.all(color: const Color(0xFF18422E), width: 1),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -346,7 +339,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     Text(
                       'Action Required',
                       style: TextStyle(
-                        color: Color(0xFFC7D2FE),
+                        color: Color(0xFFA7F3D0),
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
                       ),
@@ -360,14 +353,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF142038),
+                  color: const Color(0xFF0C1F16),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF23365C), width: 1),
+                  border: Border.all(color: const Color(0xFF173827), width: 1),
                 ),
                 child: const Text(
                   'Step 2 of 2',
                   style: TextStyle(
-                    color: Color(0xFFA5B4FC),
+                    color: Color(0xFF6EE7B7),
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -392,7 +385,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 ),
                 TextSpan(
                   text: 'Activate Workspace.',
-                  style: TextStyle(color: _primaryAccentLight),
+                  style: TextStyle(color: _primaryAccent),
                 ),
               ],
             ),
@@ -409,9 +402,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
             decoration: BoxDecoration(
-              color: const Color(0xFF0E1524),
+              color: const Color(0xFF07140E),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFF1F2B48)),
+              border: Border.all(color: const Color(0xFF132B1E)),
             ),
             child: Row(
               children: const [
@@ -425,7 +418,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   child: Text(
                     'Tip: Each new request cancels previous links. Open only the newest email received in your inbox.',
                     style: TextStyle(
-                      color: Color(0xFFCBD5E1),
+                      color: Color(0xFFD1FAE5),
                       fontSize: 12,
                       height: 1.4,
                     ),
@@ -445,10 +438,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               onPressed: _isChecking ? null : () => _checkVerification(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: const Color(0x806366F1),
+                foregroundColor: const Color(0xFF042717),
+                disabledBackgroundColor: const Color(0x8000D07E),
                 elevation: 4,
-                shadowColor: const Color(0x666366F1),
+                shadowColor: const Color(0x6600D07E),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13),
                 ),
@@ -459,7 +452,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF042717),
+                        ),
                       ),
                     )
                   : Row(
@@ -470,10 +465,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
+                            color: Color(0xFF042717),
                           ),
                         ),
                         SizedBox(width: 8),
-                        Icon(Icons.arrow_forward_rounded, size: 18),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 18,
+                          color: Color(0xFF042717),
+                        ),
                       ],
                     ),
             ),
