@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../dashboard/dashboard_screen.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({super.key});
@@ -79,41 +80,47 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     final authProvider = context.read<AuthProvider>();
     final verified = await authProvider.checkEmailVerification();
 
-    if (mounted) {
-      if (!silent) {
-        setState(() {
-          _isChecking = false;
-        });
+    if (!mounted) return;
 
-        if (!verified) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: const Color(0xFF1F1218),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(color: Color(0xFF881337)),
+    if (verified) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const DashboardScreen()),
+        (route) => false,
+      );
+      return;
+    }
+
+    if (!silent) {
+      setState(() {
+        _isChecking = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color(0xFF1F1218),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(color: Color(0xFF881337)),
+          ),
+          content: const Row(
+            children: [
+              Icon(
+                Icons.info_outline_rounded,
+                color: Color(0xFFFB7185),
+                size: 20,
               ),
-              content: const Row(
-                children: [
-                  Icon(
-                    Icons.info_outline_rounded,
-                    color: Color(0xFFFB7185),
-                    size: 20,
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      'Email is not verified yet. Please check your inbox.',
-                      style: TextStyle(color: Color(0xFFFECDD3)),
-                    ),
-                  ),
-                ],
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Email is not verified yet. Please check your inbox.',
+                  style: TextStyle(color: Color(0xFFFECDD3)),
+                ),
               ),
-            ),
-          );
-        }
-      }
+            ],
+          ),
+        ),
+      );
     }
   }
 

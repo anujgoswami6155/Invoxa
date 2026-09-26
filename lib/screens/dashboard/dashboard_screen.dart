@@ -44,10 +44,7 @@ class DashboardScreen extends StatelessWidget {
           IconButton(
             tooltip: 'Logout',
             onPressed: () => _handleLogout(context),
-            icon: const Icon(
-              Icons.logout_rounded,
-              color: Color(0xFFDC2626),
-            ),
+            icon: const Icon(Icons.logout_rounded, color: Color(0xFFDC2626)),
           ),
           const SizedBox(width: 8),
         ],
