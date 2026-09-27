@@ -11,9 +11,7 @@ class UserService {
 
   // Create or update a user profile
   Future<void> createUser(UserModel user) async {
-    await _usersCollection.doc(user.uid).set(
-      user.toMap(),
-    );
+    await _usersCollection.doc(user.uid).set(user.toMap());
   }
 
   // Get a user profile
@@ -24,17 +22,11 @@ class UserService {
       return null;
     }
 
-    return UserModel.fromMap(
-      document.id,
-      document.data()!,
-    );
+    return UserModel.fromMap(document.id, document.data()!);
   }
 
   // Update a user profile
-  Future<void> updateUser(
-    String uid,
-    Map<String, dynamic> data,
-  ) async {
+  Future<void> updateUser(String uid, Map<String, dynamic> data) async {
     await _usersCollection.doc(uid).update(data);
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/customer_provider.dart';
+import 'providers/invoice_provider.dart';
 import 'providers/product_provider.dart';
 import 'screens/auth/auth_gate.dart';
 
@@ -84,6 +85,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CustomerProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => InvoiceProvider()),
       ],
       child: const InvoxaApp(),
     ),

@@ -14,10 +14,7 @@ class UserModel {
   });
 
   // Create a UserModel instance from a Firestore document snapshot
-  factory UserModel.fromMap(
-    String uid,
-    Map<String, dynamic> data,
-  ) {
+  factory UserModel.fromMap(String uid, Map<String, dynamic> data) {
     return UserModel(
       uid: uid,
       name: data['name'] ?? '',
@@ -30,10 +27,6 @@ class UserModel {
 
   // Convert a UserModel instance to a map for Firestore storage
   Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'createdAt': createdAt,
-    };
+    return {'name': name, 'email': email, 'createdAt': createdAt};
   }
 }

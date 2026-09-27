@@ -19,10 +19,7 @@ class CustomerModel {
     this.createdAt,
   });
 
-  factory CustomerModel.fromMap(
-    String id,
-    Map<String, dynamic> data,
-  ) {
+  factory CustomerModel.fromMap(String id, Map<String, dynamic> data) {
     DateTime? parsedCreatedAt;
     final rawCreatedAt = data['createdAt'];
     if (rawCreatedAt is Timestamp) {
