@@ -21,28 +21,24 @@ class InvoiceDetailsScreen extends StatefulWidget {
 }
 
 class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
-  // Palette matching Image 1
-  static const Color _pageBg = Color(
-    0xFFF1F5F9,
-  ); // Crisp light slate background
-  static const Color _cardWhite = Colors.white;
-  static const Color _borderSubtle = Color(0xFFE2E8F0);
-  static const Color _emeraldPrimary = Color(
-    0xFF00875A,
-  ); // Deep emerald in image 1
-  static const Color _emeraldLightBg = Color(0xFFF0FDF4);
-  static const Color _emeraldBorder = Color(0xFFBBF7D0);
-  static const Color _emeraldText = Color(0xFF059669);
-  static const Color _textDark = Color(0xFF0F172A);
-  static const Color _textSlate = Color(0xFF334155);
-  static const Color _textMuted = Color(0xFF64748B);
-  static const Color _textSubtle = Color(0xFF94A3B8);
-  static const Color _danger = Color(0xFFE11D48);
-  static const Color _dangerBg = Color(0xFFFFF1F2);
-  static const Color _dangerBorder = Color(0xFFFECDD3);
-  static const Color _amberText = Color(0xFFD97706);
-  static const Color _amberBg = Color(0xFFFFFBEB);
-  static const Color _amberBorder = Color(0xFFFDE68A);
+  // Emerald Dark Aesthetic Color Palette (exact theme from login screen)
+  static const Color _pageBg = Color(0xFF060D0A);
+  static const Color _cardWhite = Color(0xFF0B1612);
+  static const Color _borderSubtle = Color(0xFF14291F);
+  static const Color _emeraldPrimary = Color(0xFF00D07E);
+  static const Color _emeraldLightBg = Color(0xFF0E2419);
+  static const Color _emeraldBorder = Color(0xFF18422E);
+  static const Color _emeraldText = Color(0xFF34D399);
+  static const Color _textDark = Colors.white;
+  static const Color _textSlate = Color(0xFFE2E8F0);
+  static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
+  static const Color _danger = Color(0xFFFB7185);
+  static const Color _dangerBg = Color(0xFF2D141E);
+  static const Color _dangerBorder = Color(0xFF9F1239);
+  static const Color _amberText = Color(0xFFFBBF24);
+  static const Color _amberBg = Color(0xFF2D2310);
+  static const Color _amberBorder = Color(0xFF573D0F);
 
   late InvoiceModel _currentInvoice;
 
@@ -112,7 +108,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         return StatefulBuilder(
           builder: (sbContext, setDlgState) {
             return AlertDialog(
-              backgroundColor: Colors.white,
+              backgroundColor: _cardWhite,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: const BorderSide(color: _borderSubtle),
@@ -158,7 +154,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF8FAFC),
+                          color: const Color(0xFF07120D),
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: _borderSubtle),
                         ),
@@ -205,13 +201,14 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         ),
                         decoration: InputDecoration(
                           hintText: '0.00',
+                          hintStyle: const TextStyle(color: _textSubtle),
                           prefixIcon: const Icon(
                             Icons.currency_rupee_rounded,
                             color: _emeraldPrimary,
                             size: 20,
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFF8FAFC),
+                          fillColor: const Color(0xFF07120D),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 12,
@@ -311,7 +308,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           ),
                           if (balanceDue > 1)
                             ActionChip(
-                              backgroundColor: const Color(0xFFF1F5F9),
+                              backgroundColor: _borderSubtle,
                               side: const BorderSide(color: _borderSubtle),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 4,
@@ -352,11 +349,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       const SizedBox(height: 6),
                       DropdownButtonFormField<String>(
                         initialValue: selectedMethod,
-                        dropdownColor: Colors.white,
+                        dropdownColor: _cardWhite,
                         style: const TextStyle(color: _textDark, fontSize: 14),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFF8FAFC),
+                          fillColor: const Color(0xFF07120D),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 10,
@@ -415,7 +412,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           hintText: 'e.g. Advance IMPS transfer / UTR #12345',
                           hintStyle: const TextStyle(color: _textSubtle),
                           filled: true,
-                          fillColor: const Color(0xFFF8FAFC),
+                          fillColor: const Color(0xFF07120D),
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 10,
@@ -546,7 +543,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
       context: context,
       builder: (dlgContext) {
         return AlertDialog(
-          backgroundColor: Colors.white,
+          backgroundColor: _cardWhite,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
             side: const BorderSide(color: _borderSubtle),
@@ -659,10 +656,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           result != 'Printed') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF064E3B),
+            backgroundColor: const Color(0xFF0E2419),
             content: Text(
               'PDF successfully saved: $result',
-              style: const TextStyle(color: Color(0xFFA7F3D0)),
+              style: const TextStyle(color: _emeraldText),
             ),
           ),
         );
@@ -682,9 +679,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   void _showShareDialog() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: _cardWhite,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        side: BorderSide(color: _borderSubtle),
       ),
       builder: (bottomSheetContext) {
         return SafeArea(
@@ -744,7 +742,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1F5F9),
+                      color: _borderSubtle,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(Icons.copy_rounded, color: _textDark),
@@ -780,9 +778,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   void _showPrintDialog() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: _cardWhite,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        side: BorderSide(color: _borderSubtle),
       ),
       builder: (bottomSheetContext) {
         return SafeArea(
@@ -842,12 +841,12 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   leading: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFEFF6FF),
+                      color: _borderSubtle,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.print_rounded,
-                      color: Color(0xFF2563EB),
+                      color: _emeraldPrimary,
                     ),
                   ),
                   title: const Text(
@@ -944,7 +943,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: _cardWhite,
           border: Border(top: BorderSide(color: _borderSubtle, width: 1.0)),
         ),
         child: SafeArea(
@@ -973,16 +972,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: _cardWhite,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: _borderSubtle),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x05000000),
-                  blurRadius: 4,
-                  offset: Offset(0, 1),
-                ),
-              ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -1048,16 +1040,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: bgColor ?? Colors.white,
+            color: bgColor ?? _cardWhite,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: borderColor ?? _borderSubtle),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x05000000),
-                blurRadius: 4,
-                offset: Offset(0, 1),
-              ),
-            ],
           ),
           child: Icon(icon, size: 18, color: iconColor ?? _textMuted),
         ),
@@ -1381,7 +1366,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         break;
       case InvoiceStatus.draft:
       case InvoiceStatus.cancelled:
-        bg = const Color(0xFFF1F5F9);
+        bg = _cardWhite;
         border = _borderSubtle;
         text = _textMuted;
         icon = Icons.info_outline_rounded;
@@ -1532,7 +1517,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: const BoxDecoration(
-              color: Color(0xFFF8FAFC),
+              color: Color(0xFF07120D),
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Row(
@@ -1587,7 +1572,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: _currentInvoice.items.length,
             separatorBuilder: (_, _) =>
-                const Divider(color: Color(0xFFF1F5F9), height: 1),
+                const Divider(color: _borderSubtle, height: 1),
             itemBuilder: (context, index) {
               final item = _currentInvoice.items[index];
               final qtyFormatted = item.quantity % 1 == 0
@@ -1755,7 +1740,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               width: dashWidth,
               height: 1,
               child: DecoratedBox(
-                decoration: BoxDecoration(color: Color(0xFFCBD5E1)),
+                decoration: BoxDecoration(color: _borderSubtle),
               ),
             );
           }),
@@ -1851,7 +1836,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
+              color: const Color(0xFF07120D),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: _borderSubtle),
             ),
@@ -1887,13 +1872,13 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFDCFCE7),
+                        color: _emeraldBorder,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Center(
                         child: Icon(
                           Icons.access_time_rounded,
-                          color: _emeraldText,
+                          color: _emeraldPrimary,
                           size: 18,
                         ),
                       ),
@@ -2078,7 +2063,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
-                        color: Color(0xFFE2E8F0),
+                        color: _emeraldPrimary,
                         shape: BoxShape.circle,
                       ),
                       constraints: const BoxConstraints(
@@ -2089,7 +2074,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         badgeCount > 99 ? '99+' : '$badgeCount',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: _textSlate,
+                          color: Colors.black,
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),

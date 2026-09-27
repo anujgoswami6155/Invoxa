@@ -23,18 +23,16 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  // Theme Color Palette (Consistent with App & Screenshot)
-  static const Color _pageBg = Color(0xFFF4F6F8);
-  static const Color _cardWhite = Colors.white;
-  static const Color _borderSubtle = Color(0xFFE2E8F0);
-  static const Color _emeraldPrimary = Color(0xFF00875A);
-  static const Color _emeraldLightBg = Color(0xFFECFDF5);
-  static const Color _emeraldText = Color(0xFF059669);
-  static const Color _textDark = Color(0xFF0F172A);
-  static const Color _textSlate = Color(0xFF334155);
-  static const Color _textMuted = Color(0xFF64748B);
-  static const Color _textSubtle = Color(0xFF94A3B8);
-  static const Color _amberText = Color(0xFFD97706);
+  // Emerald Dark Aesthetic Color Palette (exact theme from login screen)
+  static const Color _bgDark = Color(0xFF060D0A);
+  static const Color _cardBg = Color(0xFF0B1612);
+  static const Color _cardBorder = Color(0xFF14291F);
+  static const Color _primaryAccent = Color(0xFF00D07E);
+  static const Color _primaryAccentLight = Color(0xFF34D399);
+  static const Color _inputFill = Color(0xFF07120D);
+  static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
+  static const Color _danger = Color(0xFFFB7185);
 
   int _currentNavIndex = 0;
 
@@ -98,6 +96,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  Color _statusTextColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return _primaryAccentLight;
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF38BDF8);
+      case InvoiceStatus.overdue:
+        return const Color(0xFFFB7185);
+      case InvoiceStatus.pending:
+        return const Color(0xFFFBBF24);
+      case InvoiceStatus.draft:
+      case InvoiceStatus.cancelled:
+        return _textMuted;
+    }
+  }
+
+  Color _statusBgColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return const Color(0xFF0E2419);
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF0B2538);
+      case InvoiceStatus.overdue:
+        return const Color(0xFF2D141E);
+      case InvoiceStatus.pending:
+        return const Color(0xFF2D2310);
+      case InvoiceStatus.draft:
+      case InvoiceStatus.cancelled:
+        return const Color(0xFF14241D);
+    }
+  }
+
+  Color _statusBorderColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return const Color(0xFF18422E);
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF0C4A6E);
+      case InvoiceStatus.overdue:
+        return const Color(0xFF9F1239);
+      case InvoiceStatus.pending:
+        return const Color(0xFF573D0F);
+      case InvoiceStatus.draft:
+      case InvoiceStatus.cancelled:
+        return _cardBorder;
+    }
+  }
+
   void _showCreateActionSheet() {
     showModalBottomSheet(
       context: context,
@@ -105,15 +151,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: _cardBg,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x1F000000),
-              blurRadius: 20,
-              offset: Offset(0, -4),
-            ),
-          ],
+          border: Border(
+            top: BorderSide(color: _cardBorder, width: 1.5),
+            left: BorderSide(color: _cardBorder, width: 1.5),
+            right: BorderSide(color: _cardBorder, width: 1.5),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -125,15 +169,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFCBD5E1),
+                  color: const Color(0xFF1E382B),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const Text(
-              'Quick Actions',
+              'Quick Create',
               style: TextStyle(
-                color: _textDark,
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -141,8 +185,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 16),
             _buildCreateActionTile(
               icon: Icons.receipt_long_outlined,
-              iconColor: _emeraldPrimary,
-              iconBgColor: _emeraldLightBg,
+              iconColor: _primaryAccentLight,
+              iconBgColor: const Color(0xFF0E2419),
               title: 'New Invoice',
               subtitle: 'Create and issue a customer invoice',
               onTap: () {
@@ -158,8 +202,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 10),
             _buildCreateActionTile(
               icon: Icons.person_add_outlined,
-              iconColor: const Color(0xFF2563EB),
-              iconBgColor: const Color(0xFFEFF6FF),
+              iconColor: const Color(0xFF38BDF8),
+              iconBgColor: const Color(0xFF0B2538),
               title: 'Add New Customer',
               subtitle: 'Add a new client to your directory',
               onTap: () {
@@ -173,8 +217,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(height: 10),
             _buildCreateActionTile(
               icon: Icons.add_box_outlined,
-              iconColor: const Color(0xFF7C3AED),
-              iconBgColor: const Color(0xFFFAF5FF),
+              iconColor: const Color(0xFFA78BFA),
+              iconBgColor: const Color(0xFF221736),
               title: 'Add New Product / Service',
               subtitle: 'Add items or hourly services to your catalog',
               onTap: () {
@@ -205,9 +249,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8FAFC),
+          color: _inputFill,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: _borderSubtle),
+          border: Border.all(color: _cardBorder),
         ),
         child: Row(
           children: [
@@ -228,7 +272,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     title,
                     style: const TextStyle(
-                      color: _textDark,
+                      color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
@@ -236,14 +280,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: const TextStyle(color: _textMuted, fontSize: 11.5),
+                    style: const TextStyle(color: _textSubtle, fontSize: 11.5),
                   ),
                 ],
               ),
             ),
             const Icon(
               Icons.arrow_forward_ios_rounded,
-              color: Color(0xFF94A3B8),
+              color: Color(0xFF345244),
               size: 14,
             ),
           ],
@@ -266,64 +310,82 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     final businessName = (user?.name.trim().isNotEmpty ?? false)
         ? (user!.name.toUpperCase().contains('ENTERPRISES') ||
-                  user.name.toUpperCase().contains('SOLUTIONS')
-              ? user.name.toUpperCase()
-              : '${user.name.toUpperCase()} ENTERPRISES & SOLUTIONS')
+                user.name.toUpperCase().contains('SOLUTIONS')
+            ? user.name.toUpperCase()
+            : '${user.name.toUpperCase()} ENTERPRISES & SOLUTIONS')
         : 'RAHUL ENTERPRISES & SOLUTIONS';
 
     return Scaffold(
-      backgroundColor: _pageBg,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 500),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // App Header with Logout
-                  _buildHeader(context),
-                  const SizedBox(height: 16),
-
-                  // Hero Overview Card (Matches screenshot exactly)
-                  _buildHeroOverviewCard(
-                    businessName: businessName,
-                    firstName: firstName,
-                    invoiceProvider: invoiceProvider,
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  // 3 Metric Cards: INVOICES, PAID, PENDING
-                  _buildThreeStatCards(invoiceProvider),
-
-                  const SizedBox(height: 22),
-
-                  // Quick Actions Row
-                  _buildQuickActionsSection(),
-
-                  const SizedBox(height: 22),
-
-                  // Recent Invoices Section
-                  _buildRecentInvoicesSection(invoiceProvider),
-
-                  const SizedBox(height: 22),
-
-                  // Directory Modules (Customers & Products)
-                  _buildManagementCards(customerProvider, productProvider),
-
-                  const SizedBox(height: 28),
-                ],
+      backgroundColor: _bgDark,
+      body: Stack(
+        children: [
+          // Background Gradient Glow (exact as login screen)
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: const BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment(0.0, -0.35),
+                  radius: 1.0,
+                  colors: [Color(0x3800D07E), Color(0x2805291C), _bgDark],
+                  stops: [0.0, 0.45, 1.0],
+                ),
               ),
             ),
           ),
-        ),
+
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // App Header with Logout
+                      _buildHeader(context),
+                      const SizedBox(height: 16),
+
+                      // Hero Overview Card (Revenue & Outstanding)
+                      _buildHeroOverviewCard(
+                        businessName: businessName,
+                        firstName: firstName,
+                        invoiceProvider: invoiceProvider,
+                      ),
+
+                      const SizedBox(height: 18),
+
+                      // 3 Metric Cards: INVOICES, PAID, PENDING
+                      _buildThreeStatCards(invoiceProvider),
+
+                      const SizedBox(height: 22),
+
+                      // Quick Actions Row
+                      _buildQuickActionsSection(),
+
+                      const SizedBox(height: 22),
+
+                      // Recent Invoices Section
+                      _buildRecentInvoicesSection(invoiceProvider),
+
+                      const SizedBox(height: 22),
+
+                      // Directory Modules (Customers & Products)
+                      _buildManagementCards(customerProvider, productProvider),
+
+                      const SizedBox(height: 28),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: _borderSubtle, width: 1.0)),
+          color: _cardBg,
+          border: Border(top: BorderSide(color: _cardBorder, width: 1.2)),
         ),
         child: SafeArea(
           top: false,
@@ -351,19 +413,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           height: 38,
           width: 38,
           decoration: BoxDecoration(
-            color: _emeraldPrimary,
+            color: const Color(0xFF0E2419),
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x2800875A),
-                blurRadius: 8,
-                offset: Offset(0, 2),
-              ),
-            ],
+            border: Border.all(color: const Color(0xFF18422E)),
           ),
           child: const Icon(
             Icons.receipt_long_rounded,
-            color: Colors.white,
+            color: _primaryAccentLight,
             size: 20,
           ),
         ),
@@ -374,7 +430,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text(
               'INVOXA',
               style: TextStyle(
-                color: _textDark,
+                color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1.2,
@@ -382,7 +438,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             Text(
               'Business Suite',
-              style: TextStyle(color: _textMuted, fontSize: 10),
+              style: TextStyle(color: Color(0xFF6B8277), fontSize: 10),
             ),
           ],
         ),
@@ -401,19 +457,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: _cardBg,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: _borderSubtle),
+              border: Border.all(color: _cardBorder),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.logout_rounded, color: Color(0xFFE11D48), size: 14),
+                Icon(Icons.logout_rounded, color: _danger, size: 14),
                 SizedBox(width: 4),
                 Text(
                   'Logout',
                   style: TextStyle(
-                    color: _textMuted,
+                    color: Color(0xFFB6C2BC),
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -426,7 +482,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// Dark Hero Overview Card matching screenshot
+  /// Dark Hero Overview Card matching login theme & reference
   Widget _buildHeroOverviewCard({
     required String businessName,
     required String firstName,
@@ -438,12 +494,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        color: const Color(0xFF071912), // Forest dark slate
+        color: _cardBg,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF133626)),
+        border: Border.all(color: _cardBorder, width: 1.5),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x22000000),
+            color: Color(0x33000000),
             blurRadius: 16,
             offset: Offset(0, 8),
           ),
@@ -462,7 +518,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Color(0xFF00D07E),
+                    color: _primaryAccent,
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.6,
@@ -476,10 +532,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   vertical: 5,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF133227),
+                  color: const Color(0xFF0E2419),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: const Color(0xFF1A4633),
+                    color: const Color(0xFF18422E),
                     width: 0.8,
                   ),
                 ),
@@ -511,7 +567,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const Text(
             'Here is your financial and billing health at a glance.',
             style: TextStyle(
-              color: Color(0xFF8BA599),
+              color: _textMuted,
               fontSize: 12.5,
               fontWeight: FontWeight.w400,
             ),
@@ -519,7 +575,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 16),
 
           // Thin Divider
-          Container(height: 1, color: const Color(0xFF16382A)),
+          Container(height: 1, color: _cardBorder),
           const SizedBox(height: 16),
 
           // Revenue & Outstanding row
@@ -535,7 +591,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const Text(
                       'Total Revenue Collected',
                       style: TextStyle(
-                        color: Color(0xFF8BA599),
+                        color: _textMuted,
                         fontSize: 11.5,
                         fontWeight: FontWeight.w500,
                       ),
@@ -604,7 +660,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// 3 Stat Cards in a row: INVOICES, PAID, PENDING
+  /// 3 Stat Cards in a row: INVOICES, PAID, PENDING (login theme dark card style)
   Widget _buildThreeStatCards(InvoiceProvider invoiceProvider) {
     return Row(
       children: [
@@ -634,10 +690,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             title: 'PAID',
             value: '${invoiceProvider.paidInvoicesCount}',
             subtitle: 'Cleared in full',
-            titleColor: _emeraldText,
-            subtitleColor: _emeraldText,
+            titleColor: _primaryAccentLight,
+            subtitleColor: _primaryAccentLight,
             icon: Icons.description_outlined,
-            iconColor: const Color(0xFF10B981),
+            iconColor: _primaryAccentLight,
             onTap: () {
               Navigator.push(
                 context,
@@ -654,10 +710,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             title: 'PENDING',
             value: '${invoiceProvider.pendingInvoicesCount}',
             subtitle: 'Unpaid / Partial',
-            titleColor: _amberText,
-            subtitleColor: _amberText,
+            titleColor: const Color(0xFFFBBF24),
+            subtitleColor: const Color(0xFFFBBF24),
             icon: Icons.access_time_rounded,
-            iconColor: const Color(0xFFF59E0B),
+            iconColor: const Color(0xFFFBBF24),
             onTap: () {
               Navigator.push(
                 context,
@@ -686,16 +742,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: _cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _borderSubtle),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x05000000),
-              blurRadius: 4,
-              offset: Offset(0, 1),
-            ),
-          ],
+          border: Border.all(color: _cardBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -716,12 +765,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
             const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                color: _textDark,
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                value,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
             const SizedBox(height: 3),
@@ -749,16 +802,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const Text(
           'QUICK ACTIONS',
           style: TextStyle(
-            color: _textMuted,
-            fontSize: 11.5,
+            color: Color(0xFFD1FAE5),
+            fontSize: 12,
             fontWeight: FontWeight.bold,
-            letterSpacing: 0.6,
+            letterSpacing: 0.8,
           ),
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            // Action 1: New Invoice (Primary Emerald)
+            // Action 1: New Invoice (Primary Emerald glow)
             Expanded(
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
@@ -776,12 +829,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     vertical: 14,
                   ),
                   decoration: BoxDecoration(
-                    color: _emeraldPrimary,
+                    color: _primaryAccent,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: const [
                       BoxShadow(
-                        color: Color(0x2800875A),
-                        blurRadius: 10,
+                        color: Color(0x4400D07E),
+                        blurRadius: 14,
                         offset: Offset(0, 4),
                       ),
                     ],
@@ -792,13 +845,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Container(
                         width: 38,
                         height: 38,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.2),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF042717),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
                           Icons.add_rounded,
-                          color: Colors.white,
+                          color: _primaryAccent,
                           size: 22,
                         ),
                       ),
@@ -806,18 +859,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const Text(
                         'New Invoice',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF042717),
                           fontSize: 12.5,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                       const SizedBox(height: 2),
                       const Text(
                         'Start billing',
                         style: TextStyle(
-                          color: Color(0xFFD1FAE5),
+                          color: Color(0xFF0A442A),
                           fontSize: 10,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
@@ -827,12 +880,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(width: 10),
 
-            // Action 2: Add Customer (White card with blue circle)
+            // Action 2: Add Customer (Dark card with blue accent)
             Expanded(
               child: _buildStandardActionCard(
                 icon: Icons.person_add_alt_1_rounded,
-                iconColor: const Color(0xFF2563EB),
-                iconBgColor: const Color(0xFFEFF6FF),
+                iconColor: const Color(0xFF38BDF8),
+                iconBgColor: const Color(0xFF0B2538),
                 title: 'Add Customer',
                 subtitle: 'Directory',
                 onTap: () {
@@ -847,18 +900,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(width: 10),
 
-            // Action 3: Add Product (White card with purple circle)
+            // Action 3: Add Product (Dark card with purple accent)
             Expanded(
               child: _buildStandardActionCard(
                 icon: Icons.inventory_2_rounded,
-                iconColor: const Color(0xFF7C3AED),
-                iconBgColor: const Color(0xFFFAF5FF),
+                iconColor: const Color(0xFFA78BFA),
+                iconBgColor: const Color(0xFF221736),
                 title: 'Add Product',
                 subtitle: 'Catalog',
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const AddProductScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => const AddProductScreen(),
+                    ),
                   ).then((_) => _loadData());
                 },
               ),
@@ -883,16 +938,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: _cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _borderSubtle),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x05000000),
-              blurRadius: 4,
-              offset: Offset(0, 1),
-            ),
-          ],
+          border: Border.all(color: _cardBorder),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -912,7 +960,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                color: _textDark,
+                color: Colors.white,
                 fontSize: 12.5,
                 fontWeight: FontWeight.bold,
               ),
@@ -921,7 +969,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text(
               subtitle,
               style: const TextStyle(
-                color: _textMuted,
+                color: _textSubtle,
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
               ),
@@ -945,10 +993,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const Text(
               'RECENT INVOICES',
               style: TextStyle(
-                color: _textMuted,
-                fontSize: 11.5,
+                color: Color(0xFFD1FAE5),
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 0.6,
+                letterSpacing: 0.8,
               ),
             ),
             InkWell(
@@ -964,7 +1012,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     'View All (${invoiceProvider.totalInvoicesCount})',
                     style: const TextStyle(
-                      color: _emeraldPrimary,
+                      color: _primaryAccentLight,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
@@ -972,7 +1020,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(width: 2),
                   const Icon(
                     Icons.chevron_right_rounded,
-                    color: _emeraldPrimary,
+                    color: _primaryAccentLight,
                     size: 16,
                   ),
                 ],
@@ -985,7 +1033,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const Center(
             child: Padding(
               padding: EdgeInsets.all(24.0),
-              child: CircularProgressIndicator(color: _emeraldPrimary),
+              child: CircularProgressIndicator(color: _primaryAccent),
             ),
           )
         else if (recentInvoices.isEmpty)
@@ -993,9 +1041,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
             decoration: BoxDecoration(
-              color: _cardWhite,
+              color: _cardBg,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: _borderSubtle),
+              border: Border.all(color: _cardBorder),
             ),
             child: Column(
               children: [
@@ -1003,12 +1051,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   width: 48,
                   height: 48,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF1F5F9),
+                    color: Color(0xFF0E2419),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.receipt_long_outlined,
-                    color: _textMuted,
+                    color: _primaryAccentLight,
                     size: 24,
                   ),
                 ),
@@ -1016,7 +1064,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const Text(
                   'No Invoices Generated Yet',
                   style: TextStyle(
-                    color: _textDark,
+                    color: Colors.white,
                     fontSize: 14.5,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1025,17 +1073,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const Text(
                   'Create your first invoice to start billing customers and tracking payments.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: _textMuted,
-                    fontSize: 12,
-                    height: 1.4,
-                  ),
+                  style: TextStyle(color: _textSubtle, fontSize: 12, height: 1.4),
                 ),
                 const SizedBox(height: 14),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _emeraldPrimary,
-                    foregroundColor: Colors.white,
+                    backgroundColor: _primaryAccent,
+                    foregroundColor: const Color(0xFF042717),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -1091,16 +1135,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: _cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _borderSubtle),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x04000000),
-              blurRadius: 4,
-              offset: Offset(0, 1),
-            ),
-          ],
+          border: Border.all(color: _cardBorder),
         ),
         child: Row(
           children: [
@@ -1109,12 +1146,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
+                color: const Color(0xFF0E2419),
                 borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFF18422E)),
               ),
               child: const Icon(
                 Icons.receipt_long_rounded,
-                color: Color(0xFF64748B),
+                color: _primaryAccentLight,
                 size: 22,
               ),
             ),
@@ -1128,7 +1166,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     '${invoice.invoiceNumber}  •  ${_formatDateIso(invoice.dueDate)}',
                     style: const TextStyle(
-                      color: _textMuted,
+                      color: _textSubtle,
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1139,7 +1177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      color: _textDark,
+                      color: Colors.white,
                       fontSize: 14.5,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1164,7 +1202,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Text(
                   _formatCurrency(invoice.totalAmount),
                   style: const TextStyle(
-                    color: _textDark,
+                    color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
@@ -1179,77 +1217,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// Status badge matching screenshot pill style
+  /// Status badge matching login theme pill style
   Widget _buildStatusPill(InvoiceStatus status) {
-    final Color bg;
-    final Color border;
-    final Color text;
-    final IconData? icon;
-    final String label;
-
-    switch (status) {
-      case InvoiceStatus.paid:
-        bg = const Color(0xFFECFDF5);
-        border = const Color(0xFF10B981);
-        text = const Color(0xFF059669);
-        icon = Icons.check_circle_outline_rounded;
-        label = 'PAID';
-        break;
-      case InvoiceStatus.partiallyPaid:
-        bg = const Color(0xFFEFF6FF);
-        border = const Color(0xFF3B82F6);
-        text = const Color(0xFF2563EB);
-        icon = Icons.pie_chart_outline_rounded;
-        label = 'PARTIAL';
-        break;
-      case InvoiceStatus.overdue:
-        bg = const Color(0xFFFFF1F2);
-        border = const Color(0xFFF43F5E);
-        text = const Color(0xFFE11D48);
-        icon = Icons.warning_amber_rounded;
-        label = 'OVERDUE';
-        break;
-      case InvoiceStatus.pending:
-        bg = const Color(0xFFFFFBEB);
-        border = const Color(0xFFF59E0B);
-        text = const Color(0xFFD97706);
-        icon = Icons.access_time_rounded;
-        label = 'PENDING';
-        break;
-      case InvoiceStatus.draft:
-      case InvoiceStatus.cancelled:
-        bg = const Color(0xFFF8FAFC);
-        border = const Color(0xFFCBD5E1);
-        text = const Color(0xFF64748B);
-        icon = null;
-        label = status.displayName.toUpperCase();
-        break;
-    }
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: border, width: 0.8),
+        color: _statusBgColor(status),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: _statusBorderColor(status), width: 0.8),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) ...[
-            Icon(icon, color: text, size: 10),
-            const SizedBox(width: 3),
-          ],
-          Text(
-            label,
-            style: TextStyle(
-              color: text,
-              fontSize: 9.5,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.4,
-            ),
-          ),
-        ],
+      child: Text(
+        status.displayName.toUpperCase(),
+        style: TextStyle(
+          color: _statusTextColor(status),
+          fontSize: 9.5,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 0.4,
+        ),
       ),
     );
   }
@@ -1265,10 +1249,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         const Text(
           'MANAGE DIRECTORIES',
           style: TextStyle(
-            color: _textMuted,
-            fontSize: 11.5,
+            color: Color(0xFFD1FAE5),
+            fontSize: 12,
             fontWeight: FontWeight.bold,
-            letterSpacing: 0.6,
+            letterSpacing: 0.8,
           ),
         ),
         const SizedBox(height: 12),
@@ -1280,8 +1264,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Customers',
                 subtitle: '${customerProvider.totalCustomerCount} Active',
                 icon: Icons.people_outline_rounded,
-                iconColor: const Color(0xFF2563EB),
-                iconBgColor: const Color(0xFFEFF6FF),
+                iconColor: const Color(0xFF38BDF8),
+                iconBgColor: const Color(0xFF0B2538),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -1298,8 +1282,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 title: 'Products',
                 subtitle: '${productProvider.products.length} Items',
                 icon: Icons.inventory_2_outlined,
-                iconColor: const Color(0xFF7C3AED),
-                iconBgColor: const Color(0xFFFAF5FF),
+                iconColor: const Color(0xFFA78BFA),
+                iconBgColor: const Color(0xFF221736),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -1328,16 +1312,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: _cardWhite,
+          color: _cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _borderSubtle),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x04000000),
-              blurRadius: 4,
-              offset: Offset(0, 1),
-            ),
-          ],
+          border: Border.all(color: _cardBorder),
         ),
         child: Row(
           children: [
@@ -1358,7 +1335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     title,
                     style: const TextStyle(
-                      color: _textDark,
+                      color: Colors.white,
                       fontSize: 13.5,
                       fontWeight: FontWeight.bold,
                     ),
@@ -1366,14 +1343,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: const TextStyle(color: _textMuted, fontSize: 11),
+                    style: const TextStyle(color: _textSubtle, fontSize: 11),
                   ),
                 ],
               ),
             ),
             const Icon(
               Icons.arrow_forward_ios_rounded,
-              color: Color(0xFFCBD5E1),
+              color: Color(0xFF345244),
               size: 12,
             ),
           ],
@@ -1382,7 +1359,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  /// Bottom Navigation Bar matching screenshot and Invoice Details
+  /// Bottom Navigation Bar matching login emerald dark theme
   Widget _buildBottomNavigationBar(
     int customerCount,
     int productCount,
@@ -1427,19 +1404,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
               width: 48,
               height: 48,
               decoration: const BoxDecoration(
-                color: _emeraldPrimary,
+                color: _primaryAccent,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0x3300875A),
-                    blurRadius: 10,
+                    color: Color(0x6600D07E),
+                    blurRadius: 12,
                     offset: Offset(0, 3),
                   ),
                 ],
               ),
               child: const Icon(
                 Icons.add_rounded,
-                color: Colors.white,
+                color: Color(0xFF042717),
                 size: 26,
               ),
             ),
@@ -1484,8 +1461,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required VoidCallback onTap,
     int? badgeCount,
   }) {
-    final activeColor = _emeraldPrimary;
-    const inactiveColor = _textMuted;
+    final activeColor = _primaryAccent;
+    const inactiveColor = Color(0xFF7A8D84);
 
     return InkWell(
       onTap: onTap,
@@ -1509,9 +1486,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     right: -7,
                     child: Container(
                       padding: const EdgeInsets.all(3),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFE2E8F0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0E2419),
                         shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFF18422E),
+                          width: 0.8,
+                        ),
                       ),
                       constraints: const BoxConstraints(
                         minWidth: 15,
@@ -1521,7 +1502,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         badgeCount > 99 ? '99+' : '$badgeCount',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: _textSlate,
+                          color: Color(0xFFA7F3D0),
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),
