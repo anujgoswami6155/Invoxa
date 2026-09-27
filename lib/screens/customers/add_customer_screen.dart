@@ -170,11 +170,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.25),
                   radius: 0.95,
-                  colors: const [
-                    Color(0x3800D07E),
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -189,9 +185,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                   vertical: 24,
                 ),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: 520,
-                  ),
+                  constraints: const BoxConstraints(maxWidth: 520),
                   child: _buildCard(),
                 ),
               ),
@@ -208,10 +202,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       decoration: BoxDecoration(
         color: _cardBg,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: _cardBorder,
-          width: 1.2,
-        ),
+        border: Border.all(color: _cardBorder, width: 1.2),
         boxShadow: const [
           BoxShadow(
             color: Color(0x66000000),
@@ -357,10 +348,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                         : const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.person_add_alt_1_rounded,
-                                size: 19,
-                              ),
+                              Icon(Icons.person_add_alt_1_rounded, size: 19),
                               SizedBox(width: 8),
                               Text(
                                 'Save Customer',
@@ -390,10 +378,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           borderRadius: BorderRadius.circular(8),
           onTap: () => Navigator.pop(context),
           child: const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 4,
-              horizontal: 2,
-            ),
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -416,16 +401,11 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 4,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: const Color(0xFF0E2419),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: const Color(0xFF18422E),
-            ),
+            border: Border.all(color: const Color(0xFF18422E)),
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
@@ -477,27 +457,15 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           controller: controller,
           keyboardType: keyboardType,
           maxLines: maxLines,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-          ),
+          style: const TextStyle(color: Colors.white, fontSize: 14),
           decoration: InputDecoration(
             filled: true,
             fillColor: _inputFill,
             hintText: hint,
-            hintStyle: const TextStyle(
-              color: _textSubtle,
-              fontSize: 13,
-            ),
+            hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
             prefixIcon: Padding(
-              padding: EdgeInsets.only(
-                bottom: maxLines > 1 ? 36 : 0,
-              ),
-              child: Icon(
-                icon,
-                color: _primaryAccentLight,
-                size: 20,
-              ),
+              padding: EdgeInsets.only(bottom: maxLines > 1 ? 36 : 0),
+              child: Icon(icon, color: _primaryAccentLight, size: 20),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -505,28 +473,19 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: _inputBorder,
-              ),
+              borderSide: const BorderSide(color: _inputBorder),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: _inputBorder,
-              ),
+              borderSide: const BorderSide(color: _inputBorder),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: _primaryAccent,
-                width: 1.5,
-              ),
+              borderSide: const BorderSide(color: _primaryAccent, width: 1.5),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color(0xFFE11D48),
-              ),
+              borderSide: const BorderSide(color: Color(0xFFE11D48)),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
