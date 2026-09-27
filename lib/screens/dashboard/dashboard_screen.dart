@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/invoice_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/customer_provider.dart';
+import '../../providers/invoice_provider.dart';
 import '../../providers/product_provider.dart';
 import '../auth/login_screen.dart';
 import '../customers/add_customer_screen.dart';
 import '../customers/customers_screen.dart';
+import '../invoices/create_invoice_screen.dart';
+import '../invoices/invoice_details_screen.dart';
+import '../invoices/invoices_screen.dart';
 import '../products/add_product_screen.dart';
 import '../products/products_screen.dart';
 
@@ -44,88 +49,66 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (user != null) {
       context.read<CustomerProvider>().loadCustomers(user.uid);
       context.read<ProductProvider>().fetchProducts(userId: user.uid);
+      context.read<InvoiceProvider>().loadInvoices(user.uid);
     }
   }
 
-  void _showPendingInvoicesNotice() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: _cardBg,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border(
-            top: BorderSide(color: _cardBorder, width: 1.5),
-            left: BorderSide(color: _cardBorder, width: 1.5),
-            right: BorderSide(color: _cardBorder, width: 1.5),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E382B),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFF0E2419),
-                shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFF18422E)),
-              ),
-              child: const Icon(
-                Icons.receipt_long_outlined,
-                color: _primaryAccentLight,
-                size: 28,
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Invoices Module In Development',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'The invoice generator and billing engine will be enabled in the upcoming update. You can manage your Customers and Product Catalog right now.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: _textMuted, fontSize: 13, height: 1.4),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 46,
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(ctx),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _primaryAccent,
-                  foregroundColor: const Color(0xFF042717),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Got it',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  String _formatDate(DateTime date) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
+  }
+
+  Color _statusTextColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return _primaryAccentLight;
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF38BDF8);
+      case InvoiceStatus.overdue:
+        return const Color(0xFFFB7185);
+      case InvoiceStatus.pending:
+        return const Color(0xFFFBBF24);
+      case InvoiceStatus.draft:
+      case InvoiceStatus.cancelled:
+        return _textMuted;
+    }
+  }
+
+  Color _statusBgColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return const Color(0xFF0E2419);
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF0B2538);
+      case InvoiceStatus.overdue:
+        return const Color(0xFF2D141E);
+      case InvoiceStatus.pending:
+        return const Color(0xFF2D2310);
+      case InvoiceStatus.draft:
+        return const Color(0xFF14241D);
+      case InvoiceStatus.cancelled:
+        return const Color(0xFF2D141E);
+    }
+  }
+
+  Color _statusBorderColor(InvoiceStatus status) {
+    switch (status) {
+      case InvoiceStatus.paid:
+        return const Color(0xFF18422E);
+      case InvoiceStatus.partiallyPaid:
+        return const Color(0xFF0C4A6E);
+      case InvoiceStatus.overdue:
+        return const Color(0xFF9F1239);
+      case InvoiceStatus.pending:
+        return const Color(0xFF573D0F);
+      case InvoiceStatus.draft:
+        return _cardBorder;
+      case InvoiceStatus.cancelled:
+        return const Color(0xFF9F1239);
+    }
   }
 
   void _showCreateActionSheet() {
@@ -197,10 +180,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Icons.receipt_long_outlined,
               title: 'New Invoice',
               subtitle: 'Create and issue a customer invoice',
-              isPending: true,
+              isPending: false,
               onTap: () {
                 Navigator.pop(ctx);
-                _showPendingInvoicesNotice();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+                ).then((_) => _loadData());
               },
             ),
           ],
@@ -299,6 +285,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final authProvider = context.watch<AuthProvider>();
     final customerProvider = context.watch<CustomerProvider>();
     final productProvider = context.watch<ProductProvider>();
+    final invoiceProvider = context.watch<InvoiceProvider>();
 
     final user = authProvider.user;
     final displayName = user?.name.isNotEmpty == true ? user!.name : 'there';
@@ -336,7 +323,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 22),
 
                       // Stat Cards Row (Invoices, Customers, Products)
-                      _buildStatsRow(customerProvider, productProvider),
+                      _buildStatsRow(invoiceProvider, customerProvider, productProvider),
 
                       const SizedBox(height: 26),
 
@@ -351,7 +338,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 26),
 
                       // Recent Invoices Section
-                      _buildRecentInvoicesSection(),
+                      _buildRecentInvoicesSection(invoiceProvider),
 
                       const SizedBox(height: 32),
                     ],
@@ -365,6 +352,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: _buildBottomNavigationBar(
         customerProvider.totalCustomerCount,
         productProvider.products.length,
+        invoiceProvider.totalInvoicesCount,
       ),
     );
   }
@@ -468,21 +456,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildStatsRow(
+    InvoiceProvider invoiceProvider,
     CustomerProvider customerProvider,
     ProductProvider productProvider,
   ) {
     return Row(
       children: [
-        // Invoices Stat (Pending)
+        // Invoices Stat
         Expanded(
           child: _buildStatCard(
             label: 'INVOICES',
             icon: Icons.description_outlined,
-            value: '0',
-            subtitle: 'Pending billing',
+            value: '${invoiceProvider.totalInvoicesCount}',
+            subtitle: invoiceProvider.totalInvoicesCount == 0
+                ? 'Start billing'
+                : '${invoiceProvider.pendingInvoicesCount} pending',
             valueColor: _primaryAccentLight,
-            isPending: true,
-            onTap: _showPendingInvoicesNotice,
+            isPending: false,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const InvoicesScreen()),
+              ).then((_) => _loadData());
+            },
           ),
         ),
         const SizedBox(width: 10),
@@ -616,8 +612,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 icon: Icons.add_rounded,
                 title: 'New Invoice',
                 subtitle: 'Start billing',
-                isPending: true,
-                onTap: _showPendingInvoicesNotice,
+                isPending: false,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CreateInvoiceScreen(),
+                    ),
+                  ).then((_) => _loadData());
+                },
               ),
             ),
             const SizedBox(width: 10),
@@ -889,7 +892,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildRecentInvoicesSection() {
+  Widget _buildRecentInvoicesSection(InvoiceProvider invoiceProvider) {
+    final recentInvoices = invoiceProvider.recentInvoices(4);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -906,76 +911,206 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
             TextButton(
-              onPressed: _showPendingInvoicesNotice,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const InvoicesScreen()),
+                ).then((_) => _loadData());
+              },
               style: TextButton.styleFrom(
                 foregroundColor: _primaryAccentLight,
                 padding: EdgeInsets.zero,
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
-              child: const Row(
+              child: Row(
                 children: [
                   Text(
-                    'View All (0)',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    'View All (${invoiceProvider.totalInvoicesCount})',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(width: 4),
-                  Icon(Icons.arrow_forward_ios_rounded, size: 11),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.arrow_forward_ios_rounded, size: 11),
                 ],
               ),
             ),
           ],
         ),
         const SizedBox(height: 12),
+        if (invoiceProvider.isLoading && invoiceProvider.allInvoices.isEmpty)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: CircularProgressIndicator(color: _primaryAccent),
+            ),
+          )
+        else if (recentInvoices.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+            decoration: BoxDecoration(
+              color: _cardBg,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: _cardBorder),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF0E2419),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: const Color(0xFF18422E)),
+                  ),
+                  child: const Icon(
+                    Icons.receipt_long_outlined,
+                    color: _primaryAccentLight,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'No Invoices Generated Yet',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Create your first invoice to start billing customers and tracking payments.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: _textSubtle, fontSize: 12, height: 1.4),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _primaryAccent,
+                    foregroundColor: const Color(0xFF060D0A),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+                    ).then((_) => _loadData());
+                  },
+                  icon: const Icon(Icons.add_rounded, size: 16),
+                  label: const Text('Create Invoice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                ),
+              ],
+            ),
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: recentInvoices.length,
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
+            itemBuilder: (context, index) {
+              final invoice = recentInvoices[index];
+              final status = invoice.effectiveStatus;
 
-        // Invoices Pending Placeholder Card
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
-          decoration: BoxDecoration(
-            color: _cardBg,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: _cardBorder),
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => InvoiceDetailsScreen(invoice: invoice),
+                    ),
+                  ).then((_) => _loadData());
+                },
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: _cardBg,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: _cardBorder),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0E2419),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: const Color(0xFF18422E)),
+                        ),
+                        child: const Icon(
+                          Icons.receipt_long_outlined,
+                          color: _primaryAccentLight,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              invoice.invoiceNumber,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '${invoice.customerName} • ${_formatDate(invoice.dueDate)}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: _textSubtle, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            '₹ ${invoice.totalAmount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: _statusBgColor(status),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: _statusBorderColor(status)),
+                            ),
+                            child: Text(
+                              status.displayName,
+                              style: TextStyle(
+                                color: _statusTextColor(status),
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
-          child: Column(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0E2419),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: const Color(0xFF18422E)),
-                ),
-                child: const Icon(
-                  Icons.receipt_long_outlined,
-                  color: _primaryAccentLight,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'No Invoices Generated Yet',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Invoices will appear here once generated. Customer records and products are ready for billing.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: _textSubtle, fontSize: 12, height: 1.4),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
 
-  Widget _buildBottomNavigationBar(int customerCount, int productCount) {
+  Widget _buildBottomNavigationBar(int customerCount, int productCount, int invoiceCount) {
     return Container(
       decoration: const BoxDecoration(
         color: _cardBg,
@@ -1005,8 +1140,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 icon: Icons.receipt_long_outlined,
                 label: 'Invoices',
                 isSelected: _currentNavIndex == 1,
-                badgeText: 'Soon',
-                onTap: _showPendingInvoicesNotice,
+                badgeCount: invoiceCount > 0 ? invoiceCount : null,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const InvoicesScreen()),
+                  ).then((_) => _loadData());
+                },
               ),
 
               // 2: Center Floating Action (+)

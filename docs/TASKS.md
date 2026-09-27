@@ -12,7 +12,7 @@ This file tracks the project's development roadmap, module milestones, current s
 | **Phase 2: Dashboard UI (Mock Data)** | `feature/dashboard` | 🟡 **In Progress** | Professional dashboard layout with KPI cards, quick actions, and recent invoices. |
 | **Phase 3: Customer Management** | `feature/customers` | ⚪ **Planned** | Customer CRUD, client details, billing address, and history. |
 | **Phase 4: Product & Service Catalog** | `feature/products` | ⚪ **Planned** | Catalog CRUD, pricing, units of measure, descriptions. |
-| **Phase 5: Invoice Management** | `feature/invoices` | ⚪ **Planned** | Invoice builder, line items, auto-calculations, status tracking. |
+| **Phase 5: Invoice Management** | `feature/invoice` | ✅ **Completed** | Invoice builder, line items, auto-calculations, status tracking. |
 | **Phase 6: Payment Tracking** | `feature/payments` | ⚪ **Planned** | Payment capture against invoices, balance updates, payment ledger. |
 | **Phase 7: Dashboard Real Data Integration** | `feature/dashboard` | ⚪ **Planned** | Connect dashboard KPIs and recent lists to live Firestore providers. |
 | **Phase 8: Storage, PDF & Export** | `feature/invoicing-tools` | ⚪ **Planned** | PDF generation, sharing, logo upload via Firebase Storage. |
@@ -90,13 +90,13 @@ This file tracks the project's development roadmap, module milestones, current s
 
 ---
 
-### Phase 5: Invoice Module (`feature/invoices`)
-- [ ] Create `lib/models/invoice_model.dart` and `invoice_item_model.dart`.
-- [ ] Create `lib/services/invoice_service.dart`.
-- [ ] Create `lib/providers/invoice_provider.dart` (subtotal, tax, and discount computations).
-- [ ] Build `CreateInvoiceScreen` (customer picker, line item picker, quantity, notes).
-- [ ] Build `InvoicesScreen` (filtering by status: `Draft`, `Pending`, `Paid`, `Overdue`).
-- [ ] Build `InvoiceDetailsScreen` (breakdown, share trigger).
+### Phase 5: Invoice Module (`feature/invoice`)
+- [x] Create `lib/models/invoice_model.dart` and `invoice_item_model.dart`.
+- [x] Create `lib/services/invoice_service.dart`.
+- [x] Create `lib/providers/invoice_provider.dart` (subtotal, tax, and discount computations).
+- [x] Build `CreateInvoiceScreen` (customer picker, line item picker, quantity, notes).
+- [x] Build `InvoicesScreen` (filtering by status: `Draft`, `Pending`, `Paid`, `Overdue`).
+- [x] Build `InvoiceDetailsScreen` (breakdown, share trigger, payment recording).
 
 ---
 
