@@ -101,7 +101,13 @@ class InvoxaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Invoxa',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF060D0A),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF00D07E),
+          brightness: Brightness.dark,
+          surface: const Color(0xFF0B1612),
+        ),
         useMaterial3: true,
       ),
       home: const AuthGate(),

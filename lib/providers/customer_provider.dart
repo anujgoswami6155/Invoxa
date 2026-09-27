@@ -9,11 +9,41 @@ class CustomerProvider extends ChangeNotifier {
   List<CustomerModel> _customers = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String _searchQuery = '';
 
-  List<CustomerModel> get customers => _customers;
+  List<CustomerModel> get customers {
+    if (_searchQuery.trim().isEmpty) {
+      return _customers;
+    }
+    final query = _searchQuery.trim().toLowerCase();
+    return _customers.where((customer) {
+      final nameMatches = customer.name.toLowerCase().contains(query);
+      final emailMatches = customer.email.toLowerCase().contains(query);
+      final phoneMatches = customer.phone.toLowerCase().contains(query);
+      final addressMatches = customer.address.toLowerCase().contains(query);
+      return nameMatches || emailMatches || phoneMatches || addressMatches;
+    }).toList();
+  }
+
+  List<CustomerModel> get allCustomers => _customers;
+
+  int get totalCustomerCount => _customers.length;
+
+  String get searchQuery => _searchQuery;
 
   bool get isLoading => _isLoading;
+
   String? get errorMessage => _errorMessage;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
+  void clearSearch() {
+    _searchQuery = '';
+    notifyListeners();
+  }
 
   Future<bool> loadCustomers(String userId) async {
     _setLoading(true);
@@ -22,9 +52,9 @@ class CustomerProvider extends ChangeNotifier {
     try {
       _customers = await _customerService.getCustomers(userId);
       return true;
-    } catch (e) {
-      _errorMessage =
-          'Could not load customers. Please try again.';
+    } catch (e, stack) {
+      debugPrint('[CustomerProvider] Error loading customers: $e\n$stack');
+      _errorMessage = 'Could not load customers. Please try again.';
       return false;
     } finally {
       _setLoading(false);
@@ -36,14 +66,12 @@ class CustomerProvider extends ChangeNotifier {
     _clearError();
 
     try {
-      await _customerService.createCustomer(customer);
-
-      _customers.insert(0, customer);
-
+      final savedCustomer = await _customerService.createCustomer(customer);
+      _customers.insert(0, savedCustomer);
       return true;
-    } catch (e) {
-      _errorMessage =
-          'Could not add customer. Please try again.';
+    } catch (e, stack) {
+      debugPrint('[CustomerProvider] Error adding customer: $e\n$stack');
+      _errorMessage = 'Could not add customer. Please try again.';
       return false;
     } finally {
       _setLoading(false);
@@ -67,8 +95,7 @@ class CustomerProvider extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      _errorMessage =
-          'Could not update customer. Please try again.';
+      _errorMessage = 'Could not update customer. Please try again.';
       return false;
     } finally {
       _setLoading(false);
@@ -94,8 +121,7 @@ class CustomerProvider extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      _errorMessage =
-          'Could not delete customer. Please try again.';
+      _errorMessage = 'Could not delete customer. Please try again.';
       return false;
     } finally {
       _setLoading(false);
