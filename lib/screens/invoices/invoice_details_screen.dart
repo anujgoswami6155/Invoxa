@@ -22,10 +22,14 @@ class InvoiceDetailsScreen extends StatefulWidget {
 
 class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   // Palette matching Image 1
-  static const Color _pageBg = Color(0xFFF1F5F9); // Crisp light slate background
+  static const Color _pageBg = Color(
+    0xFFF1F5F9,
+  ); // Crisp light slate background
   static const Color _cardWhite = Colors.white;
   static const Color _borderSubtle = Color(0xFFE2E8F0);
-  static const Color _emeraldPrimary = Color(0xFF00875A); // Deep emerald in image 1
+  static const Color _emeraldPrimary = Color(
+    0xFF00875A,
+  ); // Deep emerald in image 1
   static const Color _emeraldLightBg = Color(0xFFF0FDF4);
   static const Color _emeraldBorder = Color(0xFFBBF7D0);
   static const Color _emeraldText = Color(0xFF059669);
@@ -96,7 +100,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           ? balanceDue.toInt().toString()
           : balanceDue.toStringAsFixed(2),
     );
-    final notesController = TextEditingController(text: 'Advance IMPS transfer');
+    final notesController = TextEditingController(
+      text: 'Advance IMPS transfer',
+    );
     String selectedMethod = 'Bank Transfer';
     String? validationError;
 
@@ -236,7 +242,8 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           final amt = double.tryParse(val.trim()) ?? 0.0;
                           setDlgState(() {
                             if (amt <= 0) {
-                              validationError = 'Amount must be greater than ₹0';
+                              validationError =
+                                  'Amount must be greater than ₹0';
                             } else if (amt > balanceDue + 0.001) {
                               validationError =
                                   'Amount cannot exceed pending balance of ${_formatCurrency(balanceDue)}';
@@ -346,10 +353,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       DropdownButtonFormField<String>(
                         initialValue: selectedMethod,
                         dropdownColor: Colors.white,
-                        style: const TextStyle(
-                          color: _textDark,
-                          fontSize: 14,
-                        ),
+                        style: const TextStyle(color: _textDark, fontSize: 14),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: const Color(0xFFF8FAFC),
@@ -375,10 +379,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                             value: 'UPI / Online',
                             child: Text('UPI / Online Payment'),
                           ),
-                          DropdownMenuItem(
-                            value: 'Cash',
-                            child: Text('Cash'),
-                          ),
+                          DropdownMenuItem(value: 'Cash', child: Text('Cash')),
                           DropdownMenuItem(
                             value: 'Cheque',
                             child: Text('Cheque / DD'),
@@ -409,10 +410,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       const SizedBox(height: 6),
                       TextField(
                         controller: notesController,
-                        style: const TextStyle(
-                          color: _textDark,
-                          fontSize: 13,
-                        ),
+                        style: const TextStyle(color: _textDark, fontSize: 13),
                         decoration: InputDecoration(
                           hintText: 'e.g. Advance IMPS transfer / UTR #12345',
                           hintStyle: const TextStyle(color: _textSubtle),
@@ -471,7 +469,8 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     // Strict validation: amount must be > 0 and <= balanceDue
                     if (amt <= 0) {
                       setDlgState(() {
-                        validationError = 'Please enter an amount greater than zero.';
+                        validationError =
+                            'Please enter an amount greater than zero.';
                       });
                       return;
                     }
@@ -518,7 +517,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         ),
                       );
                     } else if (mounted) {
-                      final errMsg = context.read<InvoiceProvider>().errorMessage;
+                      final errMsg = context
+                          .read<InvoiceProvider>()
+                          .errorMessage;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: _danger,
@@ -573,7 +574,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               onPressed: () => Navigator.pop(dlgContext),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: _textMuted, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  color: _textMuted,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             ElevatedButton(
@@ -612,13 +616,15 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     );
   }
 
-  Future<void> _handlePrintOrDownloadPdf({bool downloadDirectly = false}) async {
+  Future<void> _handlePrintOrDownloadPdf({
+    bool downloadDirectly = false,
+  }) async {
     final authUser = context.read<AuthProvider>().user;
     final businessName = (authUser?.name.trim().isNotEmpty ?? false)
         ? (authUser!.name.toLowerCase().contains('enterprises') ||
-                authUser.name.toLowerCase().contains('solutions')
-            ? authUser.name
-            : '${authUser.name} Enterprises & Solutions')
+                  authUser.name.toLowerCase().contains('solutions')
+              ? authUser.name
+              : '${authUser.name} Enterprises & Solutions')
         : 'Rahul Enterprises & Solutions';
     const businessAddress =
         'Suite 402, Trade Tower, MG Road, Bengaluru, Karnataka 560001';
@@ -647,7 +653,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         );
       }
 
-      if (mounted && result != null && result.isNotEmpty && result != 'Printed') {
+      if (mounted &&
+          result != null &&
+          result.isNotEmpty &&
+          result != 'Printed') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: const Color(0xFF064E3B),
@@ -710,11 +719,17 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       color: _emeraldLightBg,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.download_rounded, color: _emeraldPrimary),
+                    child: const Icon(
+                      Icons.download_rounded,
+                      color: _emeraldPrimary,
+                    ),
                   ),
                   title: const Text(
                     'Download PDF Invoice',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: _textDark,
+                    ),
                   ),
                   subtitle: Text(
                     'Save ${_currentInvoice.invoiceNumber}.pdf to device',
@@ -736,7 +751,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   ),
                   title: const Text(
                     'Copy Invoice Summary',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: _textDark,
+                    ),
                   ),
                   subtitle: const Text(
                     'Copy invoice text details to clipboard',
@@ -799,11 +817,17 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       color: _emeraldLightBg,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.download_rounded, color: _emeraldPrimary),
+                    child: const Icon(
+                      Icons.download_rounded,
+                      color: _emeraldPrimary,
+                    ),
                   ),
                   title: const Text(
                     'Download PDF File',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: _textDark,
+                    ),
                   ),
                   subtitle: Text(
                     'Directly download ${_currentInvoice.invoiceNumber}.pdf',
@@ -821,11 +845,17 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       color: const Color(0xFFEFF6FF),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.print_rounded, color: Color(0xFF2563EB)),
+                    child: const Icon(
+                      Icons.print_rounded,
+                      color: Color(0xFF2563EB),
+                    ),
                   ),
                   title: const Text(
                     'Print / PDF Preview',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: _textDark,
+                    ),
                   ),
                   subtitle: const Text(
                     'Open print dialog and preview',
@@ -856,9 +886,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     // Business details from Image 1 / user account
     final businessName = (authUser?.name.trim().isNotEmpty ?? false)
         ? (authUser!.name.toLowerCase().contains('enterprises') ||
-                authUser.name.toLowerCase().contains('solutions')
-            ? authUser.name
-            : '${authUser.name} Enterprises & Solutions')
+                  authUser.name.toLowerCase().contains('solutions')
+              ? authUser.name
+              : '${authUser.name} Enterprises & Solutions')
         : 'Rahul Enterprises & Solutions';
     final businessAddress =
         'Suite 402, Trade Tower, MG Road, Bengaluru, Karnataka 560001';
@@ -873,10 +903,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         child: SingleChildScrollView(
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 820),
+              constraints: const BoxConstraints(maxWidth: 500),
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 24 : 16,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
                   vertical: 16,
                 ),
                 child: Column(
@@ -912,7 +942,22 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: _borderSubtle, width: 1.0)),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Center(
+            heightFactor: 1.0,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: _buildBottomNavigationBar(context),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -942,11 +987,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: const [
-                Icon(
-                  Icons.arrow_back_rounded,
-                  size: 16,
-                  color: _textDark,
-                ),
+                Icon(Icons.arrow_back_rounded, size: 16, color: _textDark),
                 SizedBox(width: 6),
                 Text(
                   'Back',
@@ -1018,11 +1059,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ),
             ],
           ),
-          child: Icon(
-            icon,
-            size: 18,
-            color: iconColor ?? _textMuted,
-          ),
+          child: Icon(icon, size: 18, color: iconColor ?? _textMuted),
         ),
       ),
     );
@@ -1116,7 +1153,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Icon(Icons.check_circle_rounded, color: Colors.white, size: 16),
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: Colors.white,
+                    size: 16,
+                  ),
                   SizedBox(width: 6),
                   Text(
                     'Settled',
@@ -1259,10 +1300,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     const SizedBox(height: 2),
                     Text(
                       '$businessEmail • $businessPhone',
-                      style: const TextStyle(
-                        color: _textMuted,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: _textMuted, fontSize: 12),
                     ),
                   ],
                 ),
@@ -1552,11 +1590,15 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 const Divider(color: Color(0xFFF1F5F9), height: 1),
             itemBuilder: (context, index) {
               final item = _currentInvoice.items[index];
-              final qtyFormatted =
-                  item.quantity % 1 == 0 ? item.quantity.toInt().toString() : item.quantity.toString();
+              final qtyFormatted = item.quantity % 1 == 0
+                  ? item.quantity.toInt().toString()
+                  : item.quantity.toString();
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 child: Row(
                   children: [
                     // Item Name
@@ -1578,10 +1620,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       child: Text(
                         '${_formatCurrency(item.unitPrice)} × $qtyFormatted',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: _textSlate,
-                          fontSize: 12,
-                        ),
+                        style: const TextStyle(color: _textSlate, fontSize: 12),
                       ),
                     ),
 
@@ -1745,11 +1784,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         const SizedBox(height: 4),
         Text(
           notesText,
-          style: const TextStyle(
-            color: _textMuted,
-            fontSize: 12,
-            height: 1.4,
-          ),
+          style: const TextStyle(color: _textMuted, fontSize: 12, height: 1.4),
         ),
       ],
     );
@@ -1781,7 +1816,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 onTap: _showRecordPaymentDialog,
                 borderRadius: BorderRadius.circular(6),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 2,
+                  ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
@@ -1833,7 +1871,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             itemBuilder: (context, index) {
               final payment = payments[index];
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: _emeraldLightBg,
                   borderRadius: BorderRadius.circular(12),
@@ -1910,101 +1951,95 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     final productCount = context.watch<ProductProvider>().products.length;
     final invoiceCount = context.watch<InvoiceProvider>().totalInvoicesCount;
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: _borderSubtle, width: 1.0)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // 0: Home
-              _buildBottomNavItem(
-                icon: Icons.grid_view_rounded,
-                label: 'Home',
-                isSelected: false,
-                onTap: () {
-                  Navigator.popUntil(context, (r) => r.isFirst);
-                },
-              ),
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            // 0: Home
+            _buildBottomNavItem(
+              icon: Icons.grid_view_rounded,
+              label: 'Home',
+              isSelected: false,
+              onTap: () {
+                Navigator.popUntil(context, (r) => r.isFirst);
+              },
+            ),
 
-              // 1: Invoices (Active)
-              _buildBottomNavItem(
-                icon: Icons.receipt_long_outlined,
-                label: 'Invoices',
-                isSelected: true,
-                badgeCount: invoiceCount > 0 ? invoiceCount : null,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
+            // 1: Invoices (Active)
+            _buildBottomNavItem(
+              icon: Icons.receipt_long_outlined,
+              label: 'Invoices',
+              isSelected: true,
+              badgeCount: invoiceCount > 0 ? invoiceCount : null,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
 
-              // 2: Center Floating Action (+)
-              InkWell(
-                borderRadius: BorderRadius.circular(25),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const CreateInvoiceScreen(),
+            // 2: Center Floating Action (+)
+            InkWell(
+              borderRadius: BorderRadius.circular(25),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CreateInvoiceScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: const BoxDecoration(
+                  color: _emeraldPrimary,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x3300875A),
+                      blurRadius: 10,
+                      offset: Offset(0, 3),
                     ),
-                  );
-                },
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    color: _emeraldPrimary,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0x3300875A),
-                        blurRadius: 10,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.add_rounded,
-                    color: Colors.white,
-                    size: 26,
-                  ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.add_rounded,
+                  color: Colors.white,
+                  size: 26,
                 ),
               ),
+            ),
 
-              // 3: Customers
-              _buildBottomNavItem(
-                icon: Icons.people_outline_rounded,
-                label: 'Customers',
-                isSelected: false,
-                badgeCount: customerCount > 0 ? customerCount : null,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const CustomersScreen()),
-                  );
-                },
-              ),
+            // 3: Customers
+            _buildBottomNavItem(
+              icon: Icons.people_outline_rounded,
+              label: 'Customers',
+              isSelected: false,
+              badgeCount: customerCount > 0 ? customerCount : null,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CustomersScreen()),
+                );
+              },
+            ),
 
-              // 4: Items / Products
-              _buildBottomNavItem(
-                icon: Icons.inventory_2_outlined,
-                label: 'Items',
-                isSelected: false,
-                badgeCount: productCount > 0 ? productCount : null,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ProductsScreen()),
-                  );
-                },
-              ),
-            ],
-          ),
+            // 4: Items / Products
+            _buildBottomNavItem(
+              icon: Icons.inventory_2_outlined,
+              label: 'Items',
+              isSelected: false,
+              badgeCount: productCount > 0 ? productCount : null,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProductsScreen()),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
