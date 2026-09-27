@@ -55,8 +55,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
   }
@@ -185,7 +195,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.pop(ctx);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const CreateInvoiceScreen(),
+                  ),
                 ).then((_) => _loadData());
               },
             ),
@@ -323,7 +335,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 22),
 
                       // Stat Cards Row (Invoices, Customers, Products)
-                      _buildStatsRow(invoiceProvider, customerProvider, productProvider),
+                      _buildStatsRow(
+                        invoiceProvider,
+                        customerProvider,
+                        productProvider,
+                      ),
 
                       const SizedBox(height: 26),
 
@@ -927,7 +943,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   Text(
                     'View All (${invoiceProvider.totalInvoicesCount})',
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(width: 4),
                   const Icon(Icons.arrow_forward_ios_rounded, size: 11),
@@ -982,24 +1001,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const Text(
                   'Create your first invoice to start billing customers and tracking payments.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: _textSubtle, fontSize: 12, height: 1.4),
+                  style: TextStyle(
+                    color: _textSubtle,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _primaryAccent,
                     foregroundColor: const Color(0xFF060D0A),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const CreateInvoiceScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const CreateInvoiceScreen(),
+                      ),
                     ).then((_) => _loadData());
                   },
                   icon: const Icon(Icons.add_rounded, size: 16),
-                  label: const Text('Create Invoice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                  label: const Text(
+                    'Create Invoice',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
                 ),
               ],
             ),
@@ -1065,7 +1098,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               '${invoice.customerName} • ${_formatDate(invoice.dueDate)}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: _textSubtle, fontSize: 12),
+                              style: const TextStyle(
+                                color: _textSubtle,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -1083,11 +1119,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           const SizedBox(height: 3),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: _statusBgColor(status),
                               borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: _statusBorderColor(status)),
+                              border: Border.all(
+                                color: _statusBorderColor(status),
+                              ),
                             ),
                             child: Text(
                               status.displayName,
@@ -1110,7 +1151,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar(int customerCount, int productCount, int invoiceCount) {
+  Widget _buildBottomNavigationBar(
+    int customerCount,
+    int productCount,
+    int invoiceCount,
+  ) {
     return Container(
       decoration: const BoxDecoration(
         color: _cardBg,

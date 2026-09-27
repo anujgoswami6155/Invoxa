@@ -72,7 +72,9 @@ class InvoiceService {
       final nextNumber = highestNumber + 1;
       return 'INV-${nextNumber.toString().padLeft(4, '0')}';
     } catch (e) {
-      debugPrint('[InvoiceService] Failed to calculate next invoice number: $e');
+      debugPrint(
+        '[InvoiceService] Failed to calculate next invoice number: $e',
+      );
       return 'INV-0001';
     }
   }
@@ -100,7 +102,9 @@ class InvoiceService {
       return b.createdAt.compareTo(a.createdAt);
     });
 
-    debugPrint('[InvoiceService] Loaded ${invoices.length} invoices from Firestore.');
+    debugPrint(
+      '[InvoiceService] Loaded ${invoices.length} invoices from Firestore.',
+    );
     return invoices;
   }
 
@@ -114,13 +118,13 @@ class InvoiceService {
         .where('userId', isEqualTo: userId)
         .snapshots()
         .map((snapshot) {
-      final invoices = snapshot.docs.map((doc) {
-        return InvoiceModel.fromMap(doc.data(), doc.id);
-      }).toList();
+          final invoices = snapshot.docs.map((doc) {
+            return InvoiceModel.fromMap(doc.data(), doc.id);
+          }).toList();
 
-      invoices.sort((a, b) => b.issueDate.compareTo(a.issueDate));
-      return invoices;
-    });
+          invoices.sort((a, b) => b.issueDate.compareTo(a.issueDate));
+          return invoices;
+        });
   }
 
   /// Fetches a single invoice by its document ID with user validation.
@@ -136,7 +140,9 @@ class InvoiceService {
 
     final data = doc.data()!;
     if (data['userId'] != userId) {
-      debugPrint('[InvoiceService] Security check failed: unauthorized access attempt.');
+      debugPrint(
+        '[InvoiceService] Security check failed: unauthorized access attempt.',
+      );
       return null;
     }
 
@@ -171,7 +177,9 @@ class InvoiceService {
       'updatedAt': Timestamp.now(),
     });
 
-    debugPrint('[InvoiceService] Updated invoice $invoiceId status to ${status.name}');
+    debugPrint(
+      '[InvoiceService] Updated invoice $invoiceId status to ${status.name}',
+    );
   }
 
   /// Records payment amount against an invoice and updates balance & status.

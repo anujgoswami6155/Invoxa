@@ -8,10 +8,7 @@ import '../../providers/invoice_provider.dart';
 class InvoiceDetailsScreen extends StatefulWidget {
   final InvoiceModel invoice;
 
-  const InvoiceDetailsScreen({
-    super.key,
-    required this.invoice,
-  });
+  const InvoiceDetailsScreen({super.key, required this.invoice});
 
   @override
   State<InvoiceDetailsScreen> createState() => _InvoiceDetailsScreenState();
@@ -48,8 +45,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
   }
@@ -124,7 +131,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               SizedBox(width: 8),
               Text(
                 'Record Payment',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -139,12 +150,21 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               const SizedBox(height: 14),
               TextField(
                 controller: amountController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Payment Amount (₹)',
                   labelStyle: const TextStyle(color: _textMuted),
-                  prefixIcon: const Icon(Icons.currency_rupee_rounded, color: _primaryAccent),
+                  prefixIcon: const Icon(
+                    Icons.currency_rupee_rounded,
+                    color: _primaryAccent,
+                  ),
                   filled: true,
                   fillColor: _inputFill,
                   border: OutlineInputBorder(
@@ -160,18 +180,32 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   ActionChip(
                     backgroundColor: const Color(0xFF0E2419),
                     side: const BorderSide(color: Color(0xFF18422E)),
-                    label: const Text('Full Amount', style: TextStyle(color: _primaryAccentLight, fontSize: 12)),
+                    label: const Text(
+                      'Full Amount',
+                      style: TextStyle(
+                        color: _primaryAccentLight,
+                        fontSize: 12,
+                      ),
+                    ),
                     onPressed: () {
-                      amountController.text = _currentInvoice.balanceDue.toStringAsFixed(2);
+                      amountController.text = _currentInvoice.balanceDue
+                          .toStringAsFixed(2);
                     },
                   ),
                   if (_currentInvoice.balanceDue > 1)
                     ActionChip(
                       backgroundColor: const Color(0xFF0E2419),
                       side: const BorderSide(color: Color(0xFF18422E)),
-                      label: const Text('50%', style: TextStyle(color: _primaryAccentLight, fontSize: 12)),
+                      label: const Text(
+                        '50%',
+                        style: TextStyle(
+                          color: _primaryAccentLight,
+                          fontSize: 12,
+                        ),
+                      ),
                       onPressed: () {
-                        amountController.text = (_currentInvoice.balanceDue / 2).toStringAsFixed(2);
+                        amountController.text = (_currentInvoice.balanceDue / 2)
+                            .toStringAsFixed(2);
                       },
                     ),
                 ],
@@ -187,13 +221,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
                 foregroundColor: const Color(0xFF060D0A),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: () async {
-                final amt = double.tryParse(amountController.text.trim()) ?? 0.0;
+                final amt =
+                    double.tryParse(amountController.text.trim()) ?? 0.0;
                 if (amt <= 0) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter a valid payment amount.')),
+                    const SnackBar(
+                      content: Text('Please enter a valid payment amount.'),
+                    ),
                   );
                   return;
                 }
@@ -203,14 +242,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 final user = context.read<AuthProvider>().firebaseUser;
                 if (user == null) return;
 
-                final success = await context.read<InvoiceProvider>().recordPayment(
+                final success = await context
+                    .read<InvoiceProvider>()
+                    .recordPayment(
                       invoiceId: _currentInvoice.id,
                       userId: user.uid,
                       paymentAmount: amt,
                     );
 
                 if (success && mounted) {
-                  final updated = context.read<InvoiceProvider>().getInvoiceById(_currentInvoice.id);
+                  final updated = context
+                      .read<InvoiceProvider>()
+                      .getInvoiceById(_currentInvoice.id);
                   if (updated != null) {
                     setState(() {
                       _currentInvoice = updated;
@@ -227,7 +270,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   );
                 }
               },
-              child: const Text('Confirm Payment', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'Confirm Payment',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
@@ -240,13 +286,15 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     if (user == null) return;
 
     final success = await context.read<InvoiceProvider>().updateInvoiceStatus(
-          invoiceId: _currentInvoice.id,
-          userId: user.uid,
-          status: newStatus,
-        );
+      invoiceId: _currentInvoice.id,
+      userId: user.uid,
+      status: newStatus,
+    );
 
     if (success && mounted) {
-      final updated = context.read<InvoiceProvider>().getInvoiceById(_currentInvoice.id);
+      final updated = context.read<InvoiceProvider>().getInvoiceById(
+        _currentInvoice.id,
+      );
       if (updated != null) {
         setState(() {
           _currentInvoice = updated;
@@ -280,7 +328,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               SizedBox(width: 8),
               Text(
                 'Delete Invoice',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -297,14 +349,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: _danger,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               onPressed: () async {
                 Navigator.pop(dlgContext);
                 final user = context.read<AuthProvider>().firebaseUser;
                 if (user == null) return;
 
-                final success = await context.read<InvoiceProvider>().deleteInvoice(
+                final success = await context
+                    .read<InvoiceProvider>()
+                    .deleteInvoice(
                       invoiceId: _currentInvoice.id,
                       userId: user.uid,
                     );
@@ -313,7 +369,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   Navigator.pop(context, true);
                 }
               },
-              child: const Text('Delete', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                'Delete',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
@@ -354,17 +413,26 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               if (status != InvoiceStatus.paid)
                 const PopupMenuItem(
                   value: 'mark_paid',
-                  child: Text('Mark as Paid', style: TextStyle(color: _primaryAccentLight)),
+                  child: Text(
+                    'Mark as Paid',
+                    style: TextStyle(color: _primaryAccentLight),
+                  ),
                 ),
               if (status != InvoiceStatus.pending)
                 const PopupMenuItem(
                   value: 'mark_pending',
-                  child: Text('Mark as Pending', style: TextStyle(color: _warning)),
+                  child: Text(
+                    'Mark as Pending',
+                    style: TextStyle(color: _warning),
+                  ),
                 ),
               if (status != InvoiceStatus.cancelled)
                 const PopupMenuItem(
                   value: 'mark_cancelled',
-                  child: Text('Void / Cancel', style: TextStyle(color: _textMuted)),
+                  child: Text(
+                    'Void / Cancel',
+                    style: TextStyle(color: _textMuted),
+                  ),
                 ),
               const PopupMenuDivider(height: 1),
               const PopupMenuItem(
@@ -401,7 +469,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               decoration: BoxDecoration(
                 color: _statusBgColor(status),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: _statusBorderColor(status), width: 1.5),
+                border: Border.all(
+                  color: _statusBorderColor(status),
+                  width: 1.5,
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -412,7 +483,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       Text(
                         'STATUS',
                         style: TextStyle(
-                          color: _statusTextColor(status).withValues(alpha: 0.8),
+                          color: _statusTextColor(
+                            status,
+                          ).withValues(alpha: 0.8),
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1,
@@ -445,7 +518,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       Text(
                         '₹ ${_currentInvoice.balanceDue.toStringAsFixed(2)}',
                         style: TextStyle(
-                          color: _currentInvoice.balanceDue > 0 ? Colors.white : _primaryAccentLight,
+                          color: _currentInvoice.balanceDue > 0
+                              ? Colors.white
+                              : _primaryAccentLight,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -475,23 +550,35 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Issue Date', style: TextStyle(color: _textSubtle, fontSize: 12)),
+                          const Text(
+                            'Issue Date',
+                            style: TextStyle(color: _textSubtle, fontSize: 12),
+                          ),
                           const SizedBox(height: 2),
                           Text(
                             _formatDate(_currentInvoice.issueDate),
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
                           ),
                         ],
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text('Due Date', style: TextStyle(color: _textSubtle, fontSize: 12)),
+                          const Text(
+                            'Due Date',
+                            style: TextStyle(color: _textSubtle, fontSize: 12),
+                          ),
                           const SizedBox(height: 2),
                           Text(
                             _formatDate(_currentInvoice.dueDate),
                             style: TextStyle(
-                              color: _currentInvoice.isOverdue ? _danger : Colors.white,
+                              color: _currentInvoice.isOverdue
+                                  ? _danger
+                                  : Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
                             ),
@@ -503,11 +590,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   const SizedBox(height: 16),
                   const Divider(color: _cardBorder, height: 1),
                   const SizedBox(height: 16),
-                  const Text('Billed To', style: TextStyle(color: _textSubtle, fontSize: 12)),
+                  const Text(
+                    'Billed To',
+                    style: TextStyle(color: _textSubtle, fontSize: 12),
+                  ),
                   const SizedBox(height: 6),
                   Text(
                     _currentInvoice.customerName,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                   if (_currentInvoice.customerEmail.isNotEmpty) ...[
                     const SizedBox(height: 4),
@@ -549,14 +643,19 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 children: [
                   const Text(
                     'Line Items',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
                   const SizedBox(height: 14),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _currentInvoice.items.length,
-                    separatorBuilder: (_, _) => const Divider(color: _cardBorder, height: 16),
+                    separatorBuilder: (_, _) =>
+                        const Divider(color: _cardBorder, height: 16),
                     itemBuilder: (context, index) {
                       final item = _currentInvoice.items[index];
                       return Row(
@@ -568,19 +667,30 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                               children: [
                                 Text(
                                   item.productName,
-                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   '${item.quantity % 1 == 0 ? item.quantity.toInt() : item.quantity} ${item.unitType} × ₹ ${item.unitPrice.toStringAsFixed(2)}',
-                                  style: const TextStyle(color: _textMuted, fontSize: 13),
+                                  style: const TextStyle(
+                                    color: _textMuted,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           Text(
                             '₹ ${item.totalPrice.toStringAsFixed(2)}',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
                           ),
                         ],
                       );
@@ -602,7 +712,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ),
               child: Column(
                 children: [
-                  _buildSummaryRow('Subtotal', '₹ ${_currentInvoice.subtotal.toStringAsFixed(2)}'),
+                  _buildSummaryRow(
+                    'Subtotal',
+                    '₹ ${_currentInvoice.subtotal.toStringAsFixed(2)}',
+                  ),
                   if (_currentInvoice.taxRate > 0) ...[
                     const SizedBox(height: 8),
                     _buildSummaryRow(
@@ -638,7 +751,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     'Balance Due',
                     '₹ ${_currentInvoice.balanceDue.toStringAsFixed(2)}',
                     isBold: true,
-                    valueColor: _currentInvoice.balanceDue > 0 ? _warning : _primaryAccentLight,
+                    valueColor: _currentInvoice.balanceDue > 0
+                        ? _warning
+                        : _primaryAccentLight,
                   ),
                 ],
               ),
@@ -657,11 +772,18 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Notes & Terms', style: TextStyle(color: _textSubtle, fontSize: 12)),
+                    const Text(
+                      'Notes & Terms',
+                      style: TextStyle(color: _textSubtle, fontSize: 12),
+                    ),
                     const SizedBox(height: 6),
                     Text(
                       _currentInvoice.notes,
-                      style: const TextStyle(color: _textMuted, fontSize: 13, height: 1.4),
+                      style: const TextStyle(
+                        color: _textMuted,
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
                     ),
                   ],
                 ),
@@ -677,7 +799,9 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                   backgroundColor: _primaryAccent,
                   foregroundColor: const Color(0xFF060D0A),
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: _showRecordPaymentDialog,
                 icon: const Icon(Icons.add_card_rounded, size: 20),

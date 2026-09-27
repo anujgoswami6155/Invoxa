@@ -62,9 +62,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
   void _navigateToAddCustomer() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const AddCustomerScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const AddCustomerScreen()),
     ).then((_) {
       // Reload or refresh query if needed
       if (mounted) {
@@ -348,11 +346,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
           ),
           if (copyable)
             IconButton(
-              icon: const Icon(
-                Icons.copy_rounded,
-                size: 16,
-                color: _textMuted,
-              ),
+              icon: const Icon(Icons.copy_rounded, size: 16, color: _textMuted),
               tooltip: 'Copy to clipboard',
               visualDensity: VisualDensity.compact,
               onPressed: () {
@@ -391,11 +385,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
           ),
           title: Row(
             children: const [
-              Icon(
-                Icons.warning_amber_rounded,
-                color: _danger,
-                size: 22,
-              ),
+              Icon(Icons.warning_amber_rounded, color: _danger, size: 22),
               SizedBox(width: 10),
               Text(
                 'Delete Customer',
@@ -496,8 +486,18 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
@@ -515,11 +515,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 gradient: RadialGradient(
                   center: const Alignment(0.0, -0.35),
                   radius: 1.0,
-                  colors: const [
-                    Color(0x3800D07E),
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
+                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: const [0.0, 0.45, 1.0],
                 ),
               ),
@@ -556,9 +552,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                           const SizedBox(height: 16),
 
                           // Main Content (List / Loading / Error / Empty)
-                          Expanded(
-                            child: _buildContent(customerProvider),
-                          ),
+                          Expanded(child: _buildContent(customerProvider)),
                         ],
                       ),
                     ),
@@ -577,10 +571,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         icon: const Icon(Icons.person_add_alt_1_rounded, size: 20),
         label: const Text(
           'Add Customer',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-          ),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ),
     );
@@ -617,17 +608,11 @@ class _CustomersScreenState extends State<CustomersScreen> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 4,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
             color: const Color(0xFF0E2419),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: const Color(0xFF18422E),
-              width: 1,
-            ),
+            border: Border.all(color: const Color(0xFF18422E), width: 1),
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
@@ -683,9 +668,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                     decoration: BoxDecoration(
                       color: const Color(0xFF0E2419),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: const Color(0xFF18422E),
-                      ),
+                      border: Border.all(color: const Color(0xFF18422E)),
                     ),
                     child: Text(
                       '$count',
@@ -701,10 +684,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               const SizedBox(height: 4),
               const Text(
                 'Manage customer profiles, billing addresses, and contact info',
-                style: TextStyle(
-                  color: _textMuted,
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: _textMuted, fontSize: 13),
               ),
             ],
           ),
@@ -745,10 +725,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         },
         decoration: InputDecoration(
           hintText: 'Search customers by name, email, phone, or address...',
-          hintStyle: const TextStyle(
-            color: Color(0xFF43584E),
-            fontSize: 13,
-          ),
+          hintStyle: const TextStyle(color: Color(0xFF43584E), fontSize: 13),
           prefixIcon: const Icon(
             Icons.search_rounded,
             color: _primaryAccentLight,
@@ -831,16 +808,11 @@ class _CustomersScreenState extends State<CustomersScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF0E2419),
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFF18422E),
-                  width: 1,
-                ),
+                border: Border.all(color: const Color(0xFF18422E), width: 1),
               ),
               alignment: Alignment.center,
               child: Text(
-                customer.name.isNotEmpty
-                    ? customer.name[0].toUpperCase()
-                    : '?',
+                customer.name.isNotEmpty ? customer.name[0].toUpperCase() : '?',
                 style: const TextStyle(
                   color: _primaryAccentLight,
                   fontSize: 18,
@@ -891,10 +863,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
                             '•',
-                            style: TextStyle(
-                              color: _textSubtle,
-                              fontSize: 12,
-                            ),
+                            style: TextStyle(color: _textSubtle, fontSize: 12),
                           ),
                         ),
                       if (customer.phone.isNotEmpty) ...[
@@ -976,9 +945,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF0E2419),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: const Color(0xFF18422E),
-                ),
+                border: Border.all(color: const Color(0xFF18422E)),
               ),
               child: const Icon(
                 Icons.people_outline_rounded,
@@ -999,11 +966,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             const Text(
               'Add your first customer to generate invoices and build ledgers.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: _textMuted,
-                fontSize: 13,
-                height: 1.4,
-              ),
+              style: TextStyle(color: _textMuted, fontSize: 13, height: 1.4),
             ),
             const SizedBox(height: 22),
             ElevatedButton.icon(
@@ -1011,10 +974,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               icon: const Icon(Icons.person_add_alt_1_rounded, size: 18),
               label: const Text(
                 'Add Customer',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
@@ -1046,11 +1006,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.search_off_rounded,
-              size: 44,
-              color: _textSubtle,
-            ),
+            const Icon(Icons.search_off_rounded, size: 44, color: _textSubtle),
             const SizedBox(height: 14),
             Text(
               'No matches for "${customerProvider.searchQuery}"',
@@ -1064,10 +1020,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             const Text(
               'Try searching with a different name, email, or phone number.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: _textMuted,
-                fontSize: 12.5,
-              ),
+              style: TextStyle(color: _textMuted, fontSize: 12.5),
             ),
             const SizedBox(height: 16),
             OutlinedButton(
@@ -1102,11 +1055,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.error_outline_rounded,
-              size: 44,
-              color: _danger,
-            ),
+            const Icon(Icons.error_outline_rounded, size: 44, color: _danger),
             const SizedBox(height: 14),
             const Text(
               'Could not load customers',
@@ -1120,10 +1069,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             Text(
               customerProvider.errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFFFDA4AF),
-                fontSize: 13,
-              ),
+              style: const TextStyle(color: Color(0xFFFDA4AF), fontSize: 13),
             ),
             const SizedBox(height: 18),
             ElevatedButton(

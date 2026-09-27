@@ -85,9 +85,7 @@ class CustomerProvider extends ChangeNotifier {
     try {
       await _customerService.updateCustomer(customer);
 
-      final index = _customers.indexWhere(
-        (item) => item.id == customer.id,
-      );
+      final index = _customers.indexWhere((item) => item.id == customer.id);
 
       if (index != -1) {
         _customers[index] = customer;
@@ -102,22 +100,14 @@ class CustomerProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteCustomer(
-    String userId,
-    String customerId,
-  ) async {
+  Future<bool> deleteCustomer(String userId, String customerId) async {
     _setLoading(true);
     _clearError();
 
     try {
-      await _customerService.deleteCustomer(
-        userId,
-        customerId,
-      );
+      await _customerService.deleteCustomer(userId, customerId);
 
-      _customers.removeWhere(
-        (customer) => customer.id == customerId,
-      );
+      _customers.removeWhere((customer) => customer.id == customerId);
 
       return true;
     } catch (e) {

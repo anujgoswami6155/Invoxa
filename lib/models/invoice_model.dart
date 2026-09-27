@@ -91,7 +91,8 @@ class InvoiceModel {
     this.updatedAt,
   });
 
-  double get balanceDue => (totalAmount - paidAmount).clamp(0.0, double.infinity);
+  double get balanceDue =>
+      (totalAmount - paidAmount).clamp(0.0, double.infinity);
 
   bool get isPaid => paidAmount >= totalAmount && totalAmount > 0;
 
@@ -116,10 +117,7 @@ class InvoiceModel {
     return status;
   }
 
-  factory InvoiceModel.fromMap(
-    Map<String, dynamic> map, [
-    String id = '',
-  ]) {
+  factory InvoiceModel.fromMap(Map<String, dynamic> map, [String id = '']) {
     final rawItems = map['items'];
     final parsedItems = <InvoiceItemModel>[];
     if (rawItems is List) {
@@ -155,7 +153,9 @@ class InvoiceModel {
       status: InvoiceStatus.fromString(map['status'] as String?),
       notes: map['notes'] as String? ?? '',
       createdAt: _parseDateTime(map['createdAt']),
-      updatedAt: map['updatedAt'] != null ? _parseDateTime(map['updatedAt']) : null,
+      updatedAt: map['updatedAt'] != null
+          ? _parseDateTime(map['updatedAt'])
+          : null,
     );
   }
 

@@ -52,16 +52,14 @@ class InvoiceProvider extends ChangeNotifier {
   // ---------------------------------------------------------------------------
   int get totalInvoicesCount => _invoices.length;
 
-  double get totalRevenue => _invoices.fold(
-        0.0,
-        (sum, inv) => sum + inv.paidAmount,
-      );
+  double get totalRevenue =>
+      _invoices.fold(0.0, (sum, inv) => sum + inv.paidAmount);
 
   double get totalOutstanding => _invoices.fold(
-        0.0,
-        (sum, inv) =>
-            inv.status != InvoiceStatus.cancelled ? sum + inv.balanceDue : sum,
-      );
+    0.0,
+    (sum, inv) =>
+        inv.status != InvoiceStatus.cancelled ? sum + inv.balanceDue : sum,
+  );
 
   int get pendingInvoicesCount => _invoices
       .where(
@@ -103,21 +101,19 @@ class InvoiceProvider extends ChangeNotifier {
   String get draftNotes => _draftNotes;
 
   // Real-time calculation getters
-  double get draftSubtotal => _draftItems.fold(
-        0.0,
-        (sum, item) => sum + item.totalPrice,
-      );
+  double get draftSubtotal =>
+      _draftItems.fold(0.0, (sum, item) => sum + item.totalPrice);
 
   double get draftTaxAmount => draftSubtotal * (_draftTaxRate / 100);
 
   double get draftTotalAmount =>
-      (draftSubtotal + draftTaxAmount - _draftDiscountAmount)
-          .clamp(0.0, double.infinity);
+      (draftSubtotal + draftTaxAmount - _draftDiscountAmount).clamp(
+        0.0,
+        double.infinity,
+      );
 
   bool get isDraftValid =>
-      _draftCustomer != null &&
-      _draftItems.isNotEmpty &&
-      draftTotalAmount >= 0;
+      _draftCustomer != null && _draftItems.isNotEmpty && draftTotalAmount >= 0;
 
   // ---------------------------------------------------------------------------
   // Draft Builder Mutations
@@ -388,10 +384,7 @@ class InvoiceProvider extends ChangeNotifier {
     _clearError();
 
     try {
-      await _invoiceService.deleteInvoice(
-        invoiceId: invoiceId,
-        userId: userId,
-      );
+      await _invoiceService.deleteInvoice(invoiceId: invoiceId, userId: userId);
 
       _invoices.removeWhere((item) => item.id == invoiceId);
       return true;

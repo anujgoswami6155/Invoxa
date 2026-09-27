@@ -70,8 +70,18 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
   }
@@ -153,7 +163,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                 ),
                 const SizedBox(width: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF0E2419),
                     borderRadius: BorderRadius.circular(12),
@@ -198,7 +211,8 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                       Expanded(
                         child: _buildMiniKpi(
                           label: 'Revenue',
-                          value: '₹ ${provider.totalRevenue.toStringAsFixed(0)}',
+                          value:
+                              '₹ ${provider.totalRevenue.toStringAsFixed(0)}',
                           icon: Icons.payments_outlined,
                           accentColor: _primaryAccentLight,
                         ),
@@ -207,7 +221,8 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                       Expanded(
                         child: _buildMiniKpi(
                           label: 'Outstanding',
-                          value: '₹ ${provider.totalOutstanding.toStringAsFixed(0)}',
+                          value:
+                              '₹ ${provider.totalOutstanding.toStringAsFixed(0)}',
                           icon: Icons.hourglass_top_rounded,
                           accentColor: _warning,
                         ),
@@ -232,11 +247,22 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                     style: const TextStyle(color: Colors.white, fontSize: 14),
                     decoration: InputDecoration(
                       hintText: 'Search by invoice # or customer...',
-                      hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
-                      prefixIcon: const Icon(Icons.search_rounded, color: _textMuted, size: 20),
+                      hintStyle: const TextStyle(
+                        color: _textSubtle,
+                        fontSize: 13,
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
+                        color: _textMuted,
+                        size: 20,
+                      ),
                       suffixIcon: _searchController.text.isNotEmpty
                           ? IconButton(
-                              icon: const Icon(Icons.clear_rounded, color: _textSubtle, size: 18),
+                              icon: const Icon(
+                                Icons.clear_rounded,
+                                color: _textSubtle,
+                                size: 18,
+                              ),
                               onPressed: () {
                                 _searchController.clear();
                                 provider.clearSearch();
@@ -245,7 +271,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                           : null,
                       filled: true,
                       fillColor: _cardBg,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(color: _cardBorder),
@@ -277,32 +306,48 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                         const SizedBox(width: 8),
                         _buildFilterChip(
                           label: 'Pending',
-                          isSelected: provider.selectedStatusFilter == InvoiceStatus.pending,
-                          onSelected: () => provider.setStatusFilter(InvoiceStatus.pending),
+                          isSelected:
+                              provider.selectedStatusFilter ==
+                              InvoiceStatus.pending,
+                          onSelected: () =>
+                              provider.setStatusFilter(InvoiceStatus.pending),
                         ),
                         const SizedBox(width: 8),
                         _buildFilterChip(
                           label: 'Paid',
-                          isSelected: provider.selectedStatusFilter == InvoiceStatus.paid,
-                          onSelected: () => provider.setStatusFilter(InvoiceStatus.paid),
+                          isSelected:
+                              provider.selectedStatusFilter ==
+                              InvoiceStatus.paid,
+                          onSelected: () =>
+                              provider.setStatusFilter(InvoiceStatus.paid),
                         ),
                         const SizedBox(width: 8),
                         _buildFilterChip(
                           label: 'Partially Paid',
-                          isSelected: provider.selectedStatusFilter == InvoiceStatus.partiallyPaid,
-                          onSelected: () => provider.setStatusFilter(InvoiceStatus.partiallyPaid),
+                          isSelected:
+                              provider.selectedStatusFilter ==
+                              InvoiceStatus.partiallyPaid,
+                          onSelected: () => provider.setStatusFilter(
+                            InvoiceStatus.partiallyPaid,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         _buildFilterChip(
                           label: 'Overdue',
-                          isSelected: provider.selectedStatusFilter == InvoiceStatus.overdue,
-                          onSelected: () => provider.setStatusFilter(InvoiceStatus.overdue),
+                          isSelected:
+                              provider.selectedStatusFilter ==
+                              InvoiceStatus.overdue,
+                          onSelected: () =>
+                              provider.setStatusFilter(InvoiceStatus.overdue),
                         ),
                         const SizedBox(width: 8),
                         _buildFilterChip(
                           label: 'Draft',
-                          isSelected: provider.selectedStatusFilter == InvoiceStatus.draft,
-                          onSelected: () => provider.setStatusFilter(InvoiceStatus.draft),
+                          isSelected:
+                              provider.selectedStatusFilter ==
+                              InvoiceStatus.draft,
+                          onSelected: () =>
+                              provider.setStatusFilter(InvoiceStatus.draft),
                         ),
                       ],
                     ),
@@ -320,7 +365,10 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                     )
                   else if (invoices.isEmpty)
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 48,
+                        horizontal: 20,
+                      ),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: _cardBg,
@@ -336,7 +384,9 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                             decoration: BoxDecoration(
                               color: const Color(0xFF0E2419),
                               shape: BoxShape.circle,
-                              border: Border.all(color: const Color(0xFF18422E)),
+                              border: Border.all(
+                                color: const Color(0xFF18422E),
+                              ),
                             ),
                             child: const Icon(
                               Icons.receipt_long_outlined,
@@ -355,19 +405,28 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            provider.searchQuery.isNotEmpty || provider.selectedStatusFilter != null
+                            provider.searchQuery.isNotEmpty ||
+                                    provider.selectedStatusFilter != null
                                 ? 'Try changing your search or filter query'
                                 : 'Create your first invoice to start billing clients',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(color: _textMuted, fontSize: 13),
+                            style: const TextStyle(
+                              color: _textMuted,
+                              fontSize: 13,
+                            ),
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: _primaryAccent,
                               foregroundColor: const Color(0xFF060D0A),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 12,
+                              ),
                             ),
                             onPressed: _navigateToCreateInvoice,
                             icon: const Icon(Icons.add_rounded, size: 18),
@@ -397,13 +456,17 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                             decoration: BoxDecoration(
                               color: _cardBg,
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: _cardBorder, width: 1.2),
+                              border: Border.all(
+                                color: _cardBorder,
+                                width: 1.2,
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       invoice.invoiceNumber,
@@ -415,11 +478,16 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                       ),
                                     ),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 3,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: _statusBgColor(status),
                                         borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: _statusBorderColor(status)),
+                                        border: Border.all(
+                                          color: _statusBorderColor(status),
+                                        ),
                                       ),
                                       child: Text(
                                         status.displayName,
@@ -445,26 +513,34 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                 const Divider(color: _cardBorder, height: 1),
                                 const SizedBox(height: 12),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Due ${_formatDate(invoice.dueDate)}',
                                           style: TextStyle(
-                                            color: invoice.isOverdue ? _danger : _textSubtle,
+                                            color: invoice.isOverdue
+                                                ? _danger
+                                                : _textSubtle,
                                             fontSize: 12,
                                           ),
                                         ),
                                         Text(
                                           '${invoice.items.length} ${invoice.items.length == 1 ? 'item' : 'items'}',
-                                          style: const TextStyle(color: _textSubtle, fontSize: 11),
+                                          style: const TextStyle(
+                                            color: _textSubtle,
+                                            fontSize: 11,
+                                          ),
                                         ),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Text(
                                           '₹ ${invoice.totalAmount.toStringAsFixed(2)}',
@@ -474,10 +550,15 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        if (invoice.balanceDue > 0 && invoice.balanceDue < invoice.totalAmount)
+                                        if (invoice.balanceDue > 0 &&
+                                            invoice.balanceDue <
+                                                invoice.totalAmount)
                                           Text(
                                             'Bal: ₹ ${invoice.balanceDue.toStringAsFixed(2)}',
-                                            style: const TextStyle(color: _warning, fontSize: 11),
+                                            style: const TextStyle(
+                                              color: _warning,
+                                              fontSize: 11,
+                                            ),
                                           ),
                                       ],
                                     ),
@@ -570,9 +651,7 @@ class _InvoicesScreenState extends State<InvoicesScreen> {
         decoration: BoxDecoration(
           color: isSelected ? _primaryAccent : _cardBg,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? _primaryAccent : _cardBorder,
-          ),
+          border: Border.all(color: isSelected ? _primaryAccent : _cardBorder),
         ),
         child: Text(
           label,

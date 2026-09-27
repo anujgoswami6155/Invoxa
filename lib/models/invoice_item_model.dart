@@ -39,7 +39,8 @@ class InvoiceItemModel {
   factory InvoiceItemModel.fromMap(Map<String, dynamic> map) {
     final quantity = (map['quantity'] as num?)?.toDouble() ?? 1.0;
     final unitPrice = (map['unitPrice'] as num?)?.toDouble() ?? 0.0;
-    final totalPrice = (map['totalPrice'] as num?)?.toDouble() ?? (quantity * unitPrice);
+    final totalPrice =
+        (map['totalPrice'] as num?)?.toDouble() ?? (quantity * unitPrice);
 
     return InvoiceItemModel(
       id: map['id'] as String? ?? '',
