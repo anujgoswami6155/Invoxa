@@ -44,6 +44,55 @@ enum InvoiceStatus {
   }
 }
 
+class InvoicePaymentModel {
+  final String id;
+  final double amount;
+  final DateTime date;
+  final String paymentMethod;
+  final String notes;
+
+  const InvoicePaymentModel({
+    required this.id,
+    required this.amount,
+    required this.date,
+    this.paymentMethod = 'Bank Transfer',
+    this.notes = '',
+  });
+
+  factory InvoicePaymentModel.fromMap(Map<String, dynamic> map) {
+    return InvoicePaymentModel(
+      id: map['id'] as String? ?? '',
+      amount: (map['amount'] as num?)?.toDouble() ?? 0.0,
+      date: _parsePaymentDate(map['date']),
+      paymentMethod: map['paymentMethod'] as String? ?? 'Bank Transfer',
+      notes: map['notes'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'amount': amount,
+      'date': Timestamp.fromDate(date),
+      'paymentMethod': paymentMethod,
+      'notes': notes,
+    };
+  }
+
+  static DateTime _parsePaymentDate(dynamic value) {
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+    if (value is DateTime) {
+      return value;
+    }
+    if (value is String) {
+      return DateTime.tryParse(value) ?? DateTime.now();
+    }
+    return DateTime.now();
+  }
+}
+
 class InvoiceModel {
   final String id;
   final String userId;
@@ -64,6 +113,7 @@ class InvoiceModel {
   final double paidAmount;
   final InvoiceStatus status;
   final String notes;
+  final List<InvoicePaymentModel> payments;
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -87,6 +137,7 @@ class InvoiceModel {
     this.paidAmount = 0.0,
     this.status = InvoiceStatus.draft,
     this.notes = '',
+    this.payments = const [],
     required this.createdAt,
     this.updatedAt,
   });
@@ -117,6 +168,24 @@ class InvoiceModel {
     return status;
   }
 
+  List<InvoicePaymentModel> get effectivePayments {
+    if (payments.isNotEmpty) return payments;
+    if (paidAmount > 0) {
+      return [
+        InvoicePaymentModel(
+          id: 'initial_payment',
+          amount: paidAmount,
+          date: updatedAt ?? issueDate,
+          paymentMethod: 'Bank Transfer',
+          notes: status == InvoiceStatus.paid
+              ? 'Full Payment'
+              : 'Advance IMPS transfer',
+        ),
+      ];
+    }
+    return const [];
+  }
+
   factory InvoiceModel.fromMap(Map<String, dynamic> map, [String id = '']) {
     final rawItems = map['items'];
     final parsedItems = <InvoiceItemModel>[];
@@ -127,6 +196,20 @@ class InvoiceModel {
         } else if (item is Map) {
           parsedItems.add(
             InvoiceItemModel.fromMap(Map<String, dynamic>.from(item)),
+          );
+        }
+      }
+    }
+
+    final rawPayments = map['payments'];
+    final parsedPayments = <InvoicePaymentModel>[];
+    if (rawPayments is List) {
+      for (final p in rawPayments) {
+        if (p is Map<String, dynamic>) {
+          parsedPayments.add(InvoicePaymentModel.fromMap(p));
+        } else if (p is Map) {
+          parsedPayments.add(
+            InvoicePaymentModel.fromMap(Map<String, dynamic>.from(p)),
           );
         }
       }
@@ -152,6 +235,7 @@ class InvoiceModel {
       paidAmount: (map['paidAmount'] as num?)?.toDouble() ?? 0.0,
       status: InvoiceStatus.fromString(map['status'] as String?),
       notes: map['notes'] as String? ?? '',
+      payments: parsedPayments,
       createdAt: _parseDateTime(map['createdAt']),
       updatedAt: map['updatedAt'] != null
           ? _parseDateTime(map['updatedAt'])
@@ -180,6 +264,7 @@ class InvoiceModel {
       'paidAmount': paidAmount,
       'status': status.name,
       'notes': notes,
+      'payments': payments.map((p) => p.toMap()).toList(),
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
@@ -205,6 +290,7 @@ class InvoiceModel {
     double? paidAmount,
     InvoiceStatus? status,
     String? notes,
+    List<InvoicePaymentModel>? payments,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -228,6 +314,7 @@ class InvoiceModel {
       paidAmount: paidAmount ?? this.paidAmount,
       status: status ?? this.status,
       notes: notes ?? this.notes,
+      payments: payments ?? this.payments,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

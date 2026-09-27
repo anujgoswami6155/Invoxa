@@ -352,6 +352,8 @@ class InvoiceProvider extends ChangeNotifier {
     required String invoiceId,
     required String userId,
     required double paymentAmount,
+    String paymentMethod = 'Bank Transfer',
+    String notes = '',
   }) async {
     _setLoading(true);
     _clearError();
@@ -361,6 +363,8 @@ class InvoiceProvider extends ChangeNotifier {
         invoiceId: invoiceId,
         userId: userId,
         paymentAmount: paymentAmount,
+        paymentMethod: paymentMethod,
+        notes: notes,
       );
 
       final index = _invoices.indexWhere((item) => item.id == invoiceId);
@@ -369,7 +373,11 @@ class InvoiceProvider extends ChangeNotifier {
       }
       return true;
     } catch (e) {
-      _errorMessage = 'Could not record payment. Please try again.';
+      if (e is ArgumentError) {
+        _errorMessage = e.message?.toString() ?? 'Invalid payment amount.';
+      } else {
+        _errorMessage = 'Could not record payment. Please try again.';
+      }
       return false;
     } finally {
       _setLoading(false);
