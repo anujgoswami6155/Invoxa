@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
+import 'providers/customer_provider.dart';
 import 'providers/product_provider.dart';
 import 'screens/auth/auth_gate.dart';
 
@@ -11,7 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Object? initError;
-
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -75,7 +75,6 @@ void main() async {
         ),
       ),
     );
-
     return;
   }
 
@@ -83,6 +82,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CustomerProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: const InvoxaApp(),
@@ -99,7 +99,13 @@ class InvoxaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Invoxa',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF060D0A),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF00D07E),
+          brightness: Brightness.dark,
+          surface: const Color(0xFF0B1612),
+        ),
         useMaterial3: true,
       ),
       home: const AuthGate(),
