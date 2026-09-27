@@ -172,10 +172,29 @@ class InvoiceService {
       throw Exception('Invoice not found or unauthorized.');
     }
 
-    await _invoicesCollection.doc(invoiceId).update({
+    final updateData = <String, dynamic>{
       'status': status.name,
       'updatedAt': Timestamp.now(),
-    });
+    };
+
+    if (status == InvoiceStatus.paid && invoice.paidAmount < invoice.totalAmount) {
+      updateData['paidAmount'] = invoice.totalAmount;
+      final remaining = invoice.totalAmount - invoice.paidAmount;
+      if (remaining > 0) {
+        final payment = InvoicePaymentModel(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          amount: remaining,
+          date: DateTime.now(),
+          paymentMethod: 'Manual Settlement',
+          notes: 'Marked as paid',
+        );
+        final updatedPayments = List<InvoicePaymentModel>.from(invoice.payments)
+          ..add(payment);
+        updateData['payments'] = updatedPayments.map((p) => p.toMap()).toList();
+      }
+    }
+
+    await _invoicesCollection.doc(invoiceId).update(updateData);
 
     debugPrint(
       '[InvoiceService] Updated invoice $invoiceId status to ${status.name}',
@@ -183,30 +202,74 @@ class InvoiceService {
   }
 
   /// Records payment amount against an invoice and updates balance & status.
+  /// Enforces validation: rejects overpayments and zero/negative amounts.
   Future<InvoiceModel> recordPayment({
     required String invoiceId,
     required String userId,
     required double paymentAmount,
+    String paymentMethod = 'Bank Transfer',
+    String notes = '',
   }) async {
     final invoice = await getInvoice(invoiceId: invoiceId, userId: userId);
     if (invoice == null) {
       throw Exception('Invoice not found or unauthorized.');
     }
 
-    final newPaidAmount = invoice.paidAmount + paymentAmount;
-    final newStatus = newPaidAmount >= invoice.totalAmount
+    if (paymentAmount <= 0) {
+      throw ArgumentError('Payment amount must be greater than zero.');
+    }
+
+    final balanceDue = invoice.balanceDue;
+    if (paymentAmount > balanceDue + 0.001) {
+      throw ArgumentError(
+        'Payment amount cannot exceed the pending balance of ₹${balanceDue.toStringAsFixed(2)}.',
+      );
+    }
+
+    final newPaidAmount = (invoice.paidAmount + paymentAmount).clamp(
+      0.0,
+      invoice.totalAmount,
+    );
+
+    final newStatus = (invoice.totalAmount - newPaidAmount) <= 0.001
         ? InvoiceStatus.paid
         : InvoiceStatus.partiallyPaid;
+
+    final newPayment = InvoicePaymentModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      amount: paymentAmount,
+      date: DateTime.now(),
+      paymentMethod: paymentMethod.trim().isNotEmpty
+          ? paymentMethod.trim()
+          : 'Bank Transfer',
+      notes: notes.trim().isNotEmpty ? notes.trim() : 'Payment received',
+    );
+
+    final currentPayments = List<InvoicePaymentModel>.from(invoice.payments);
+    if (currentPayments.isEmpty && invoice.paidAmount > 0) {
+      currentPayments.add(
+        InvoicePaymentModel(
+          id: 'prev_${invoice.id}',
+          amount: invoice.paidAmount,
+          date: invoice.issueDate,
+          paymentMethod: 'Bank Transfer',
+          notes: 'Advance IMPS transfer',
+        ),
+      );
+    }
+    currentPayments.add(newPayment);
 
     final updatedInvoice = invoice.copyWith(
       paidAmount: newPaidAmount,
       status: newStatus,
+      payments: currentPayments,
       updatedAt: DateTime.now(),
     );
 
     await _invoicesCollection.doc(invoiceId).update({
       'paidAmount': newPaidAmount,
       'status': newStatus.name,
+      'payments': currentPayments.map((p) => p.toMap()).toList(),
       'updatedAt': Timestamp.now(),
     });
 
