@@ -23,24 +23,27 @@ class CustomerService {
       createdAt: customer.createdAt ?? DateTime.now(),
     );
 
-    debugPrint('[CustomerService] Writing customer to root collection: ${document.path}');
+    debugPrint(
+      '[CustomerService] Writing customer to root collection: ${document.path}',
+    );
     await document.set(customerWithId.toMap());
-    debugPrint('[CustomerService] Successfully written to Firestore: ${document.path}');
+    debugPrint(
+      '[CustomerService] Successfully written to Firestore: ${document.path}',
+    );
 
     return customerWithId;
   }
 
   Future<List<CustomerModel>> getCustomers(String userId) async {
-    debugPrint('[CustomerService] Fetching customers from root collection: customers where userId == $userId');
+    debugPrint(
+      '[CustomerService] Fetching customers from root collection: customers where userId == $userId',
+    );
     final snapshot = await _customersCollection
         .where('userId', isEqualTo: userId)
         .get();
 
     final customers = snapshot.docs.map((document) {
-      return CustomerModel.fromMap(
-        document.id,
-        document.data(),
-      );
+      return CustomerModel.fromMap(document.id, document.data());
     }).toList();
 
     // Sort descending by creation date in memory (avoids requiring a manual composite index)
@@ -51,40 +54,27 @@ class CustomerService {
       return b.createdAt!.compareTo(a.createdAt!);
     });
 
-    debugPrint('[CustomerService] Loaded ${customers.length} customers from Firestore.');
+    debugPrint(
+      '[CustomerService] Loaded ${customers.length} customers from Firestore.',
+    );
     return customers;
   }
 
-  Future<CustomerModel?> getCustomer(
-    String userId,
-    String customerId,
-  ) async {
+  Future<CustomerModel?> getCustomer(String userId, String customerId) async {
     final document = await _customersCollection.doc(customerId).get();
 
     if (!document.exists || document.data() == null) {
       return null;
     }
 
-    return CustomerModel.fromMap(
-      document.id,
-      document.data()!,
-    );
+    return CustomerModel.fromMap(document.id, document.data()!);
   }
 
-  Future<void> updateCustomer(
-    CustomerModel customer,
-  ) async {
-    await _customersCollection
-        .doc(customer.id)
-        .update(customer.toMap());
+  Future<void> updateCustomer(CustomerModel customer) async {
+    await _customersCollection.doc(customer.id).update(customer.toMap());
   }
 
-  Future<void> deleteCustomer(
-    String userId,
-    String customerId,
-  ) async {
-    await _customersCollection
-        .doc(customerId)
-        .delete();
+  Future<void> deleteCustomer(String userId, String customerId) async {
+    await _customersCollection.doc(customerId).delete();
   }
 }
