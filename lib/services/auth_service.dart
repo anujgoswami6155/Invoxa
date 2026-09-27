@@ -38,9 +38,7 @@ class AuthService {
 
   // Send password reset email
   Future<void> resetPassword(String email) async {
-    await _auth.sendPasswordResetEmail(
-      email: email,
-    );
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
   // Send email verification
@@ -53,26 +51,26 @@ class AuthService {
   }
 
   Future<bool> checkEmailVerification() async {
-  final user = _auth.currentUser;
+    final user = _auth.currentUser;
 
-  if (user == null) {
-    return false;
+    if (user == null) {
+      return false;
+    }
+
+    await user.reload();
+
+    return _auth.currentUser?.emailVerified ?? false;
   }
 
-  await user.reload();
+  Future<User?> reloadCurrentUser() async {
+    final user = _auth.currentUser;
 
-  return _auth.currentUser?.emailVerified ?? false;
-}
+    if (user == null) {
+      return null;
+    }
 
-Future<User?> reloadCurrentUser() async {
-  final user = _auth.currentUser;
+    await user.reload();
 
-  if (user == null) {
-    return null;
+    return _auth.currentUser;
   }
-
-  await user.reload();
-
-  return _auth.currentUser;
-}
 }

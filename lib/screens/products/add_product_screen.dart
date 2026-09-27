@@ -97,10 +97,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        _buildSnackBar(
-          message: 'Product added successfully.',
-          isError: false,
-        ),
+        _buildSnackBar(message: 'Product added successfully.', isError: false),
       );
 
       Navigator.of(context).pop(true);
@@ -220,11 +217,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 gradient: RadialGradient(
                   center: Alignment(0.0, -0.3),
                   radius: 0.95,
-                  colors: [
-                    Color(0x3800D07E),
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
+                  colors: [Color(0x3800D07E), Color(0x2805291C), _bgDark],
                   stops: [0.0, 0.45, 1.0],
                 ),
               ),
