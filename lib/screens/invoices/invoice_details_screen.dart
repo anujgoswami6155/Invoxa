@@ -6,6 +6,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/customer_provider.dart';
 import '../../providers/invoice_provider.dart';
 import '../../providers/product_provider.dart';
+import '../../services/invoice_pdf_service.dart';
 import '../customers/customers_screen.dart';
 import '../products/products_screen.dart';
 import 'create_invoice_screen.dart';
@@ -611,6 +612,64 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     );
   }
 
+  Future<void> _handlePrintOrDownloadPdf({bool downloadDirectly = false}) async {
+    final authUser = context.read<AuthProvider>().user;
+    final businessName = (authUser?.name.trim().isNotEmpty ?? false)
+        ? (authUser!.name.toLowerCase().contains('enterprises') ||
+                authUser.name.toLowerCase().contains('solutions')
+            ? authUser.name
+            : '${authUser.name} Enterprises & Solutions')
+        : 'Rahul Enterprises & Solutions';
+    const businessAddress =
+        'Suite 402, Trade Tower, MG Road, Bengaluru, Karnataka 560001';
+    final businessEmail = (authUser?.email.trim().isNotEmpty ?? false)
+        ? authUser!.email
+        : 'rahul@invoxa.app';
+    const businessPhone = '+919876543210';
+
+    try {
+      final String? result;
+      if (downloadDirectly) {
+        result = await InvoicePdfService.downloadOrSharePdf(
+          invoice: _currentInvoice,
+          businessName: businessName,
+          businessAddress: businessAddress,
+          businessEmail: businessEmail,
+          businessPhone: businessPhone,
+        );
+      } else {
+        result = await InvoicePdfService.printPdf(
+          invoice: _currentInvoice,
+          businessName: businessName,
+          businessAddress: businessAddress,
+          businessEmail: businessEmail,
+          businessPhone: businessPhone,
+        );
+      }
+
+      if (mounted && result != null && result.isNotEmpty && result != 'Printed') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: const Color(0xFF064E3B),
+            content: Text(
+              'PDF successfully saved: $result',
+              style: const TextStyle(color: Color(0xFFA7F3D0)),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: _danger,
+            content: Text('Failed to generate PDF: $e'),
+          ),
+        );
+      }
+    }
+  }
+
   void _showShareDialog() {
     showModalBottomSheet(
       context: context,
@@ -618,7 +677,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) {
+      builder: (bottomSheetContext) {
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -639,7 +698,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.close_rounded, color: _textMuted),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(bottomSheetContext),
                     ),
                   ],
                 ),
@@ -651,7 +710,29 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       color: _emeraldLightBg,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.copy_rounded, color: _emeraldPrimary),
+                    child: const Icon(Icons.download_rounded, color: _emeraldPrimary),
+                  ),
+                  title: const Text(
+                    'Download PDF Invoice',
+                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                  ),
+                  subtitle: Text(
+                    'Save ${_currentInvoice.invoiceNumber}.pdf to device',
+                    style: const TextStyle(color: _textMuted, fontSize: 12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(bottomSheetContext);
+                    _handlePrintOrDownloadPdf(downloadDirectly: true);
+                  },
+                ),
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.copy_rounded, color: _textDark),
                   ),
                   title: const Text(
                     'Copy Invoice Summary',
@@ -662,40 +743,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                     style: TextStyle(color: _textMuted, fontSize: 12),
                   ),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(bottomSheetContext);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Invoice details copied to clipboard!'),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEFF6FF),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(Icons.email_outlined, color: Color(0xFF2563EB)),
-                  ),
-                  title: const Text(
-                    'Send via Email',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
-                  ),
-                  subtitle: Text(
-                    _currentInvoice.customerEmail.isNotEmpty
-                        ? 'To ${_currentInvoice.customerEmail}'
-                        : 'No email specified for customer',
-                    style: const TextStyle(color: _textMuted, fontSize: 12),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Invoice email queued for ${_currentInvoice.customerEmail.isNotEmpty ? _currentInvoice.customerEmail : _currentInvoice.customerName}',
-                        ),
                       ),
                     );
                   },
@@ -709,14 +760,87 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   }
 
   void _showPrintDialog() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color(0xFF1E293B),
-        content: Text(
-          'Invoice ${_currentInvoice.invoiceNumber} prepared for printing / PDF export.',
-          style: const TextStyle(color: Colors.white),
-        ),
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (bottomSheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Export ${_currentInvoice.invoiceNumber}',
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: _textDark,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded, color: _textMuted),
+                      onPressed: () => Navigator.pop(bottomSheetContext),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: _emeraldLightBg,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.download_rounded, color: _emeraldPrimary),
+                  ),
+                  title: const Text(
+                    'Download PDF File',
+                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                  ),
+                  subtitle: Text(
+                    'Directly download ${_currentInvoice.invoiceNumber}.pdf',
+                    style: const TextStyle(color: _textMuted, fontSize: 12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(bottomSheetContext);
+                    _handlePrintOrDownloadPdf(downloadDirectly: true);
+                  },
+                ),
+                ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEFF6FF),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.print_rounded, color: Color(0xFF2563EB)),
+                  ),
+                  title: const Text(
+                    'Print / PDF Preview',
+                    style: TextStyle(fontWeight: FontWeight.w600, color: _textDark),
+                  ),
+                  subtitle: const Text(
+                    'Open print dialog and preview',
+                    style: TextStyle(color: _textMuted, fontSize: 12),
+                  ),
+                  onTap: () {
+                    Navigator.pop(bottomSheetContext);
+                    _handlePrintOrDownloadPdf(downloadDirectly: false);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
