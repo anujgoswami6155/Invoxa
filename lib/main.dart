@@ -27,9 +27,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
         title: 'Invoxa',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
         home: Scaffold(
@@ -37,9 +35,7 @@ void main() async {
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 500,
-                ),
+                constraints: const BoxConstraints(maxWidth: 500),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -69,10 +65,7 @@ void main() async {
                     const Text(
                       'Tip: If you are running on Windows, Firebase is currently configured for Web and Android. Run on Chrome or Edge (e.g. flutter run -d chrome).',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.blueGrey,
-                      ),
+                      style: TextStyle(fontSize: 13, color: Colors.blueGrey),
                     ),
                   ],
                 ),
@@ -89,12 +82,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ProductProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: const InvoxaApp(),
     ),
@@ -110,9 +99,7 @@ class InvoxaApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Invoxa',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const AuthGate(),

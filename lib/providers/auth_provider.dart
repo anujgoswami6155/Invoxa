@@ -92,10 +92,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<bool> login({required String email, required String password}) async {
     _setLoading(true);
     _clearError();
 
@@ -108,13 +105,10 @@ class AuthProvider extends ChangeNotifier {
       _firebaseUser = credential.user;
 
       if (_firebaseUser != null) {
-        _user = await _userService.getUser(
-          _firebaseUser!.uid,
-        );
+        _user = await _userService.getUser(_firebaseUser!.uid);
 
         if (_user == null) {
-          _errorMessage =
-              'User profile not found. Please contact support.';
+          _errorMessage = 'User profile not found. Please contact support.';
           return false;
         }
       }
@@ -196,9 +190,7 @@ class AuthProvider extends ChangeNotifier {
         _firebaseUser = _authService.currentUser;
 
         if (_firebaseUser != null) {
-          _user = await _userService.getUser(
-            _firebaseUser!.uid,
-          );
+          _user = await _userService.getUser(_firebaseUser!.uid);
         }
 
         notifyListeners();

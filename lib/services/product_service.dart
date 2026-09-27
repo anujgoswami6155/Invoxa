@@ -11,12 +11,14 @@ class ProductService {
   Future<List<ProductModel>> getProducts(String userId) async {
     final snapshot = await _productsCollection
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
         .get();
 
-    return snapshot.docs
+    final products = snapshot.docs
         .map((doc) => ProductModel.fromMap({...doc.data(), 'id': doc.id}))
         .toList();
+
+    products.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return products;
   }
 
   Future<ProductModel?> getProduct({
@@ -39,6 +41,10 @@ class ProductService {
   }
 
   Future<String> createProduct(ProductModel product) async {
+    if (product.userId.isEmpty) {
+      throw ArgumentError('Product userId cannot be empty.');
+    }
+
     final document = _productsCollection.doc();
 
     await document.set(product.copyWith(id: document.id).toMap());
@@ -47,6 +53,10 @@ class ProductService {
   }
 
   Future<void> updateProduct(ProductModel product) async {
+    if (product.id.isEmpty) {
+      throw ArgumentError('Product id cannot be empty for update.');
+    }
+
     await _productsCollection.doc(product.id).update(product.toMap());
   }
 

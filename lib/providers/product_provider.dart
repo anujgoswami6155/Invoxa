@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/product_model.dart';
@@ -20,8 +21,12 @@ class ProductProvider extends ChangeNotifier {
 
     try {
       _products = await _productService.getProducts(userId);
+    } on FirebaseException catch (e) {
+      debugPrint('Fetch products Firebase error: ${e.code} - ${e.message}');
+      _errorMessage = e.message ?? 'Failed to load products (${e.code}).';
     } catch (e) {
-      _errorMessage = 'Failed to load products.';
+      debugPrint('Fetch products error: $e');
+      _errorMessage = 'Failed to load products: $e';
     } finally {
       _setLoading(false);
     }
@@ -34,11 +39,16 @@ class ProductProvider extends ChangeNotifier {
     try {
       final productId = await _productService.createProduct(product);
 
-      _products = [..._products, product.copyWith(id: productId)];
+      _products = [product.copyWith(id: productId), ..._products];
 
       return true;
+    } on FirebaseException catch (e) {
+      debugPrint('Add product Firebase error: ${e.code} - ${e.message}');
+      _errorMessage = e.message ?? 'Failed to add product (${e.code}).';
+      return false;
     } catch (e) {
-      _errorMessage = 'Failed to add product.';
+      debugPrint('Add product error: $e');
+      _errorMessage = 'Failed to add product: $e';
       return false;
     } finally {
       _setLoading(false);
@@ -61,8 +71,13 @@ class ProductProvider extends ChangeNotifier {
       }
 
       return true;
+    } on FirebaseException catch (e) {
+      debugPrint('Update product Firebase error: ${e.code} - ${e.message}');
+      _errorMessage = e.message ?? 'Failed to update product (${e.code}).';
+      return false;
     } catch (e) {
-      _errorMessage = 'Failed to update product.';
+      debugPrint('Update product error: $e');
+      _errorMessage = 'Failed to update product: $e';
       return false;
     } finally {
       _setLoading(false);
@@ -84,8 +99,13 @@ class ProductProvider extends ChangeNotifier {
           .toList();
 
       return true;
+    } on FirebaseException catch (e) {
+      debugPrint('Delete product Firebase error: ${e.code} - ${e.message}');
+      _errorMessage = e.message ?? 'Failed to delete product (${e.code}).';
+      return false;
     } catch (e) {
-      _errorMessage = 'Failed to delete product.';
+      debugPrint('Delete product error: $e');
+      _errorMessage = 'Failed to delete product: $e';
       return false;
     } finally {
       _setLoading(false);
