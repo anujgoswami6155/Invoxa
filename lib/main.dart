@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'providers/customer_provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
@@ -77,11 +78,18 @@ void main() async {
   }
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
-      child: const InvoxaApp(),
-    ),
-  );
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CustomerProvider(),
+      ),
+    ],
+    child: const InvoxaApp(),
+  ),
+);
 }
 
 class InvoxaApp extends StatelessWidget {
