@@ -96,9 +96,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           ? balanceDue.toInt().toString()
           : balanceDue.toStringAsFixed(2),
     );
-    final notesController = TextEditingController(
-      text: 'Advance IMPS transfer',
-    );
+    final notesController = TextEditingController();
     String selectedMethod = 'Bank Transfer';
     String? validationError;
 
@@ -618,17 +616,13 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   }) async {
     final authUser = context.read<AuthProvider>().user;
     final businessName = (authUser?.name.trim().isNotEmpty ?? false)
-        ? (authUser!.name.toLowerCase().contains('enterprises') ||
-                  authUser.name.toLowerCase().contains('solutions')
-              ? authUser.name
-              : '${authUser.name} Enterprises & Solutions')
-        : 'Rahul Enterprises & Solutions';
-    const businessAddress =
-        'Suite 402, Trade Tower, MG Road, Bengaluru, Karnataka 560001';
+        ? authUser!.name.trim()
+        : 'Invoxa Merchant';
+    const businessAddress = '';
     final businessEmail = (authUser?.email.trim().isNotEmpty ?? false)
-        ? authUser!.email
-        : 'rahul@invoxa.app';
-    const businessPhone = '+919876543210';
+        ? authUser!.email.trim()
+        : '';
+    const businessPhone = '';
 
     try {
       final String? result;
@@ -882,19 +876,15 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktop = screenWidth >= 768;
 
-    // Business details from Image 1 / user account
+    // Business details from user account
     final businessName = (authUser?.name.trim().isNotEmpty ?? false)
-        ? (authUser!.name.toLowerCase().contains('enterprises') ||
-                  authUser.name.toLowerCase().contains('solutions')
-              ? authUser.name
-              : '${authUser.name} Enterprises & Solutions')
-        : 'Rahul Enterprises & Solutions';
-    final businessAddress =
-        'Suite 402, Trade Tower, MG Road, Bengaluru, Karnataka 560001';
+        ? authUser!.name.trim()
+        : 'Invoxa Merchant';
+    const businessAddress = '';
     final businessEmail = (authUser?.email.trim().isNotEmpty ?? false)
-        ? authUser!.email
-        : 'rahul@invoxa.app';
-    const businessPhone = '+919876543210';
+        ? authUser!.email.trim()
+        : '';
+    const businessPhone = '';
 
     return Scaffold(
       backgroundColor: _pageBg,
@@ -1273,20 +1263,27 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         height: 1.2,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      businessAddress,
-                      style: const TextStyle(
-                        color: _textMuted,
-                        fontSize: 12,
-                        height: 1.3,
+                    if (businessAddress.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        businessAddress,
+                        style: const TextStyle(
+                          color: _textMuted,
+                          fontSize: 12,
+                          height: 1.3,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '$businessEmail • $businessPhone',
-                      style: const TextStyle(color: _textMuted, fontSize: 12),
-                    ),
+                    ],
+                    if (businessEmail.isNotEmpty || businessPhone.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        [
+                          if (businessEmail.isNotEmpty) businessEmail,
+                          if (businessPhone.isNotEmpty) businessPhone,
+                        ].join(' • '),
+                        style: const TextStyle(color: _textMuted, fontSize: 12),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -1753,7 +1750,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
   Widget _buildNotesSection() {
     final notesText = _currentInvoice.notes.trim().isNotEmpty
         ? _currentInvoice.notes.trim()
-        : 'Initial deposit paid on dispatch. Balance due within 15 days.';
+        : 'No additional payment terms or notes provided.';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

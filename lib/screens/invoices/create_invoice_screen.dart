@@ -1231,6 +1231,8 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                     style: const TextStyle(color: Colors.white, fontSize: 14),
                     decoration: _inputDecoration(
                       label: 'Payment terms or client notes (optional)',
+                      hintText:
+                          'e.g. Net 15 days. Payment via UPI / Bank transfer.',
                       prefixIcon: Icons.edit_note_rounded,
                     ),
                     onChanged: (val) => provider.setDraftNotes(val),
@@ -1353,10 +1355,13 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   InputDecoration _inputDecoration({
     required String label,
     required IconData prefixIcon,
+    String? hintText,
   }) {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: _textSubtle, fontSize: 13),
+      hintText: hintText,
+      hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
       prefixIcon: Icon(prefixIcon, color: _textMuted, size: 18),
       filled: true,
       fillColor: _inputFill,
@@ -1413,6 +1418,7 @@ class _CustomItemFormState extends State<_CustomItemForm> {
   static const Color _inputBorder = Color(0xFF152A1F);
   static const Color _primaryAccent = Color(0xFF00D07E);
   static const Color _textMuted = Color(0xFF98ACA2);
+  static const Color _textSubtle = Color(0xFF5A7568);
 
   @override
   void dispose() {
@@ -1433,6 +1439,8 @@ class _CustomItemFormState extends State<_CustomItemForm> {
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'Item Name or Description *',
+              hintText: 'e.g. Consulting Services / Office Desk',
+              hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
               labelStyle: const TextStyle(color: _textMuted),
               filled: true,
               fillColor: _inputFill,
@@ -1454,6 +1462,9 @@ class _CustomItemFormState extends State<_CustomItemForm> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Quantity *',
+                    hintText: '1',
+                    hintStyle:
+                        const TextStyle(color: _textSubtle, fontSize: 13),
                     labelStyle: const TextStyle(color: _textMuted),
                     filled: true,
                     fillColor: _inputFill,
@@ -1474,6 +1485,9 @@ class _CustomItemFormState extends State<_CustomItemForm> {
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Unit Price (₹) *',
+                    hintText: 'e.g. 2500',
+                    hintStyle:
+                        const TextStyle(color: _textSubtle, fontSize: 13),
                     labelStyle: const TextStyle(color: _textMuted),
                     filled: true,
                     fillColor: _inputFill,

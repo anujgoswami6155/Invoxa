@@ -250,7 +250,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
             _buildField(
               label: 'Customer Name',
-              hint: 'e.g. Rahul Sharma or Tech Corp',
+              hint: 'e.g. Acme Corp / Alex Mercer',
               icon: Icons.person_outline_rounded,
               controller: _nameController,
               validator: (value) {
@@ -265,7 +265,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
             _buildField(
               label: 'Email Address',
-              hint: 'customer@example.com',
+              hint: 'billing@clientcompany.com',
               icon: Icons.mail_outline_rounded,
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
@@ -284,7 +284,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
             _buildField(
               label: 'Phone Number',
-              hint: '+91 98765 43210',
+              hint: '+91 98765 00000',
               icon: Icons.phone_outlined,
               controller: _phoneController,
               keyboardType: TextInputType.phone,
@@ -303,7 +303,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
             _buildField(
               label: 'Billing / Physical Address',
-              hint: 'Street, City, State, ZIP code',
+              hint: 'e.g. 102 Business Park, MG Road, Bengaluru, 560001',
               icon: Icons.location_on_outlined,
               controller: _addressController,
               maxLines: 3,

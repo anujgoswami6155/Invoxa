@@ -352,7 +352,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               textCapitalization: TextCapitalization.words,
               style: const TextStyle(color: Colors.white, fontSize: 14),
               decoration: _buildInputDecoration(
-                hint: 'e.g. Rahul Sharma',
+                hint: 'e.g. Acme Corp / Alex Mercer',
                 prefixIcon: Icons.person_outline_rounded,
               ),
               validator: (value) {

@@ -304,16 +304,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final invoiceProvider = context.watch<InvoiceProvider>();
 
     final user = authProvider.user;
-    final firstName = (user?.name.trim().isNotEmpty ?? false)
-        ? user!.name.trim().split(' ').first
-        : 'Rahul';
+    final userName = user?.name.trim();
+    final firstName = (userName != null && userName.isNotEmpty)
+        ? userName.split(' ').first
+        : 'Business';
 
-    final businessName = (user?.name.trim().isNotEmpty ?? false)
-        ? (user!.name.toUpperCase().contains('ENTERPRISES') ||
-                user.name.toUpperCase().contains('SOLUTIONS')
-            ? user.name.toUpperCase()
-            : '${user.name.toUpperCase()} ENTERPRISES & SOLUTIONS')
-        : 'RAHUL ENTERPRISES & SOLUTIONS';
+    final businessName = (userName != null && userName.isNotEmpty)
+        ? userName.toUpperCase()
+        : 'MY WORKSPACE';
 
     return Scaffold(
       backgroundColor: _bgDark,

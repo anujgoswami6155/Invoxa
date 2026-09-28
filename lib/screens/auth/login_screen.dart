@@ -320,56 +320,6 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          const SizedBox(height: 14),
-
-          // Action Button 3: Explore Demo Pill
-          Center(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(20),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const SignInScreen(
-                      initialEmail: 'demo@invoxa.com',
-                      initialPassword: 'demo123456',
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF091711),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: const Color(0xFF143022), width: 1),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
-                      Icons.auto_awesome_outlined,
-                      size: 13,
-                      color: _primaryAccentLight,
-                    ),
-                    SizedBox(width: 7),
-                    Text(
-                      'Explore Demo (Preloaded with Rahul Enterprises)',
-                      style: TextStyle(
-                        color: _textMuted,
-                        fontSize: 11.5,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
