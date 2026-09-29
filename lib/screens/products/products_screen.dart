@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/product_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/product_provider.dart';
+import '../../theme/app_theme.dart';
 import 'add_product_screen.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -14,19 +15,19 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
-  // Emerald Dark Aesthetic Color Palette
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
-  static const Color _danger = Color(0xFFFB7185);
-  static const Color _dangerBg = Color(0xFF2D141E);
-  static const Color _dangerBorder = Color(0xFF9F1239);
+  // Warm Cream Elegance Palette
+  static const Color _bg = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
+  static const Color _danger = AppColors.danger;
+  static const Color _dangerBg = AppColors.dangerBg;
+  static const Color _dangerBorder = AppColors.dangerBorder;
 
   final TextEditingController _searchController = TextEditingController();
   String _selectedFilter = 'All'; // 'All', 'Physical Good', 'Hourly Service'
@@ -70,143 +71,156 @@ class _ProductsScreenState extends State<ProductsScreen> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (ctx) {
-        return Container(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-          decoration: const BoxDecoration(
-            color: _cardBg,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border(
-              top: BorderSide(color: _cardBorder, width: 1.5),
-              left: BorderSide(color: _cardBorder, width: 1.5),
-              right: BorderSide(color: _cardBorder, width: 1.5),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: Container(
-                  width: 42,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E382B),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+              decoration: const BoxDecoration(
+                color: _cardBg,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                border: Border(
+                  top: BorderSide(color: _cardBorder, width: 1.5),
+                  left: BorderSide(color: _cardBorder, width: 1.5),
+                  right: BorderSide(color: _cardBorder, width: 1.5),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x22113946),
+                    blurRadius: 30,
+                    offset: Offset(0, -6),
+                  ),
+                ],
               ),
-
-              Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0E2419),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF18422E),
-                        width: 1.2,
+                  Center(
+                    child: Container(
+                      width: 42,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.camel,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      product.itemType == 'Physical Good'
-                          ? Icons.inventory_2_rounded
-                          : Icons.design_services_rounded,
-                      color: _primaryAccentLight,
-                      size: 26,
-                    ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+
+                  Row(
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: AppColors.sand,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.camel,
+                            width: 1.2,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0E2419),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0xFF18422E)),
-                          ),
-                          child: Text(
-                            product.itemType.toUpperCase(),
-                            style: const TextStyle(
-                              color: Color(0xFFA7F3D0),
-                              fontSize: 9.5,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 0.8,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          product.itemType == 'Physical Good'
+                              ? Icons.inventory_2_rounded
+                              : Icons.design_services_rounded,
+                          color: _primaryAccent,
+                          size: 26,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                color: _textDark,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.sandLight,
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: AppColors.sandDark),
+                              ),
+                              child: Text(
+                                product.itemType.toUpperCase(),
+                                style: const TextStyle(
+                                  color: _primaryAccent,
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+                  const Divider(color: _cardBorder, height: 1),
+                  const SizedBox(height: 20),
+
+                  _buildDetailTile(
+                    icon: Icons.currency_rupee_rounded,
+                    label: 'Unit Price',
+                    value:
+                        '₹ ${product.unitPrice.toStringAsFixed(2)} per ${product.unitType}',
+                  ),
+
+                  if (product.description.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    _buildDetailTile(
+                      icon: Icons.notes_rounded,
+                      label: 'Description',
+                      value: product.description,
+                    ),
+                  ],
+
+                  const SizedBox(height: 12),
+                  _buildDetailTile(
+                    icon: Icons.straighten_rounded,
+                    label: 'Unit of Measure',
+                    value: product.unitType,
+                  ),
+
+                  const SizedBox(height: 28),
+
+                  SizedBox(
+                    height: 48,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        _confirmDeleteProduct(product);
+                      },
+                      icon: const Icon(Icons.delete_outline_rounded, size: 18),
+                      label: const Text('Delete Product'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: _danger,
+                        backgroundColor: _dangerBg,
+                        side: const BorderSide(color: _dangerBorder),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-
-              const SizedBox(height: 24),
-              const Divider(color: _cardBorder, height: 1),
-              const SizedBox(height: 20),
-
-              _buildDetailTile(
-                icon: Icons.currency_rupee_rounded,
-                label: 'Unit Price',
-                value:
-                    '₹ ${product.unitPrice.toStringAsFixed(2)} per ${product.unitType}',
-              ),
-
-              if (product.description.isNotEmpty) ...[
-                const SizedBox(height: 12),
-                _buildDetailTile(
-                  icon: Icons.notes_rounded,
-                  label: 'Description',
-                  value: product.description,
-                ),
-              ],
-
-              const SizedBox(height: 12),
-              _buildDetailTile(
-                icon: Icons.straighten_rounded,
-                label: 'Unit of Measure',
-                value: product.unitType,
-              ),
-
-              const SizedBox(height: 28),
-
-              SizedBox(
-                height: 48,
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                    _confirmDeleteProduct(product);
-                  },
-                  icon: const Icon(Icons.delete_outline_rounded, size: 18),
-                  label: const Text('Delete Product'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: _danger,
-                    side: const BorderSide(color: _dangerBorder),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -228,7 +242,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: _primaryAccentLight, size: 18),
+          Icon(icon, color: _primaryAccent, size: 18),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -246,7 +260,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 Text(
                   value,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: _textDark,
                     fontSize: 13.5,
                     fontWeight: FontWeight.w500,
                   ),
@@ -274,7 +288,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         ),
         title: const Text(
           'Delete Product',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: _textDark, fontWeight: FontWeight.bold),
         ),
         content: Text(
           'Are you sure you want to delete "${product.name}"? This action cannot be undone.',
@@ -287,7 +301,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFDC2626),
+              backgroundColor: _danger,
             ),
             onPressed: () => Navigator.pop(dialogCtx, true),
             child: const Text('Delete'),
@@ -307,16 +321,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: success ? const Color(0xFF0D281E) : _dangerBg,
+        backgroundColor: success ? AppColors.successBg : _dangerBg,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: success ? _primaryAccent : _dangerBorder),
+          side: BorderSide(color: success ? AppColors.successBorder : _dangerBorder),
         ),
         content: Text(
           success ? 'Product deleted.' : 'Failed to delete product.',
           style: TextStyle(
-            color: success ? const Color(0xFFD1FAE5) : const Color(0xFFFECDD3),
+            color: success ? AppColors.success : _danger,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -350,183 +365,170 @@ class _ProductsScreenState extends State<ProductsScreen> {
     final filteredProducts = _filterProducts(products);
 
     return Scaffold(
-      backgroundColor: _bgDark,
-      body: Stack(
-        children: [
-          // Background Gradient
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: RadialGradient(
-                  center: Alignment(0.0, -0.4),
-                  radius: 1.0,
-                  colors: [Color(0x3800D07E), Color(0x2805291C), _bgDark],
-                  stops: [0.0, 0.45, 1.0],
+      backgroundColor: _bg,
+      body: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Column(
+                  children: [
+                    // Top App Bar
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.arrow_back_rounded,
+                              color: _primaryAccent,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Product Catalog',
+                            style: TextStyle(
+                              color: _textDark,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.sandLight,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppColors.sandDark),
+                            ),
+                            child: Text(
+                              '${products.length} item${products.length == 1 ? '' : 's'}',
+                              style: const TextStyle(
+                                color: _primaryAccent,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Search Bar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
+                      child: TextField(
+                        controller: _searchController,
+                        onChanged: (_) => setState(() {}),
+                        style: const TextStyle(color: _textDark, fontSize: 14),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: _cardBg,
+                          hintText: 'Search products or services...',
+                          hintStyle: const TextStyle(
+                            color: _textSubtle,
+                            fontSize: 13,
+                          ),
+                          prefixIcon: const Icon(
+                            Icons.search_rounded,
+                            color: _primaryAccent,
+                            size: 20,
+                          ),
+                          suffixIcon: _searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: const Icon(
+                                    Icons.clear_rounded,
+                                    color: _textSubtle,
+                                    size: 18,
+                                  ),
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    setState(() {});
+                                  },
+                                )
+                              : null,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(color: _cardBorder),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(color: _cardBorder),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: const BorderSide(
+                              color: _primaryAccent,
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Filter Tabs (All, Physical Good, Hourly Service)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 4,
+                      ),
+                      child: Row(
+                        children: [
+                          _buildFilterChip('All'),
+                          const SizedBox(width: 8),
+                          _buildFilterChip('Physical Good'),
+                          const SizedBox(width: 8),
+                          _buildFilterChip('Hourly Service'),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Products List
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: _loadProducts,
+                        color: _primaryAccent,
+                        backgroundColor: _cardBg,
+                        child: isLoading && products.isEmpty
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: _primaryAccent,
+                                ),
+                              )
+                            : filteredProducts.isEmpty
+                            ? _buildEmptyState()
+                            : ListView.builder(
+                                padding: const EdgeInsets.fromLTRB(20, 8, 20, 80),
+                                itemCount: filteredProducts.length,
+                                itemBuilder: (context, index) {
+                                  final product = filteredProducts[index];
+                                  return _buildProductCard(product);
+                                },
+                              ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-
-          SafeArea(
-            child: Column(
-              children: [
-                // Top App Bar
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back_rounded,
-                          color: _primaryAccentLight,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Product Catalog',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0E2419),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFF18422E)),
-                        ),
-                        child: Text(
-                          '${products.length} item${products.length == 1 ? '' : 's'}',
-                          style: const TextStyle(
-                            color: Color(0xFFA7F3D0),
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Search Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (_) => setState(() {}),
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: _cardBg,
-                      hintText: 'Search products or services...',
-                      hintStyle: const TextStyle(
-                        color: Color(0xFF43584E),
-                        fontSize: 13,
-                      ),
-                      prefixIcon: const Icon(
-                        Icons.search_rounded,
-                        color: _primaryAccentLight,
-                        size: 20,
-                      ),
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(
-                                Icons.clear_rounded,
-                                color: _textSubtle,
-                                size: 18,
-                              ),
-                              onPressed: () {
-                                _searchController.clear();
-                                setState(() {});
-                              },
-                            )
-                          : null,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: _cardBorder),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: _cardBorder),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(
-                          color: _primaryAccent,
-                          width: 1.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                // Filter Tabs (All, Physical Good, Hourly Service)
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 4,
-                  ),
-                  child: Row(
-                    children: [
-                      _buildFilterChip('All'),
-                      const SizedBox(width: 8),
-                      _buildFilterChip('Physical Good'),
-                      const SizedBox(width: 8),
-                      _buildFilterChip('Hourly Service'),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                // Products List
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: _loadProducts,
-                    color: _primaryAccent,
-                    backgroundColor: _cardBg,
-                    child: isLoading && products.isEmpty
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: _primaryAccent,
-                            ),
-                          )
-                        : filteredProducts.isEmpty
-                        ? _buildEmptyState()
-                        : ListView.builder(
-                            padding: const EdgeInsets.fromLTRB(20, 8, 20, 80),
-                            itemCount: filteredProducts.length,
-                            itemBuilder: (context, index) {
-                              final product = filteredProducts[index];
-                              return _buildProductCard(product);
-                            },
-                          ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _navigateToAddProduct,
         backgroundColor: _primaryAccent,
-        foregroundColor: const Color(0xFF042717),
+        foregroundColor: AppColors.cream,
         icon: const Icon(Icons.add_rounded),
         label: const Text(
           'Add Product',
@@ -548,7 +550,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0E2419) : _cardBg,
+          color: isSelected ? _primaryAccent : _cardBg,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? _primaryAccent : _cardBorder,
@@ -558,7 +560,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? const Color(0xFFA7F3D0) : _textMuted,
+            color: isSelected ? AppColors.cream : _textMuted,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
           ),
@@ -589,16 +591,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0E2419),
+                    color: AppColors.sandLight,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFF18422E)),
+                    border: Border.all(color: AppColors.cardBorder),
                   ),
                   alignment: Alignment.center,
                   child: Icon(
                     product.itemType == 'Physical Good'
                         ? Icons.inventory_2_rounded
                         : Icons.design_services_rounded,
-                    color: _primaryAccentLight,
+                    color: _primaryAccent,
                     size: 20,
                   ),
                 ),
@@ -610,7 +612,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       Text(
                         product.name,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: _textDark,
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
                         ),
@@ -633,7 +635,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           Text(
                             '₹${product.unitPrice.toStringAsFixed(2)}',
                             style: const TextStyle(
-                              color: Color(0xFF34D399),
+                              color: _primaryAccent,
                               fontSize: 13.5,
                               fontWeight: FontWeight.bold,
                             ),
@@ -652,13 +654,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0E2419),
+                              color: AppColors.sandLight,
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
                               product.itemType,
                               style: const TextStyle(
-                                color: Color(0xFFA7F3D0),
+                                color: _primaryAccent,
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -672,7 +674,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 IconButton(
                   icon: const Icon(
                     Icons.delete_outline_rounded,
-                    color: Color(0xFF6B7280),
+                    color: _textSubtle,
                     size: 20,
                   ),
                   onPressed: () => _confirmDeleteProduct(product),
@@ -696,13 +698,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: const Color(0xFF0E2419),
+                color: AppColors.sandLight,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFF18422E)),
+                border: Border.all(color: AppColors.cardBorder),
               ),
               child: const Icon(
                 Icons.inventory_2_outlined,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
                 size: 30,
               ),
             ),
@@ -710,7 +712,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             const Text(
               'No Products Found',
               style: TextStyle(
-                color: Colors.white,
+                color: _textDark,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
@@ -726,7 +728,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               onPressed: _navigateToAddProduct,
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
-                foregroundColor: const Color(0xFF042717),
+                foregroundColor: AppColors.cream,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

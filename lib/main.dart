@@ -8,6 +8,7 @@ import 'providers/customer_provider.dart';
 import 'providers/invoice_provider.dart';
 import 'providers/product_provider.dart';
 import 'screens/auth/auth_gate.dart';
+import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,16 +101,7 @@ class InvoxaApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Invoxa',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF060D0A),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF00D07E),
-          brightness: Brightness.dark,
-          surface: const Color(0xFF0B1612),
-        ),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
       home: const AuthGate(),
     );
   }

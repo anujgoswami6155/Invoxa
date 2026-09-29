@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/customer_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/customer_provider.dart';
+import '../../theme/app_theme.dart';
 
 class AddCustomerScreen extends StatefulWidget {
   const AddCustomerScreen({super.key});
@@ -20,16 +21,16 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
 
-  // Emerald Dark Aesthetic Color Palette (consistent with Auth & Dashboard)
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
+  // Warm Cream Elegance Palette
+  static const Color _bg = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
 
   @override
   void dispose() {
@@ -53,24 +54,24 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF2D141E),
+          backgroundColor: AppColors.dangerBg,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color(0xFF9F1239)),
+            side: const BorderSide(color: AppColors.dangerBorder),
           ),
           content: const Row(
             children: [
               Icon(
                 Icons.error_outline_rounded,
-                color: Color(0xFFFB7185),
+                color: AppColors.danger,
                 size: 20,
               ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'You must be logged in to add a customer.',
-                  style: TextStyle(color: Color(0xFFFECDD3)),
+                  style: TextStyle(color: AppColors.danger),
                 ),
               ),
             ],
@@ -99,24 +100,24 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF0E2419),
+          backgroundColor: AppColors.successBg,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: Color(0xFF18422E)),
+            side: const BorderSide(color: AppColors.successBorder),
           ),
           content: const Row(
             children: [
               Icon(
                 Icons.check_circle_outline_rounded,
-                color: _primaryAccentLight,
+                color: AppColors.success,
                 size: 20,
               ),
               SizedBox(width: 10),
               Text(
                 'Customer added successfully',
                 style: TextStyle(
-                  color: Color(0xFFA7F3D0),
+                  color: AppColors.success,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -130,17 +131,17 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF2D141E),
+        backgroundColor: AppColors.dangerBg,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Color(0xFF9F1239)),
+          side: const BorderSide(color: AppColors.dangerBorder),
         ),
         content: Row(
           children: [
             const Icon(
               Icons.error_outline_rounded,
-              color: Color(0xFFFB7185),
+              color: AppColors.danger,
               size: 20,
             ),
             const SizedBox(width: 10),
@@ -148,7 +149,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               child: Text(
                 customerProvider.errorMessage ??
                     'Could not add customer. Please try again.',
-                style: const TextStyle(color: Color(0xFFFECDD3)),
+                style: const TextStyle(color: AppColors.danger),
               ),
             ),
           ],
@@ -160,38 +161,21 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgDark,
-      body: Stack(
-        children: [
-          // Ambient Radial Background Glow (Emerald aura)
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: const Alignment(0.0, -0.25),
-                  radius: 0.95,
-                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
-                  stops: const [0.0, 0.45, 1.0],
-                ),
-              ),
+      backgroundColor: _bg,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 24,
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: _buildCard(),
             ),
           ),
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
-                  child: _buildCard(),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -205,9 +189,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
         border: Border.all(color: _cardBorder, width: 1.2),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 36,
-            offset: Offset(0, 16),
+            color: Color(0x12113946),
+            blurRadius: 24,
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -231,7 +215,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 children: [
                   TextSpan(
                     text: 'New Customer.\n',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: _textDark),
                   ),
                   TextSpan(
                     text: 'Add to Business Directory.',
@@ -328,10 +312,10 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                         : _saveCustomer,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _primaryAccent,
-                      disabledBackgroundColor: const Color(0x8000D07E),
-                      foregroundColor: const Color(0xFF042717),
-                      elevation: 4,
-                      shadowColor: const Color(0x6600D07E),
+                      disabledBackgroundColor: const Color(0x80113946),
+                      foregroundColor: AppColors.cream,
+                      elevation: 3,
+                      shadowColor: const Color(0x33113946),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13),
                       ),
@@ -342,20 +326,20 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Color(0xFF042717),
+                              color: AppColors.cream,
                             ),
                           )
                         : const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.person_add_alt_1_rounded, size: 19),
+                              Icon(Icons.person_add_alt_1_rounded, size: 19, color: AppColors.cream),
                               SizedBox(width: 8),
                               Text(
                                 'Save Customer',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xFF042717),
+                                  color: AppColors.cream,
                                 ),
                               ),
                             ],
@@ -385,13 +369,13 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
                 Icon(
                   Icons.arrow_back_rounded,
                   size: 17,
-                  color: _primaryAccentLight,
+                  color: _primaryAccent,
                 ),
                 SizedBox(width: 6),
                 Text(
                   'Back to Customers',
                   style: TextStyle(
-                    color: _primaryAccentLight,
+                    color: _primaryAccent,
                     fontSize: 12.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -403,9 +387,9 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFF0E2419),
+            color: AppColors.sandLight,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFF18422E)),
+            border: Border.all(color: AppColors.sandDark),
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
@@ -413,13 +397,13 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               Icon(
                 Icons.person_add_rounded,
                 size: 13,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
               ),
               SizedBox(width: 6),
               Text(
                 'NEW CLIENT',
                 style: TextStyle(
-                  color: Color(0xFFA7F3D0),
+                  color: _primaryAccent,
                   fontSize: 10,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.2,
@@ -447,7 +431,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
         Text(
           label,
           style: const TextStyle(
-            color: Color(0xFFD1FAE5),
+            color: _textDark,
             fontSize: 12.5,
             fontWeight: FontWeight.w600,
           ),
@@ -457,7 +441,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           controller: controller,
           keyboardType: keyboardType,
           maxLines: maxLines,
-          style: const TextStyle(color: Colors.white, fontSize: 14),
+          style: const TextStyle(color: _textDark, fontSize: 14),
           decoration: InputDecoration(
             filled: true,
             fillColor: _inputFill,
@@ -465,7 +449,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
             prefixIcon: Padding(
               padding: EdgeInsets.only(bottom: maxLines > 1 ? 36 : 0),
-              child: Icon(icon, color: _primaryAccentLight, size: 20),
+              child: Icon(icon, color: _primaryAccent, size: 20),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -485,12 +469,12 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFFE11D48)),
+              borderSide: const BorderSide(color: AppColors.danger),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
-                color: Color(0xFFE11D48),
+                color: AppColors.danger,
                 width: 1.5,
               ),
             ),

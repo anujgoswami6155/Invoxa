@@ -10,6 +10,7 @@ import '../../services/invoice_pdf_service.dart';
 import '../customers/customers_screen.dart';
 import '../products/products_screen.dart';
 import 'create_invoice_screen.dart';
+import '../../theme/app_theme.dart';
 
 class InvoiceDetailsScreen extends StatefulWidget {
   final InvoiceModel invoice;
@@ -21,24 +22,24 @@ class InvoiceDetailsScreen extends StatefulWidget {
 }
 
 class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
-  // Emerald Dark Aesthetic Color Palette (exact theme from login screen)
-  static const Color _pageBg = Color(0xFF060D0A);
-  static const Color _cardWhite = Color(0xFF0B1612);
-  static const Color _borderSubtle = Color(0xFF14291F);
-  static const Color _emeraldPrimary = Color(0xFF00D07E);
-  static const Color _emeraldLightBg = Color(0xFF0E2419);
-  static const Color _emeraldBorder = Color(0xFF18422E);
-  static const Color _emeraldText = Color(0xFF34D399);
-  static const Color _textDark = Colors.white;
-  static const Color _textSlate = Color(0xFFE2E8F0);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
-  static const Color _danger = Color(0xFFFB7185);
-  static const Color _dangerBg = Color(0xFF2D141E);
-  static const Color _dangerBorder = Color(0xFF9F1239);
-  static const Color _amberText = Color(0xFFFBBF24);
-  static const Color _amberBg = Color(0xFF2D2310);
-  static const Color _amberBorder = Color(0xFF573D0F);
+  // Nordic Oceanic Color Palette
+  static const Color _pageBg = AppColors.bg;
+  static const Color _cardWhite = AppColors.cardBg;
+  static const Color _borderSubtle = AppColors.cardBorder;
+  static const Color _emeraldPrimary = AppColors.primary;
+  static const Color _emeraldLightBg = Color(0xFF183244);
+  static const Color _emeraldBorder = AppColors.azureBlue;
+  static const Color _emeraldText = AppColors.iceBlue;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textSlate = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
+  static const Color _danger = AppColors.danger;
+  static const Color _dangerBg = AppColors.dangerBg;
+  static const Color _dangerBorder = AppColors.dangerBorder;
+  static const Color _amberText = AppColors.warning;
+  static const Color _amberBg = AppColors.warningBg;
+  static const Color _amberBorder = AppColors.warningBorder;
 
   late InvoiceModel _currentInvoice;
 
@@ -152,7 +153,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF07120D),
+                          color: AppColors.sand.withValues(alpha: 0.35),
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: _borderSubtle),
                         ),
@@ -206,7 +207,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                             size: 20,
                           ),
                           filled: true,
-                          fillColor: const Color(0xFF07120D),
+                          fillColor: AppColors.inputFill,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 12,
@@ -351,7 +352,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         style: const TextStyle(color: _textDark, fontSize: 14),
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFF07120D),
+                          fillColor: AppColors.inputFill,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 10,
@@ -410,7 +411,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                           hintText: 'e.g. Advance IMPS transfer / UTR #12345',
                           hintStyle: const TextStyle(color: _textSubtle),
                           filled: true,
-                          fillColor: const Color(0xFF07120D),
+                          fillColor: AppColors.inputFill,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 10,
@@ -447,7 +448,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _emeraldPrimary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.cream,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
@@ -504,10 +505,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       }
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: const Color(0xFF064E3B),
+                          backgroundColor: _emeraldPrimary,
                           content: Text(
                             'Payment of ${_formatCurrency(amt)} recorded successfully!',
-                            style: const TextStyle(color: Color(0xFFA7F3D0)),
+                            style: const TextStyle(color: AppColors.cream),
                           ),
                         ),
                       );
@@ -650,10 +651,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           result != 'Printed') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: const Color(0xFF0E2419),
+            backgroundColor: _emeraldPrimary,
             content: Text(
               'PDF successfully saved: $result',
-              style: const TextStyle(color: _emeraldText),
+              style: const TextStyle(color: AppColors.cream),
             ),
           ),
         );
@@ -679,8 +680,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         side: BorderSide(color: _borderSubtle),
       ),
       builder: (bottomSheetContext) {
-        return SafeArea(
-          child: Padding(
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: SafeArea(
+              child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -764,9 +768,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
+  },
+);
   }
 
   void _showPrintDialog() {
@@ -778,8 +784,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
         side: BorderSide(color: _borderSubtle),
       ),
       builder: (bottomSheetContext) {
-        return SafeArea(
-          child: Padding(
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: SafeArea(
+              child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -862,9 +871,11 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
+  },
+);
   }
 
   @override
@@ -1040,18 +1051,22 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
     );
   }
 
-  /// Emerald green banner card on top
+  /// Oceanic Navy banner card on top
   Widget _buildPendingBalanceBanner(double balanceDue) {
     final isSettled = balanceDue <= 0.001;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: isSettled ? const Color(0xFF047857) : _emeraldPrimary,
+        color: AppColors.oceanBlue,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.azureBlue.withValues(alpha: 0.4),
+          width: 1.2,
+        ),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x1800875A),
+            color: Color(0x330F4C75),
             blurRadius: 16,
             offset: Offset(0, 6),
           ),
@@ -1065,10 +1080,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                isSettled ? 'BALANCE STATUS' : 'PENDING BALANCE',
-                style: const TextStyle(
-                  color: Colors.white,
+              const Text(
+                'PENDING BALANCE',
+                style: TextStyle(
+                  color: AppColors.iceBlue,
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.8,
@@ -1091,8 +1106,8 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           if (!isSettled)
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: _emeraldPrimary,
+                backgroundColor: AppColors.azureBlue,
+                foregroundColor: Colors.white,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -1106,12 +1121,12 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               icon: const Icon(
                 Icons.credit_card_outlined,
                 size: 18,
-                color: _emeraldPrimary,
+                color: Colors.white,
               ),
               label: const Text(
                 'Record Payment',
                 style: TextStyle(
-                  color: _emeraldPrimary,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 13,
                 ),
@@ -1130,14 +1145,14 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 children: const [
                   Icon(
                     Icons.check_circle_rounded,
-                    color: Colors.white,
+                    color: AppColors.cream,
                     size: 16,
                   ),
                   SizedBox(width: 6),
                   Text(
                     'Settled',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.cream,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
@@ -1244,7 +1259,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                 child: const Center(
                   child: Icon(
                     Icons.receipt_long_rounded,
-                    color: Colors.white,
+                    color: AppColors.cream,
                     size: 24,
                   ),
                 ),
@@ -1513,9 +1528,10 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           // Table Header
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: const BoxDecoration(
-              color: Color(0xFF07120D),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            decoration: BoxDecoration(
+              color: AppColors.sand.withValues(alpha: 0.4),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Row(
               children: const [
@@ -1833,7 +1849,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF07120D),
+              color: AppColors.sand.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: _borderSubtle),
             ),
@@ -1869,7 +1885,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: _emeraldBorder,
+                        color: AppColors.sand,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Center(
@@ -1975,20 +1991,20 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
               child: Container(
                 width: 48,
                 height: 48,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: _emeraldPrimary,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0x3300875A),
+                      color: _emeraldPrimary.withValues(alpha: 0.35),
                       blurRadius: 10,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: const Icon(
                   Icons.add_rounded,
-                  color: Colors.white,
+                  color: AppColors.cream,
                   size: 26,
                 ),
               ),
@@ -2071,7 +2087,7 @@ class _InvoiceDetailsScreenState extends State<InvoiceDetailsScreen> {
                         badgeCount > 99 ? '99+' : '$badgeCount',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Colors.black,
+                          color: AppColors.cream,
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),

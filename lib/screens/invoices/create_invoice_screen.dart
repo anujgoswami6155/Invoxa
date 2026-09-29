@@ -9,6 +9,7 @@ import '../../providers/customer_provider.dart';
 import '../../providers/invoice_provider.dart';
 import '../../providers/product_provider.dart';
 import '../customers/add_customer_screen.dart';
+import '../../theme/app_theme.dart';
 
 class CreateInvoiceScreen extends StatefulWidget {
   const CreateInvoiceScreen({super.key});
@@ -18,17 +19,17 @@ class CreateInvoiceScreen extends StatefulWidget {
 }
 
 class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
-  // Emerald Dark Aesthetic Palette
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
-  static const Color _danger = Color(0xFFFB7185);
+  // Warm Cream Elegance Palette
+  static const Color _bgDark = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
+  static const Color _danger = AppColors.danger;
 
   final TextEditingController _invoiceNumberController =
       TextEditingController();
@@ -107,12 +108,12 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       lastDate: DateTime(2040),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
               primary: _primaryAccent,
-              onPrimary: Color(0xFF060D0A),
+              onPrimary: AppColors.cream,
               surface: _cardBg,
-              onSurface: Colors.white,
+              onSurface: _textDark,
             ),
             dialogTheme: const DialogThemeData(backgroundColor: _cardBg),
           ),
@@ -137,7 +138,10 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (bottomContext) {
-        return StatefulBuilder(
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: StatefulBuilder(
           builder: (context, setModalState) {
             final filtered = filterQuery.trim().isEmpty
                 ? customers
@@ -169,7 +173,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       height: 4,
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1E382B),
+                        color: AppColors.sand,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -180,7 +184,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       const Text(
                         'Select Customer',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: _textDark,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -218,7 +222,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                   const SizedBox(height: 12),
                   // Search field
                   TextField(
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: _textDark, fontSize: 14),
                     decoration: InputDecoration(
                       hintText: 'Search customer name or email...',
                       hintStyle: const TextStyle(
@@ -292,8 +296,9 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                   vertical: 4,
                                 ),
                                 leading: CircleAvatar(
-                                  backgroundColor: const Color(0xFF0E2419),
-                                  foregroundColor: _primaryAccentLight,
+                                  backgroundColor:
+                                      AppColors.sand.withValues(alpha: 0.5),
+                                  foregroundColor: _primaryAccent,
                                   child: Text(
                                     customer.name.isNotEmpty
                                         ? customer.name
@@ -308,7 +313,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                 title: Text(
                                   customer.name,
                                   style: const TextStyle(
-                                    color: Colors.white,
+                                    color: _textDark,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 15,
                                   ),
@@ -340,9 +345,11 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               ),
             );
           },
-        );
-      },
+        ),
+      ),
     );
+  },
+);
   }
 
   void _showAddItemModal() {
@@ -354,7 +361,10 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
-        return DefaultTabController(
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: DefaultTabController(
           length: 2,
           child: Container(
             height: MediaQuery.of(context).size.height * 0.8,
@@ -377,7 +387,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                     height: 4,
                     margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1E382B),
+                      color: AppColors.sand,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -385,7 +395,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                 const Text(
                   'Add Line Item',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: _textDark,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -442,7 +452,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                   title: Text(
                                     product.name,
                                     style: const TextStyle(
-                                      color: Colors.white,
+                                      color: _textDark,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -480,9 +490,11 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
+  },
+);
   }
 
   void _promptQuantityForCatalogProduct(
@@ -510,7 +522,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               title: Text(
                 'Add ${product.name}',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: _textDark,
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
@@ -526,7 +538,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                           keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: _textDark),
                           decoration: InputDecoration(
                             labelText: 'Quantity (${product.unitType})',
                             labelStyle: const TextStyle(color: _textMuted),
@@ -550,7 +562,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                           keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: _textDark),
                           decoration: InputDecoration(
                             labelText: 'Unit Price (₹)',
                             labelStyle: const TextStyle(color: _textMuted),
@@ -577,9 +589,9 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0E2419),
+                      color: AppColors.sand.withValues(alpha: 0.35),
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: const Color(0xFF18422E)),
+                      border: Border.all(color: AppColors.cardBorder),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -591,7 +603,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                         Text(
                           '₹ ${(quantity * unitPrice).toStringAsFixed(2)}',
                           style: const TextStyle(
-                            color: _primaryAccentLight,
+                            color: _primaryAccent,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -612,7 +624,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _primaryAccent,
-                    foregroundColor: const Color(0xFF060D0A),
+                    foregroundColor: AppColors.cream,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -681,10 +693,10 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
     if (savedInvoice != null && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF0E2419),
+          backgroundColor: AppColors.primary,
           content: Text(
             'Invoice ${savedInvoice.invoiceNumber} created successfully!',
-            style: const TextStyle(color: Color(0xFFA7F3D0)),
+            style: const TextStyle(color: AppColors.cream),
           ),
         ),
       );
@@ -692,10 +704,10 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: const Color(0xFF2D141E),
+          backgroundColor: AppColors.danger,
           content: Text(
             invoiceProvider.errorMessage ?? 'Failed to create invoice.',
-            style: const TextStyle(color: Color(0xFFFECDD3)),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       );
@@ -715,42 +727,61 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       builder: (context, provider, _) {
         return Scaffold(
           backgroundColor: _bgDark,
-          appBar: AppBar(
-            backgroundColor: _cardBg,
-            elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: const Text(
-              'New Invoice',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight + 1),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: _cardBg,
+                border: Border(bottom: BorderSide(color: _cardBorder, width: 1)),
               ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  final user = context.read<AuthProvider>().firebaseUser;
-                  if (user != null) {
-                    provider.initDraft(user.uid);
-                  }
-                },
-                child: const Text('Reset', style: TextStyle(color: _textMuted)),
+              child: SafeArea(
+                bottom: false,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_rounded, color: _textDark),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'New Invoice',
+                            style: TextStyle(
+                              color: _textDark,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              final user = context.read<AuthProvider>().firebaseUser;
+                              if (user != null) {
+                                provider.initDraft(user.uid);
+                              }
+                            },
+                            child: const Text('Reset', style: TextStyle(color: _textMuted)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ],
-            bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(1),
-              child: Divider(color: _cardBorder, height: 1),
             ),
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                 // 1. Invoice Number & Dates Section
                 _buildCardWrapper(
                   title: 'Invoice Details',
@@ -760,7 +791,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       TextField(
                         controller: _invoiceNumberController,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: _textDark,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.5,
@@ -806,7 +837,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                     Text(
                                       _formatDate(provider.draftIssueDate),
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: _textDark,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -849,7 +880,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                     Text(
                                       _formatDate(provider.draftDueDate),
                                       style: const TextStyle(
-                                        color: _primaryAccentLight,
+                                        color: _primaryAccent,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -886,7 +917,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                             foregroundColor: _primaryAccent,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             side: const BorderSide(
-                              color: Color(0xFF1B4332),
+                              color: AppColors.cardBorder,
                               width: 1.2,
                             ),
                             shape: RoundedRectangleBorder(
@@ -909,15 +940,15 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       : Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF0E2419),
+                            color: AppColors.sand.withValues(alpha: 0.35),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: const Color(0xFF18422E)),
+                            border: Border.all(color: AppColors.cardBorder),
                           ),
                           child: Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor: const Color(0xFF143827),
-                                foregroundColor: _primaryAccentLight,
+                                backgroundColor: AppColors.sand,
+                                foregroundColor: _primaryAccent,
                                 child: Text(
                                   provider.draftCustomer!.name.isNotEmpty
                                       ? provider.draftCustomer!.name
@@ -937,7 +968,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                     Text(
                                       provider.draftCustomer!.name,
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: _textDark,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15,
                                       ),
@@ -1057,7 +1088,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                         Text(
                                           item.productName,
                                           style: const TextStyle(
-                                            color: Colors.white,
+                                            color: _textDark,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 14,
                                           ),
@@ -1076,7 +1107,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                   Text(
                                     '₹ ${item.totalPrice.toStringAsFixed(2)}',
                                     style: const TextStyle(
-                                      color: _primaryAccentLight,
+                                      color: _primaryAccent,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
                                     ),
@@ -1115,7 +1146,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                   const TextInputType.numberWithOptions(
                                     decimal: true,
                                   ),
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: _textDark),
                               decoration: _inputDecoration(
                                 label: 'Tax Rate (%)',
                                 prefixIcon: Icons.percent_rounded,
@@ -1134,7 +1165,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                   const TextInputType.numberWithOptions(
                                     decimal: true,
                                   ),
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: _textDark),
                               decoration: _inputDecoration(
                                 label: 'Discount (₹)',
                                 prefixIcon: Icons.discount_outlined,
@@ -1179,18 +1210,18 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
 
                       const SizedBox(height: 8),
 
-                      // Grand Total highlighted
+                      // Grand Total highlighted in Deep Oceanic Blue
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 14,
                           vertical: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0E2419),
+                          color: AppColors.oceanBlue,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: const Color(0xFF18422E),
-                            width: 1.5,
+                            color: AppColors.azureBlue.withValues(alpha: 0.5),
+                            width: 1.2,
                           ),
                         ),
                         child: Row(
@@ -1199,7 +1230,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                             const Text(
                               'Grand Total',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.iceBlue,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
@@ -1207,7 +1238,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                             Text(
                               '₹ ${provider.draftTotalAmount.toStringAsFixed(2)}',
                               style: const TextStyle(
-                                color: _primaryAccentLight,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -1228,7 +1259,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                   child: TextField(
                     controller: _notesController,
                     maxLines: 3,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: _textDark, fontSize: 14),
                     decoration: _inputDecoration(
                       label: 'Payment terms or client notes (optional)',
                       hintText:
@@ -1272,13 +1303,13 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _primaryAccent,
-                          foregroundColor: const Color(0xFF060D0A),
+                          foregroundColor: AppColors.cream,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          elevation: 4,
-                          shadowColor: const Color(0x6600D07E),
+                          elevation: 3,
+                          shadowColor: _primaryAccent.withValues(alpha: 0.3),
                         ),
                         onPressed: provider.isLoading
                             ? null
@@ -1290,7 +1321,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: Color(0xFF060D0A),
+                                  color: AppColors.cream,
                                 ),
                               )
                             : const Text(
@@ -1308,7 +1339,9 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
               ],
             ),
           ),
-        );
+        ),
+      ),
+    );
       },
     );
   }
@@ -1331,12 +1364,12 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
         children: [
           Row(
             children: [
-              Icon(icon, color: _primaryAccentLight, size: 18),
+              Icon(icon, color: _primaryAccent, size: 18),
               const SizedBox(width: 8),
               Text(
                 title,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: _textDark,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -1389,7 +1422,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
         Text(
           value,
           style: TextStyle(
-            color: valueColor ?? Colors.white,
+            color: valueColor ?? _textDark,
             fontSize: 15,
             fontWeight: FontWeight.w600,
           ),
@@ -1414,11 +1447,12 @@ class _CustomItemFormState extends State<_CustomItemForm> {
   final _priceController = TextEditingController();
   String _unitType = 'unit';
 
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
 
   @override
   void dispose() {
@@ -1436,7 +1470,7 @@ class _CustomItemFormState extends State<_CustomItemForm> {
         children: [
           TextField(
             controller: _nameController,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: _textDark),
             decoration: InputDecoration(
               labelText: 'Item Name or Description *',
               hintText: 'e.g. Consulting Services / Office Desk',
@@ -1459,7 +1493,7 @@ class _CustomItemFormState extends State<_CustomItemForm> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: _textDark),
                   decoration: InputDecoration(
                     labelText: 'Quantity *',
                     hintText: '1',
@@ -1482,7 +1516,7 @@ class _CustomItemFormState extends State<_CustomItemForm> {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: _textDark),
                   decoration: InputDecoration(
                     labelText: 'Unit Price (₹) *',
                     hintText: 'e.g. 2500',
@@ -1503,8 +1537,8 @@ class _CustomItemFormState extends State<_CustomItemForm> {
           const SizedBox(height: 14),
           DropdownButtonFormField<String>(
             initialValue: _unitType,
-            dropdownColor: const Color(0xFF0B1612),
-            style: const TextStyle(color: Colors.white),
+            dropdownColor: AppColors.cardBg,
+            style: const TextStyle(color: _textDark),
             decoration: InputDecoration(
               labelText: 'Unit of Measure',
               labelStyle: const TextStyle(color: _textMuted),
@@ -1532,7 +1566,7 @@ class _CustomItemFormState extends State<_CustomItemForm> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: _primaryAccent,
-              foregroundColor: const Color(0xFF060D0A),
+              foregroundColor: AppColors.cream,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

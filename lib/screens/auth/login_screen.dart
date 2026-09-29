@@ -1,79 +1,56 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_theme.dart';
 import 'register_screen.dart';
 import 'sign_in_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  // Emerald Dark Aesthetic Color Palette (as in reference image)
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _buttonSecondaryBg = Color(0xFF102018);
-  static const Color _buttonSecondaryBorder = Color(0xFF193828);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
+  static const Color _bg = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _buttonSecondaryBg = AppColors.sand;
+  static const Color _buttonSecondaryBorder = AppColors.camel;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgDark,
-      body: Stack(
-        children: [
-          // Ambient Radial Background Glow (Emerald aura)
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: const Alignment(0.0, -0.25),
-                  radius: 0.95,
-                  colors: const [
-                    Color(0x3800D07E), // Vibrant emerald glow
-                    Color(0x2805291C),
-                    _bgDark,
-                  ],
-                  stops: const [0.0, 0.45, 1.0],
-                ),
+      backgroundColor: _bg,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 24,
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 460),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Top Branding Header
+                  _buildTopBranding(),
+
+                  const SizedBox(height: 28),
+
+                  // Showcase / Hero Card
+                  _buildShowcaseCard(context),
+
+                  const SizedBox(height: 24),
+
+                  // Bottom Trust/Security Badge
+                  _buildFooterBadge(),
+                ],
               ),
             ),
           ),
-
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 460),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Top Branding Header
-                      _buildTopBranding(),
-
-                      const SizedBox(height: 28),
-
-                      // Showcase / Hero Card (Exact layout & hierarchy from reference image)
-                      _buildShowcaseCard(context),
-
-                      const SizedBox(height: 24),
-
-                      // Bottom Trust/Security Badge
-                      _buildFooterBadge(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -91,7 +68,7 @@ class LoginScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(13),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x6600D07E),
+                color: Color(0x330F4C75),
                 blurRadius: 18,
                 offset: Offset(0, 4),
               ),
@@ -99,7 +76,7 @@ class LoginScreen extends StatelessWidget {
           ),
           child: const Icon(
             Icons.receipt_long_rounded,
-            color: Color(0xFF042717),
+            color: Colors.white,
             size: 24,
           ),
         ),
@@ -110,7 +87,7 @@ class LoginScreen extends StatelessWidget {
             Text(
               'INVOXA',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.textDark,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 2.2,
@@ -120,7 +97,7 @@ class LoginScreen extends StatelessWidget {
             Text(
               'BUSINESS SUITE',
               style: TextStyle(
-                color: _primaryAccentLight,
+                color: AppColors.iceBlue,
                 fontSize: 10.5,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 2.5,
@@ -132,7 +109,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // 2. Showcase / Hero Card (Exact layout & hierarchy from reference image)
+  // 2. Showcase / Hero Card
   Widget _buildShowcaseCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(26),
@@ -142,9 +119,9 @@ class LoginScreen extends StatelessWidget {
         border: Border.all(color: _cardBorder, width: 1.2),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 36,
-            offset: Offset(0, 16),
+            color: Color(0x180F4C75),
+            blurRadius: 28,
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -155,19 +132,22 @@ class LoginScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFF0E2419),
+              color: const Color(0xFF163245),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFF18422E), width: 1),
+              border: Border.all(
+                color: const Color(0xFF2B5370),
+                width: 1,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: const [
-                Icon(Icons.auto_awesome, size: 13, color: _primaryAccentLight),
+                Icon(Icons.auto_awesome, size: 13, color: AppColors.iceBlue),
                 SizedBox(width: 7),
                 Text(
                   'Mobile-First Invoicing & Billing',
                   style: TextStyle(
-                    color: Color(0xFFA7F3D0),
+                    color: AppColors.iceBlue,
                     fontSize: 11.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -189,11 +169,11 @@ class LoginScreen extends StatelessWidget {
               children: [
                 TextSpan(
                   text: 'Simple invoicing.\n',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: AppColors.textDark),
                 ),
                 TextSpan(
                   text: 'Smarter business.',
-                  style: TextStyle(color: _primaryAccent),
+                  style: TextStyle(color: AppColors.azureBlue),
                 ),
               ],
             ),
@@ -248,7 +228,7 @@ class LoginScreen extends StatelessWidget {
 
           const SizedBox(height: 26),
 
-          // Action Button 1: Login with Email ->
+          // Action Button 1: Login with Email
           SizedBox(
             width: double.infinity,
             height: 50,
@@ -261,9 +241,9 @@ class LoginScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
-                foregroundColor: const Color(0xFF042717),
+                foregroundColor: AppColors.cream,
                 elevation: 4,
-                shadowColor: const Color(0x6600D07E),
+                shadowColor: const Color(0x33113946),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(13),
                 ),
@@ -276,14 +256,14 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF042717),
+                      color: AppColors.cream,
                     ),
                   ),
                   SizedBox(width: 8),
                   Icon(
                     Icons.arrow_forward_rounded,
                     size: 18,
-                    color: Color(0xFF042717),
+                    color: AppColors.cream,
                   ),
                 ],
               ),
@@ -305,7 +285,7 @@ class LoginScreen extends StatelessWidget {
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: _buttonSecondaryBg,
-                foregroundColor: const Color(0xFFF1F5F9),
+                foregroundColor: AppColors.textDark,
                 side: const BorderSide(
                   color: _buttonSecondaryBorder,
                   width: 1.1,
@@ -316,7 +296,11 @@ class LoginScreen extends StatelessWidget {
               ),
               child: const Text(
                 'Create New Account',
-                style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textDark,
+                ),
               ),
             ),
           ),
@@ -329,13 +313,13 @@ class LoginScreen extends StatelessWidget {
   Widget _buildFeatureItem({required IconData icon, required String label}) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: _primaryAccentLight),
+        Icon(icon, size: 16, color: AppColors.camelDark),
         const SizedBox(width: 7),
         Expanded(
           child: Text(
             label,
             style: const TextStyle(
-              color: Color(0xFFD1FAE5),
+              color: AppColors.textDark,
               fontSize: 12.5,
               fontWeight: FontWeight.w500,
             ),
@@ -352,7 +336,7 @@ class LoginScreen extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: const [
-          Icon(Icons.shield_outlined, size: 14, color: _primaryAccentLight),
+          Icon(Icons.shield_outlined, size: 14, color: AppColors.camelDark),
           SizedBox(width: 7),
           Text(
             'Secure Local-First Business Architecture',
