@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../models/product_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/product_provider.dart';
+import '../../theme/app_theme.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -35,16 +36,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
     'service',
   ];
 
-  // Emerald Dark Aesthetic Color Palette (exact auth theme)
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
+  // Warm Cream Elegance Palette
+  static const Color _bg = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
 
   @override
   void dispose() {
@@ -113,14 +114,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   SnackBar _buildSnackBar({required String message, required bool isError}) {
     return SnackBar(
-      backgroundColor: isError
-          ? const Color(0xFF1F1218)
-          : const Color(0xFF0D281E),
+      backgroundColor: isError ? AppColors.dangerBg : AppColors.successBg,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: BorderSide(
-          color: isError ? const Color(0xFF881337) : _primaryAccent,
+          color: isError ? AppColors.dangerBorder : AppColors.successBorder,
         ),
       ),
       content: Row(
@@ -129,7 +128,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             isError
                 ? Icons.error_outline_rounded
                 : Icons.check_circle_outline_rounded,
-            color: isError ? const Color(0xFFFB7185) : _primaryAccentLight,
+            color: isError ? AppColors.danger : AppColors.success,
             size: 20,
           ),
           const SizedBox(width: 10),
@@ -137,9 +136,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             child: Text(
               message,
               style: TextStyle(
-                color: isError
-                    ? const Color(0xFFFECDD3)
-                    : const Color(0xFFD1FAE5),
+                color: isError ? AppColors.danger : AppColors.success,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
@@ -159,14 +156,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
       filled: true,
       fillColor: _inputFill,
       hintText: hintText,
-      hintStyle: const TextStyle(color: Color(0xFF43584E), fontSize: 13),
+      hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
       prefixText: prefixText,
       prefixStyle: const TextStyle(
-        color: _primaryAccentLight,
+        color: _primaryAccent,
         fontWeight: FontWeight.bold,
         fontSize: 14,
       ),
-      prefixIcon: Icon(prefixIcon, color: _primaryAccentLight, size: 20),
+      prefixIcon: Icon(prefixIcon, color: _primaryAccent, size: 20),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -182,11 +179,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFE11D48)),
+        borderSide: const BorderSide(color: AppColors.danger),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFE11D48), width: 1.5),
+        borderSide: const BorderSide(color: AppColors.danger, width: 1.5),
       ),
     );
   }
@@ -195,7 +192,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return Text(
       label,
       style: const TextStyle(
-        color: Color(0xFFD1FAE5),
+        color: _textDark,
         fontSize: 12.5,
         fontWeight: FontWeight.w600,
       ),
@@ -207,49 +204,31 @@ class _AddProductScreenState extends State<AddProductScreen> {
     final isLoading = context.watch<ProductProvider>().isLoading;
 
     return Scaffold(
-      backgroundColor: _bgDark,
-      body: Stack(
-        children: [
-          // Ambient Radial Background Glow (Emerald aura)
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: const BoxDecoration(
-                gradient: RadialGradient(
-                  center: Alignment(0.0, -0.3),
-                  radius: 0.95,
-                  colors: [Color(0x3800D07E), Color(0x2805291C), _bgDark],
-                  stops: [0.0, 0.45, 1.0],
-                ),
+      backgroundColor: _bg,
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 24,
+            ),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildTopBranding(),
+                  const SizedBox(height: 24),
+                  _buildCard(context, isLoading),
+                  const SizedBox(height: 20),
+                  _buildFooterBadge(),
+                ],
               ),
             ),
           ),
-
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 480),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _buildTopBranding(),
-                      const SizedBox(height: 24),
-                      _buildCard(context, isLoading),
-                      const SizedBox(height: 20),
-                      _buildFooterBadge(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -266,7 +245,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             borderRadius: BorderRadius.circular(13),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x6600D07E),
+                color: Color(0x33113946),
                 blurRadius: 18,
                 offset: Offset(0, 4),
               ),
@@ -274,7 +253,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
           child: const Icon(
             Icons.inventory_2_rounded,
-            color: Color(0xFF042717),
+            color: AppColors.cream,
             size: 24,
           ),
         ),
@@ -285,7 +264,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             Text(
               'INVOXA',
               style: TextStyle(
-                color: Colors.white,
+                color: _textDark,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 2.2,
@@ -295,7 +274,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             Text(
               'PRODUCT CATALOG',
               style: TextStyle(
-                color: _primaryAccentLight,
+                color: AppColors.camelDark,
                 fontSize: 10.5,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 2.5,
@@ -316,9 +295,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
         border: Border.all(color: _cardBorder, width: 1.2),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x66000000),
-            blurRadius: 36,
-            offset: Offset(0, 16),
+            color: Color(0x12113946),
+            blurRadius: 24,
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -342,13 +321,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         Icon(
                           Icons.arrow_back_rounded,
                           size: 16,
-                          color: _primaryAccentLight,
+                          color: _primaryAccent,
                         ),
                         SizedBox(width: 6),
                         Text(
                           'Back to Dashboard',
                           style: TextStyle(
-                            color: _primaryAccentLight,
+                            color: _primaryAccent,
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
                           ),
@@ -363,17 +342,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0E2419),
+                    color: AppColors.sandLight,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: const Color(0xFF18422E),
+                      color: AppColors.sandDark,
                       width: 1,
                     ),
                   ),
                   child: const Text(
                     'New Product',
                     style: TextStyle(
-                      color: Color(0xFFA7F3D0),
+                      color: _primaryAccent,
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                     ),
@@ -394,7 +373,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 children: [
                   TextSpan(
                     text: 'Add Product.\n',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: _textDark),
                   ),
                   TextSpan(
                     text: 'To Your Catalog.',
@@ -424,15 +403,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2D141E),
+                    color: AppColors.dangerBg,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: const Color(0xFF9F1239)),
+                    border: Border.all(color: AppColors.dangerBorder),
                   ),
                   child: Row(
                     children: [
                       const Icon(
                         Icons.error_outline_rounded,
-                        color: Color(0xFFFB7185),
+                        color: AppColors.danger,
                         size: 18,
                       ),
                       const SizedBox(width: 8),
@@ -440,7 +419,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         child: Text(
                           productProvider.errorMessage!,
                           style: const TextStyle(
-                            color: Color(0xFFFECDD3),
+                            color: AppColors.danger,
                             fontSize: 12.5,
                           ),
                         ),
@@ -457,7 +436,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             TextFormField(
               controller: _nameController,
               textInputAction: TextInputAction.next,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: _textDark, fontSize: 14),
               decoration: _buildInputDecoration(
                 hintText: 'e.g. Website Design or Modern Desk Lamp',
                 prefixIcon: Icons.drive_file_rename_outline_rounded,
@@ -479,7 +458,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               controller: _descriptionController,
               textInputAction: TextInputAction.next,
               maxLines: 3,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: _textDark, fontSize: 14),
               decoration: _buildInputDecoration(
                 hintText: 'Brief description of the product or service...',
                 prefixIcon: Icons.notes_rounded,
@@ -497,7 +476,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decimal: true,
               ),
               textInputAction: TextInputAction.next,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: _textDark, fontSize: 14),
               decoration: _buildInputDecoration(
                 hintText: 'e.g. 1500.00',
                 prefixIcon: Icons.currency_rupee_rounded,
@@ -530,10 +509,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
             DropdownButtonFormField<String>(
               initialValue: _itemType,
               dropdownColor: _cardBg,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: _textDark, fontSize: 14),
               icon: const Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
               ),
               decoration: _buildInputDecoration(
                 hintText: 'Select item type',
@@ -545,7 +524,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       value: type,
                       child: Text(
                         type,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: _textDark),
                       ),
                     ),
                   )
@@ -569,10 +548,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
             DropdownButtonFormField<String>(
               initialValue: _unitType,
               dropdownColor: _cardBg,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: _textDark, fontSize: 14),
               icon: const Icon(
                 Icons.keyboard_arrow_down_rounded,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
               ),
               decoration: _buildInputDecoration(
                 hintText: 'Select unit of measure',
@@ -584,7 +563,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       value: type,
                       child: Text(
                         type,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: _textDark),
                       ),
                     ),
                   )
@@ -609,10 +588,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 onPressed: isLoading ? null : _saveProduct,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _primaryAccent,
-                  foregroundColor: const Color(0xFF042717),
-                  disabledBackgroundColor: const Color(0x8000D07E),
-                  elevation: 4,
-                  shadowColor: const Color(0x6600D07E),
+                  foregroundColor: AppColors.cream,
+                  disabledBackgroundColor: const Color(0x80113946),
+                  elevation: 3,
+                  shadowColor: const Color(0x33113946),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(13),
                   ),
@@ -624,7 +603,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Color(0xFF042717),
+                            AppColors.cream,
                           ),
                         ),
                       )
@@ -634,7 +613,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           Icon(
                             Icons.add_rounded,
                             size: 20,
-                            color: Color(0xFF042717),
+                            color: AppColors.cream,
                           ),
                           SizedBox(width: 8),
                           Text(
@@ -642,7 +621,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF042717),
+                              color: AppColors.cream,
                             ),
                           ),
                         ],
@@ -659,7 +638,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.shield_outlined, size: 14, color: _textSubtle),
+        Icon(Icons.shield_outlined, size: 14, color: AppColors.camelDark),
         SizedBox(width: 6),
         Text(
           'Tenant Scoped • Cloud Firestore Protected',

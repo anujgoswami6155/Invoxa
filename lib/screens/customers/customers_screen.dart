@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../models/customer_model.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/customer_provider.dart';
+import '../../../theme/app_theme.dart';
 import 'add_customer_screen.dart';
 
 class CustomersScreen extends StatefulWidget {
@@ -15,19 +16,19 @@ class CustomersScreen extends StatefulWidget {
 }
 
 class _CustomersScreenState extends State<CustomersScreen> {
-  // Emerald Dark Aesthetic Color Palette (consistent with Auth & Dashboard)
-  static const Color _bgDark = Color(0xFF060D0A);
-  static const Color _cardBg = Color(0xFF0B1612);
-  static const Color _cardBorder = Color(0xFF14291F);
-  static const Color _primaryAccent = Color(0xFF00D07E);
-  static const Color _primaryAccentLight = Color(0xFF34D399);
-  static const Color _inputFill = Color(0xFF07120D);
-  static const Color _inputBorder = Color(0xFF152A1F);
-  static const Color _textMuted = Color(0xFF98ACA2);
-  static const Color _textSubtle = Color(0xFF5A7568);
-  static const Color _danger = Color(0xFFFB7185);
-  static const Color _dangerBg = Color(0xFF2D141E);
-  static const Color _dangerBorder = Color(0xFF9F1239);
+  // Warm Cream Elegance Palette
+  static const Color _bg = AppColors.bg;
+  static const Color _cardBg = AppColors.cardBg;
+  static const Color _cardBorder = AppColors.cardBorder;
+  static const Color _primaryAccent = AppColors.primary;
+  static const Color _inputFill = AppColors.inputFill;
+  static const Color _inputBorder = AppColors.inputBorder;
+  static const Color _textDark = AppColors.textDark;
+  static const Color _textMuted = AppColors.textMuted;
+  static const Color _textSubtle = AppColors.textSubtle;
+  static const Color _danger = AppColors.danger;
+  static const Color _dangerBg = AppColors.dangerBg;
+  static const Color _dangerBorder = AppColors.dangerBorder;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -64,7 +65,6 @@ class _CustomersScreenState extends State<CustomersScreen> {
       context,
       MaterialPageRoute(builder: (_) => const AddCustomerScreen()),
     ).then((_) {
-      // Reload or refresh query if needed
       if (mounted) {
         final authProvider = context.read<AuthProvider>();
         final user = authProvider.firebaseUser;
@@ -81,221 +81,226 @@ class _CustomersScreenState extends State<CustomersScreen> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (bottomSheetContext) {
-        return Container(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
-          decoration: const BoxDecoration(
-            color: _cardBg,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            border: Border(
-              top: BorderSide(color: _cardBorder, width: 1.5),
-              left: BorderSide(color: _cardBorder, width: 1.5),
-              right: BorderSide(color: _cardBorder, width: 1.5),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x99000000),
-                blurRadius: 40,
-                offset: Offset(0, -10),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Bottom sheet handle
-              Center(
-                child: Container(
-                  width: 42,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1E382B),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+              decoration: const BoxDecoration(
+                color: _cardBg,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                border: Border(
+                  top: BorderSide(color: _cardBorder, width: 1.5),
+                  left: BorderSide(color: _cardBorder, width: 1.5),
+                  right: BorderSide(color: _cardBorder, width: 1.5),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x22113946),
+                    blurRadius: 30,
+                    offset: Offset(0, -6),
+                  ),
+                ],
               ),
-
-              // Customer Header Row
-              Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0E2419),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF18422E),
-                        width: 1.2,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      customer.name.isNotEmpty
-                          ? customer.name[0].toUpperCase()
-                          : '?',
-                      style: const TextStyle(
-                        color: _primaryAccentLight,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                  // Bottom sheet handle
+                  Center(
+                    child: Container(
+                      width: 42,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.camel,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          customer.name,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+
+                  // Customer Header Row
+                  Row(
+                    children: [
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          color: AppColors.sand,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.camel,
+                            width: 1.2,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Row(
+                        alignment: Alignment.center,
+                        child: Text(
+                          customer.name.isNotEmpty
+                              ? customer.name[0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(
+                            color: _primaryAccent,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0E2419),
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(
-                                  color: const Color(0xFF18422E),
-                                ),
-                              ),
-                              child: const Text(
-                                'ACTIVE CLIENT',
-                                style: TextStyle(
-                                  color: Color(0xFFA7F3D0),
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.8,
-                                ),
+                            Text(
+                              customer.name,
+                              style: const TextStyle(
+                                color: _textDark,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            if (customer.createdAt != null) ...[
-                              const SizedBox(width: 8),
-                              Text(
-                                'Added ${_formatDate(customer.createdAt!)}',
-                                style: const TextStyle(
-                                  color: _textSubtle,
-                                  fontSize: 11,
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.sandLight,
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(
+                                      color: AppColors.sandDark,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'ACTIVE CLIENT',
+                                    style: TextStyle(
+                                      color: _primaryAccent,
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.8,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                                if (customer.createdAt != null) ...[
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Added ${_formatDate(customer.createdAt!)}',
+                                    style: const TextStyle(
+                                      color: _textSubtle,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+                  const Divider(color: _cardBorder, height: 1),
+                  const SizedBox(height: 20),
+
+                  // Detail List Items
+                  _buildDetailTile(
+                    icon: Icons.mail_outline_rounded,
+                    label: 'Email Address',
+                    value: customer.email.isNotEmpty
+                        ? customer.email
+                        : 'Not provided',
+                    copyable: customer.email.isNotEmpty,
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  _buildDetailTile(
+                    icon: Icons.phone_outlined,
+                    label: 'Phone Number',
+                    value: customer.phone.isNotEmpty
+                        ? customer.phone
+                        : 'Not provided',
+                    copyable: customer.phone.isNotEmpty,
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  _buildDetailTile(
+                    icon: Icons.location_on_outlined,
+                    label: 'Billing Address',
+                    value: customer.address.isNotEmpty
+                        ? customer.address
+                        : 'Not provided',
+                    copyable: customer.address.isNotEmpty,
+                  ),
+
+                  const SizedBox(height: 28),
+
+                  // Action Buttons Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(bottomSheetContext);
+                            _confirmDeleteCustomer(customer);
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            size: 18,
+                            color: _danger,
+                          ),
+                          label: const Text(
+                            'Delete Customer',
+                            style: TextStyle(
+                              color: _danger,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13.5,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: _dangerBg,
+                            side: const BorderSide(color: _dangerBorder),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(bottomSheetContext),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.sand,
+                            foregroundColor: _textDark,
+                            side: const BorderSide(
+                              color: AppColors.camel,
+                              width: 1.1,
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Close',
+                            style: TextStyle(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-
-              const SizedBox(height: 24),
-              const Divider(color: _cardBorder, height: 1),
-              const SizedBox(height: 20),
-
-              // Detail List Items
-              _buildDetailTile(
-                icon: Icons.mail_outline_rounded,
-                label: 'Email Address',
-                value: customer.email.isNotEmpty
-                    ? customer.email
-                    : 'Not provided',
-                copyable: customer.email.isNotEmpty,
-              ),
-
-              const SizedBox(height: 12),
-
-              _buildDetailTile(
-                icon: Icons.phone_outlined,
-                label: 'Phone Number',
-                value: customer.phone.isNotEmpty
-                    ? customer.phone
-                    : 'Not provided',
-                copyable: customer.phone.isNotEmpty,
-              ),
-
-              const SizedBox(height: 12),
-
-              _buildDetailTile(
-                icon: Icons.location_on_outlined,
-                label: 'Billing Address',
-                value: customer.address.isNotEmpty
-                    ? customer.address
-                    : 'Not provided',
-                copyable: customer.address.isNotEmpty,
-              ),
-
-              const SizedBox(height: 28),
-
-              // Action Buttons Row
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(bottomSheetContext);
-                        _confirmDeleteCustomer(customer);
-                      },
-                      icon: const Icon(
-                        Icons.delete_outline_rounded,
-                        size: 18,
-                        color: _danger,
-                      ),
-                      label: const Text(
-                        'Delete Customer',
-                        style: TextStyle(
-                          color: _danger,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13.5,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: _dangerBg,
-                        side: const BorderSide(color: _dangerBorder),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(bottomSheetContext),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF102018),
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(
-                          color: Color(0xFF193828),
-                          width: 1.1,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Close',
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         );
       },
@@ -311,14 +316,14 @@ class _CustomersScreenState extends State<CustomersScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF07120D),
+        color: _inputFill,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: _cardBorder),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18, color: _primaryAccentLight),
+          Icon(icon, size: 18, color: _primaryAccent),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -336,7 +341,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 Text(
                   value,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: _textDark,
                     fontSize: 13.5,
                     fontWeight: FontWeight.w500,
                   ),
@@ -353,15 +358,15 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 Clipboard.setData(ClipboardData(text: value));
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: const Color(0xFF0E2419),
+                    backgroundColor: AppColors.cardBgElevated,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(color: Color(0xFF18422E)),
+                      side: const BorderSide(color: AppColors.cardBorder),
                     ),
                     content: Text(
                       'Copied $label to clipboard',
-                      style: const TextStyle(color: Color(0xFFA7F3D0)),
+                      style: const TextStyle(color: _textDark),
                     ),
                     duration: const Duration(seconds: 2),
                   ),
@@ -390,7 +395,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               Text(
                 'Delete Customer',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: _textDark,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -434,15 +439,15 @@ class _CustomersScreenState extends State<CustomersScreen> {
                     if (success) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          backgroundColor: const Color(0xFF0E2419),
+                          backgroundColor: AppColors.successBg,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(color: Color(0xFF18422E)),
+                            side: const BorderSide(color: AppColors.successBorder),
                           ),
                           content: const Text(
                             'Customer deleted successfully',
-                            style: TextStyle(color: Color(0xFFA7F3D0)),
+                            style: TextStyle(color: AppColors.success, fontWeight: FontWeight.w600),
                           ),
                         ),
                       );
@@ -458,7 +463,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                           content: Text(
                             customerProvider.errorMessage ??
                                 'Could not delete customer',
-                            style: const TextStyle(color: Color(0xFFFECDD3)),
+                            style: const TextStyle(color: _danger),
                           ),
                         ),
                       );
@@ -468,7 +473,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: _danger,
-                foregroundColor: const Color(0xFF450A0A),
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -505,69 +510,51 @@ class _CustomersScreenState extends State<CustomersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _bgDark,
-      body: Stack(
-        children: [
-          // Ambient Radial Background Glow (Emerald aura)
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  center: const Alignment(0.0, -0.35),
-                  radius: 1.0,
-                  colors: const [Color(0x3800D07E), Color(0x2805291C), _bgDark],
-                  stops: const [0.0, 0.45, 1.0],
+      backgroundColor: _bg,
+      body: SafeArea(
+        child: Consumer<CustomerProvider>(
+          builder: (context, customerProvider, child) {
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Top Navigation Row
+                      _buildTopNav(context),
+
+                      const SizedBox(height: 20),
+
+                      // Header Title & Action
+                      _buildHeaderTitle(customerProvider),
+
+                      const SizedBox(height: 18),
+
+                      // Search & Filter Bar
+                      _buildSearchBar(customerProvider),
+
+                      const SizedBox(height: 16),
+
+                      // Main Content (List / Loading / Error / Empty)
+                      Expanded(child: _buildContent(customerProvider)),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-
-          SafeArea(
-            child: Consumer<CustomerProvider>(
-              builder: (context, customerProvider, child) {
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 900),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Top Navigation Row
-                          _buildTopNav(context),
-
-                          const SizedBox(height: 20),
-
-                          // Header Title & Action
-                          _buildHeaderTitle(customerProvider),
-
-                          const SizedBox(height: 18),
-
-                          // Search & Filter Bar
-                          _buildSearchBar(customerProvider),
-
-                          const SizedBox(height: 16),
-
-                          // Main Content (List / Loading / Error / Empty)
-                          Expanded(child: _buildContent(customerProvider)),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _navigateToAddCustomer,
         backgroundColor: _primaryAccent,
-        foregroundColor: const Color(0xFF042717),
-        elevation: 6,
+        foregroundColor: AppColors.cream,
+        elevation: 4,
         icon: const Icon(Icons.person_add_alt_1_rounded, size: 20),
         label: const Text(
           'Add Customer',
@@ -592,13 +579,13 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 Icon(
                   Icons.arrow_back_rounded,
                   size: 18,
-                  color: _primaryAccentLight,
+                  color: _primaryAccent,
                 ),
                 SizedBox(width: 8),
                 Text(
                   'Back to Dashboard',
                   style: TextStyle(
-                    color: _primaryAccentLight,
+                    color: _primaryAccent,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -610,9 +597,9 @@ class _CustomersScreenState extends State<CustomersScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFF0E2419),
+            color: AppColors.sandLight,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFF18422E), width: 1),
+            border: Border.all(color: AppColors.sandDark, width: 1),
           ),
           child: const Row(
             mainAxisSize: MainAxisSize.min,
@@ -620,13 +607,13 @@ class _CustomersScreenState extends State<CustomersScreen> {
               Icon(
                 Icons.people_outline_rounded,
                 size: 13,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
               ),
               SizedBox(width: 6),
               Text(
                 'DIRECTORY',
                 style: TextStyle(
-                  color: Color(0xFFA7F3D0),
+                  color: _primaryAccent,
                   fontSize: 10.5,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.2,
@@ -653,7 +640,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                   const Text(
                     'Customers',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: _textDark,
                       fontSize: 26,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.5,
@@ -666,14 +653,14 @@ class _CustomersScreenState extends State<CustomersScreen> {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0E2419),
+                      color: AppColors.sandLight,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: const Color(0xFF18422E)),
+                      border: Border.all(color: AppColors.sandDark),
                     ),
                     child: Text(
                       '$count',
                       style: const TextStyle(
-                        color: _primaryAccentLight,
+                        color: _primaryAccent,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
@@ -701,7 +688,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             ),
             child: const Icon(
               Icons.refresh_rounded,
-              color: _primaryAccentLight,
+              color: _primaryAccent,
               size: 20,
             ),
           ),
@@ -719,16 +706,16 @@ class _CustomersScreenState extends State<CustomersScreen> {
       ),
       child: TextField(
         controller: _searchController,
-        style: const TextStyle(color: Colors.white, fontSize: 13.5),
+        style: const TextStyle(color: _textDark, fontSize: 13.5),
         onChanged: (value) {
           customerProvider.setSearchQuery(value);
         },
         decoration: InputDecoration(
           hintText: 'Search customers by name, email, phone, or address...',
-          hintStyle: const TextStyle(color: Color(0xFF43584E), fontSize: 13),
+          hintStyle: const TextStyle(color: _textSubtle, fontSize: 13),
           prefixIcon: const Icon(
             Icons.search_rounded,
-            color: _primaryAccentLight,
+            color: _primaryAccent,
             size: 20,
           ),
           suffixIcon: customerProvider.searchQuery.isNotEmpty
@@ -806,15 +793,15 @@ class _CustomersScreenState extends State<CustomersScreen> {
               height: 46,
               width: 46,
               decoration: BoxDecoration(
-                color: const Color(0xFF0E2419),
+                color: AppColors.sandLight,
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFF18422E), width: 1),
+                border: Border.all(color: AppColors.cardBorder, width: 1),
               ),
               alignment: Alignment.center,
               child: Text(
                 customer.name.isNotEmpty ? customer.name[0].toUpperCase() : '?',
                 style: const TextStyle(
-                  color: _primaryAccentLight,
+                  color: _primaryAccent,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -831,7 +818,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                   Text(
                     customer.name,
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: _textDark,
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
@@ -843,7 +830,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                         const Icon(
                           Icons.mail_outline_rounded,
                           size: 13,
-                          color: _primaryAccentLight,
+                          color: _primaryAccent,
                         ),
                         const SizedBox(width: 4),
                         Flexible(
@@ -870,7 +857,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
                         const Icon(
                           Icons.phone_outlined,
                           size: 13,
-                          color: _primaryAccentLight,
+                          color: _primaryAccent,
                         ),
                         const SizedBox(width: 4),
                         Flexible(
@@ -918,7 +905,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
 
             const Icon(
               Icons.chevron_right_rounded,
-              color: Color(0xFF4F7663),
+              color: AppColors.camelDark,
               size: 20,
             ),
           ],
@@ -943,21 +930,21 @@ class _CustomersScreenState extends State<CustomersScreen> {
               height: 68,
               width: 68,
               decoration: BoxDecoration(
-                color: const Color(0xFF0E2419),
+                color: AppColors.sandLight,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFF18422E)),
+                border: Border.all(color: AppColors.cardBorder),
               ),
               child: const Icon(
                 Icons.people_outline_rounded,
                 size: 34,
-                color: _primaryAccentLight,
+                color: _primaryAccent,
               ),
             ),
             const SizedBox(height: 18),
             const Text(
               'No Customers Yet',
               style: TextStyle(
-                color: Colors.white,
+                color: _textDark,
                 fontSize: 19,
                 fontWeight: FontWeight.w700,
               ),
@@ -978,7 +965,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryAccent,
-                foregroundColor: const Color(0xFF042717),
+                foregroundColor: AppColors.cream,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 12,
@@ -1011,7 +998,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             Text(
               'No matches for "${customerProvider.searchQuery}"',
               style: const TextStyle(
-                color: Colors.white,
+                color: _textDark,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -1029,8 +1016,8 @@ class _CustomersScreenState extends State<CustomersScreen> {
                 customerProvider.clearSearch();
               },
               style: OutlinedButton.styleFrom(
-                foregroundColor: _primaryAccentLight,
-                side: const BorderSide(color: Color(0xFF18422E)),
+                foregroundColor: _primaryAccent,
+                side: const BorderSide(color: AppColors.inputBorder),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -1060,7 +1047,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
             const Text(
               'Could not load customers',
               style: TextStyle(
-                color: Color(0xFFFECDD3),
+                color: _danger,
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
               ),
@@ -1069,14 +1056,14 @@ class _CustomersScreenState extends State<CustomersScreen> {
             Text(
               customerProvider.errorMessage!,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xFFFDA4AF), fontSize: 13),
+              style: const TextStyle(color: _danger, fontSize: 13),
             ),
             const SizedBox(height: 18),
             ElevatedButton(
               onPressed: _loadCustomers,
               style: ElevatedButton.styleFrom(
                 backgroundColor: _danger,
-                foregroundColor: const Color(0xFF450A0A),
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
