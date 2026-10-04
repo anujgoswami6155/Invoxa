@@ -72,6 +72,9 @@ class AppColors {
 }
 
 class AppTheme {
+  static ThemeData get darkTheme => lightTheme;
+  static ThemeData get theme => lightTheme;
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,

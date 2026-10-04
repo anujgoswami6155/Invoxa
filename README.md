@@ -14,7 +14,7 @@ The project repository includes comprehensive documentation covering all aspects
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | [**PRD.md**](docs/PRD.md)                         | Product Requirements Document: Vision, target personas, user flows, and functional requirements.         |
 | [**ARCHITECTURE.md**](docs/ARCHITECTURE.md)       | System architecture: Layered pattern, ER diagrams, data flow, auth gates, and Firestore security.        |
-| [**ProjectStruture.md**](docs/ProjectStruture.md) | Comprehensive directory & file guide: Detailed explanation of every folder, file, usage, and boundaries. |
+| [**ProjectStructure.md**](docs/ProjectStructure.md) | Comprehensive directory & file guide: Detailed explanation of every folder, file, usage, and boundaries. |
 | [**DESIGN.md**](docs/DESIGN.md)                   | Design system: Color palettes, typography, spacing tokens, and component guidelines.                     |
 | [**RULES.md**](docs/RULES.md)                     | Engineering standards: Golden rules, coding invariants, security restrictions, and Git workflows.        |
 | [**TASKS.md**](docs/TASKS.md)                     | Roadmap & status: Phase progress, immediate sprint checklist, and parked issues.                         |

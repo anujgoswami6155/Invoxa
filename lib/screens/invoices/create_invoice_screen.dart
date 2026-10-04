@@ -108,8 +108,8 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
       lastDate: DateTime(2040),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
               primary: _primaryAccent,
               onPrimary: AppColors.cream,
               surface: _cardBg,

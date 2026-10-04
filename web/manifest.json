@@ -1,11 +1,11 @@
 {
-    "name": "invoxa",
-    "short_name": "invoxa",
+    "name": "Invoxa — Smart Invoicing & Billing Suite",
+    "short_name": "Invoxa",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#000000",
+    "theme_color": "#0F4C75",
+    "description": "Simple, modern invoicing and billing management suite for businesses and independent professionals.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
